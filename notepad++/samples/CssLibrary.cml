@@ -1,0 +1,42 @@
+{CSSLibrary {
+  $classpath : "some.classpath..MyChildLib",
+  $extends : "some.classpath..MyBaseLib",
+  $csslibs : {
+    myextlib : "the.other.classpath.ExternalCSSLib"
+  },
+  $dependencies : [
+  	"some.other.dependendency.library.Dependency"
+  ],
+  $hasScript: true
+}}
+
+  {var myRed = "rgb(221,0,0)" /}
+  {macro semiTransparentPara_callsExtCml(displayStyle)}
+    p.para { /*unescaped CSS*/
+      display: ${displayStyle};       /*making sure variable passing works*/
+      color: ${greenColor()};         /*calling script*/
+      {call myextlib.opacity(0.5) /}  /*calling other lib*/
+    }
+  {/macro}
+
+  {macro putDefaultLinksStyle_invokesParent(cssClass)}
+    /* curly braces inside var/set statement should not be escaped */
+    {var linkStyles = {normal: myRed, visited: "cyan", hover: "navy", focus: "navy"} /}
+    {call putLinkStyle_macroFromParent(cssClass, linkStyles) /} /*calling macro from parent*/
+  {/macro}
+
+  {macro overriddenStyle()} /* overriding the parent */
+    {call $MyBaseLib.overriddenStyle() /} 
+    color: rgb(85,85,85);
+  {/macro}
+  
+  {macro colorFromDependency()}
+  	{var myextjs = test.templateTests.tests.features.csslibs.csslibsenv.libs.ExternalJsFile /}
+  	background-color: ${myextjs.getTestColor()};
+  {/macro}
+  
+  {macro bgImage_usingCssPath()}
+  	background-image: url(${cssPath}/noSuchImage.jpg);
+  {/macro}
+
+{/CSSLibrary}
