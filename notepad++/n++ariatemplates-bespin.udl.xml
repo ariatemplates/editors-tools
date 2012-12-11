@@ -7,14 +7,14 @@
         </Settings>
         <KeywordLists>
             <Keywords name="Delimiters">[00]00</Keywords>
-            <Keywords name="Folder+">{Template {CSSTemplate {Library {CSSLibrary {section {macro {repeater {if</Keywords>
-            <Keywords name="Folder-">{/Template} {/CSSTemplate} {/Library} {/CSSLibrary} {/section} {/macro} {/repeater} {/if}</Keywords>
+            <Keywords name="Folder+">{Template {CSSTemplate {Library {CSSLibrary {macro {repeater {if {foreach {separator {CDATA</Keywords>
+            <Keywords name="Folder-">{/Template} {/CSSTemplate} {/Library} {/CSSLibrary} {/macro} {/repeater} {/if} {/foreach} {/separator} {/CDATA}</Keywords>
             <Keywords name="Operators">( ) [ ] =</Keywords>
             <Keywords name="Comment">1/* 2*/ 0//</Keywords>
-            <Keywords name="Words1">{for {foreach {/foreach} {call {on {var {set checkDefault {createView {CDATA {/CDATA} {id {separator {/separator} {elseif { } /} }, }} }/}</Keywords>
+            <Keywords name="Words1">{for {section {/section} {call {on {var {set checkDefault {createView {id {elseif {else {else/}  { } /} }, }} }/}</Keywords>
             <Keywords name="Words2">$ $classpath $classpath: $css $css: $hasScript $hasScript: $macrolibs $macrolibs: $csslibs $csslibs: $texts $texts: $extends $extends: $dependencies $dependencies: $res $res: bindRefreshTo bindRefreshTo: bind bind: this data this.data</Keywords>
             <Keywords name="Words3">&lt; &lt;/</Keywords>
-            <Keywords name="Words4">{@aria: {@html:</Keywords>
+            <Keywords name="Words4">{@aria: {/@aria: {@html: {/@html:</Keywords>
         </KeywordLists>
         <Styles>
             <WordsStyle name="DEFAULT" styleID="11" fgColor="BDAE9D" bgColor="2A211C" fontName="" fontStyle="0" />
