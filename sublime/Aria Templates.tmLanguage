@@ -13,10 +13,6 @@
 	<key>patterns</key>
 	<array>
 		<dict>
-			<key>include</key>
-			<string>#keywords</string>
-		</dict>
-		<dict>
 			<key>begin</key>
 			<string>\{(Template)\s*</string>
 			<key>beginCaptures</key>
@@ -106,7 +102,7 @@
 				</dict>
 			</dict>
 			<key>comment</key>
-			<string>sd</string>
+			<string>Simplified HTML tags</string>
 			<key>end</key>
 			<string>&gt;</string>
 			<key>name</key>
@@ -115,11 +111,11 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>#tag-stuff</string>
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#tag-stuff</string>
+					<string>$self</string>
 				</dict>
 			</array>
 		</dict>
@@ -167,11 +163,11 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.js</string>
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>source.js</string>
+					<string>$self</string>
 				</dict>
 			</array>
 		</dict>
@@ -197,48 +193,126 @@
 			<string>source.macro.begin.tpl</string>
 		</dict>
 		<dict>
-			<key>begin</key>
-			<string>\{/?\s*(\w+)\b</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>support.function.tpl</string>
-				</dict>
-			</dict>
-			<key>comment</key>
-			<string>match statement opening or ending: {xyz ...}, {/xyz} and short version {xyz/}</string>
-			<key>end</key>
-			<string>\}</string>
-			<key>name</key>
-			<string>source.statement.bounds.tpl</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>$self</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>source.js</string>
-				</dict>
-			</array>
+			<key>include</key>
+			<string>#tpl-statement</string>
 		</dict>
 		<dict>
 			<key>include</key>
-			<string>#expression</string>
+			<string>#tpl-expression</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#tpl-keyword</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#comment</string>
 		</dict>
 	</array>
 	<key>repository</key>
 	<dict>
-		<key>entities</key>
+		<key>comment</key>
 		<dict>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#expression</string>
+					<string>#comment-block-documentation</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#comment-block</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#comment-line-double-slash</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#comment-block-html</string>
+				</dict>
+			</array>
+		</dict>
+		<key>comment-block</key>
+		<dict>
+			<key>begin</key>
+			<string>/\*</string>
+			<key>captures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.comment.js</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>\*/</string>
+			<key>name</key>
+			<string>comment.block.tpl</string>
+		</dict>
+		<key>comment-block-documentation</key>
+		<dict>
+			<key>begin</key>
+			<string>/\*\*(?!/)</string>
+			<key>captures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.comment.js</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>\*/</string>
+			<key>name</key>
+			<string>comment.block.documentation.tpl</string>
+		</dict>
+		<key>comment-block-html</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.comment.html.js</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.comment.html.js</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(&lt;!--|--&gt;)</string>
+			<key>name</key>
+			<string>comment.block.html.tpl</string>
+		</dict>
+		<key>comment-line-double-slash</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.comment.js</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(//).*$\n?</string>
+			<key>name</key>
+			<string>comment.line.double.slash.tpl</string>
+		</dict>
+		<key>tag-entities</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tpl-statement</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#tpl-expression</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -265,91 +339,11 @@
 					<key>name</key>
 					<string>invalid.illegal.bad-ampersand.html</string>
 				</dict>
-			</array>
-		</dict>
-		<key>expression</key>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>0</key>
 				<dict>
+					<key>match</key>
+					<string>.</string>
 					<key>name</key>
-					<string>constant.other.tpl</string>
-				</dict>
-			</dict>
-			<key>comment</key>
-			<string>matches !!single line!! expressions : ${ ... }</string>
-			<key>match</key>
-			<string>\$\{.*?(\})(?=[^\}]*?($|\{))</string>
-		</dict>
-		<key>keywords</key>
-		<dict>
-			<key>match</key>
-			<string>\b(inArray|inView|inSortedView|bindRefreshTo|bindProcessingTo|to|inside|data)\b</string>
-			<key>name</key>
-			<string>storage.tag.tpl</string>
-		</dict>
-		<key>string-double-quoted</key>
-		<dict>
-			<key>begin</key>
-			<string>"</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>0</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.definition.string.begin.html</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>"</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>0</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.definition.string.end.html</string>
-				</dict>
-			</dict>
-			<key>name</key>
-			<string>string.quoted.double.html</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#entities</string>
-				</dict>
-			</array>
-		</dict>
-		<key>string-single-quoted</key>
-		<dict>
-			<key>begin</key>
-			<string>'</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>0</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.definition.string.begin.html</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>'</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>0</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.definition.string.end.html</string>
-				</dict>
-			</dict>
-			<key>name</key>
-			<string>string.quoted.single.html</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#entities</string>
+					<string>string.quoted.double.html</string>
 				</dict>
 			</array>
 		</dict>
@@ -412,7 +406,7 @@
 					<array>
 						<dict>
 							<key>include</key>
-							<string>#entities</string>
+							<string>#tag-entities</string>
 						</dict>
 					</array>
 				</dict>
@@ -445,9 +439,71 @@
 					<array>
 						<dict>
 							<key>include</key>
-							<string>#entities</string>
+							<string>#tag-entities</string>
 						</dict>
 					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>tag-string-double-quoted</key>
+		<dict>
+			<key>begin</key>
+			<string>"</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>string.quoted.double.html</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>"</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>string.quoted.double.html</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tag-entities</string>
+				</dict>
+			</array>
+		</dict>
+		<key>tag-string-single-quoted</key>
+		<dict>
+			<key>begin</key>
+			<string>'</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.begin.html</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>'</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.end.html</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>string.quoted.single.html</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tag-entities</string>
 				</dict>
 			</array>
 		</dict>
@@ -465,11 +521,61 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#string-double-quoted</string>
+					<string>#tag-string-double-quoted</string>
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#string-single-quoted</string>
+					<string>#tag-string-single-quoted</string>
+				</dict>
+			</array>
+		</dict>
+		<key>tpl-expression</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>constant.other.tpl</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>matches !!single line!! expressions : ${ ... }</string>
+			<key>match</key>
+			<string>\$\{.*?(\})(?=[^\}]*?($|\{))</string>
+		</dict>
+		<key>tpl-keyword</key>
+		<dict>
+			<key>match</key>
+			<string>\b(inArray|inView|inSortedView|bindRefreshTo|bindProcessingTo|to|inside|data)\b</string>
+			<key>name</key>
+			<string>storage.tag.tpl</string>
+		</dict>
+		<key>tpl-statement</key>
+		<dict>
+			<key>begin</key>
+			<string>\{/?\s*(\w+)\b</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>support.function.tpl</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>match statement opening or ending: {xyz ...}, {/xyz} and short version {xyz/}</string>
+			<key>end</key>
+			<string>\}</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.js</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#tpl-keyword</string>
 				</dict>
 			</array>
 		</dict>

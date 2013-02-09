@@ -2,7 +2,6 @@
   "scopeName": "source.tpl",
   "fileTypes": ["tpl", "tml", "tpl.css"],
   "patterns": [
-    {"include": "#keywords"},
     { 
       "name": "source.template.tpl",
       "comment" : "matches : {Template {options}} ... {/Template}",
@@ -37,15 +36,15 @@
     },
     {
       "name" : "source.tag.tpl",
-      "comment" : "sd",
+      "comment" : "Simplified HTML tags",
       "begin" : "</?\\s*(\\w+)",
       "beginCaptures": {
           "1": {"name": "keyword.tag.tpl"}
       },
       "end" : ">",
       "patterns" : [
-        {"include":"$self"},
-        {"include":"#tag-stuff"}
+        {"include":"#tag-stuff"},
+        {"include":"$self"}
       ]
     },
     {
@@ -63,8 +62,8 @@
           "3": {"name": "keyword.tag.tpl"}
       },
       "patterns": [
-        {"include": "$self"},
-        {"include": "source.js"}
+        {"include": "source.js"},
+        {"include": "$self"}
       ]
     },{ 
       "name": "source.macro.begin.tpl",
@@ -74,8 +73,14 @@
           "1": {"name": "support.function.tpl"},
           "3": {"name": "variable.parameter.function.tpl"}
       }
-    },{
-      "name": "source.statement.bounds.tpl",
+    },
+    {"include" : "#tpl-statement"},
+    {"include" : "#tpl-expression"},
+    {"include": "#tpl-keyword"},
+    {"include": "#comment"}
+  ],
+  "repository": {
+    "tpl-statement" : {
       "comment": "match statement opening or ending: {xyz ...}, {/xyz} and short version {xyz/}", 
       "begin": "\\{/?\\s*(\\w+)\\b", 
       "beginCaptures": {
@@ -83,27 +88,25 @@
       }, 
       "end": "\\}",
       "patterns": [
-        {"include": "$self"},
-        {"include": "source.js"}
+        {"include": "source.js"},
+        {"include": "#tpl-keyword"}
       ]
     },
-    {"include" : "#expression"}
-  ],
-  "repository": {
-    "expression" : {
+    "tpl-expression" : {
       "comment" : "matches !!single line!! expressions : ${ ... }",
       "match": "\\$\\{.*?(\\})(?=[^\\}]*?($|\\{))",  
       "captures": {
           "0": {"name": "constant.other.tpl"}
       }
     },
-    "keywords" : {
+    "tpl-keyword" : {
       "match": "\\b(inArray|inView|inSortedView|bindRefreshTo|bindProcessingTo|to|inside|data)\\b", 
       "name": "storage.tag.tpl"
     },
-    "entities": {
+    "tag-entities": {
         "patterns": [
-            {"include": "#expression"},
+            {"include": "#tpl-statement"},
+            {"include": "#tpl-expression"},
             {
                 "captures": {
                     "1": {
@@ -119,30 +122,33 @@
             {
                 "match": "&", 
                 "name": "invalid.illegal.bad-ampersand.html"
+            }, 
+            {
+                "match": ".", 
+                "name": "string.quoted.double.html"
             }
         ]
     },
-    "string-double-quoted": {
+    "tag-string-double-quoted": {
         "begin": "\"", 
         "beginCaptures": {
             "0": {
-                "name": "punctuation.definition.string.begin.html"
+                "name": "string.quoted.double.html"
             }
         }, 
         "end": "\"", 
         "endCaptures": {
             "0": {
-                "name": "punctuation.definition.string.end.html"
+                "name": "string.quoted.double.html"
             }
         }, 
-        "name": "string.quoted.double.html", 
         "patterns": [
             {
-                "include": "#entities"
+                "include": "#tag-entities"
             }
         ]
     }, 
-    "string-single-quoted": {
+    "tag-string-single-quoted": {
         "begin": "'", 
         "beginCaptures": {
             "0": {
@@ -158,7 +164,7 @@
         "name": "string.quoted.single.html", 
         "patterns": [
             {
-                "include": "#entities"
+                "include": "#tag-entities"
             }
         ]
     }, 
@@ -196,28 +202,24 @@
                 "name": "string.quoted.double.html", 
                 "patterns": [
                     {
-                        "include": "#entities"
+                        "include": "#tag-entities"
                     }
                 ]
             }, 
             {
                 "begin": "'", 
                 "beginCaptures": {
-                    "0": {
-                        "name": "punctuation.definition.string.begin.html"
-                    }
+                    "0": {"name": "punctuation.definition.string.begin.html"}
                 }, 
                 "contentName": "meta.toc-list.id.html", 
                 "end": "'", 
                 "endCaptures": {
-                    "0": {
-                        "name": "punctuation.definition.string.end.html"
-                    }
+                    "0": {"name": "punctuation.definition.string.end.html"}
                 }, 
                 "name": "string.quoted.single.html", 
                 "patterns": [
                     {
-                        "include": "#entities"
+                        "include": "#tag-entities"
                     }
                 ]
             }
@@ -225,18 +227,49 @@
     }, 
     "tag-stuff": {
         "patterns": [
-            {
-                "include": "#tag-id-attribute"
-            }, 
-            {
-                "include": "#tag-generic-attribute"
-            }, 
-            {
-                "include": "#string-double-quoted"
-            }, 
-            {
-                "include": "#string-single-quoted"
-            }
+            {"include": "#tag-id-attribute"}, 
+            {"include": "#tag-generic-attribute"}, 
+            {"include": "#tag-string-double-quoted"}, 
+            {"include": "#tag-string-single-quoted"}
+        ]
+    },
+    "comment-block-documentation" : {
+        "begin": "/\\*\\*(?!/)", 
+        "captures": {
+            "0": {"name": "punctuation.definition.comment.js"}
+        }, 
+        "end": "\\*/",
+        "name" : "comment.block.documentation.tpl"
+    }, 
+    "comment-block": {
+        "begin": "/\\*", 
+        "captures": {
+            "0": {"name": "punctuation.definition.comment.js"}
+        }, 
+        "end": "\\*/",
+        "name" : "comment.block.tpl"
+    }, 
+    "comment-line-double-slash" : {
+        "captures": {
+            "1": {"name": "punctuation.definition.comment.js"}
+        }, 
+        "match": "(//).*$\\n?",
+        "name" : "comment.line.double.slash.tpl"
+    }, 
+    "comment-block-html" : {
+        "captures": {
+            "0": {"name": "punctuation.definition.comment.html.js"}, 
+            "2": {"name": "punctuation.definition.comment.html.js"}
+        }, 
+        "match": "(<!--|-->)",
+        "name" : "comment.block.html.tpl"
+    },
+    "comment" : {
+        "patterns": [
+            {"include": "#comment-block-documentation"}, 
+            {"include": "#comment-block"}, 
+            {"include": "#comment-line-double-slash"}, 
+            {"include": "#comment-block-html"}
         ]
     }
   },
