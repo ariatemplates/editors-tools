@@ -17,3 +17,9 @@ How to improve/change it ?
 3. Reuse the existing "Aria Templates.JSON-tmLanguage"
 
 AAAPackageDev takes care of translating the JSON version of the syntax definition to the much harder to read XML format.
+
+Screenshots
+===========
+
+![Preview template](https://raw.github.com/ariatemplates/editors-tools/master/sublime/preview-1.png "Preview template")
+![Preview css-template](https://raw.github.com/ariatemplates/editors-tools/master/sublime/preview-2.png "Preview css-template")
