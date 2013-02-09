@@ -1,0 +1,244 @@
+{ "name": "Aria Templates",
+  "scopeName": "source.tpl",
+  "fileTypes": ["tpl", "tml", "tpl.css"],
+  "patterns": [
+    {"include": "#keywords"},
+    { 
+      "name": "source.template.tpl",
+      "comment" : "matches : {Template {options}} ... {/Template}",
+      "begin": "\\{(Template)\\s*", 
+      "beginCaptures": {
+          "1": {"name": "support.function.tpl"}
+      },
+      "end": "\\{/(Template)\\}",
+      "endCaptures": {
+          "1": {"name": "support.function.tpl"}
+      }, 
+      "patterns": [
+        {"include": "$self"},
+        {"include": "source.js"}
+      ]
+    },{ 
+      "name": "source.csstemplate.tpl",
+      "comment" : "matches CSSTemplate : {CSSTemplate {options}} ... {/CSSTemplate} . Separate rule since css and js kept conflicting",
+      "begin": "\\{(CSSTemplate)\\s*", 
+      "beginCaptures": {
+          "1": {"name": "support.function.tpl"}
+      },
+      "end": "\\{/(CSSTemplate)\\}",
+      "endCaptures": {
+          "1": {"name": "support.function.tpl"}
+      }, 
+      "patterns": [
+        {"include": "$self"},
+        {"include": "source.css"},
+        {"include": "source.js"}
+      ]
+    },
+    {
+      "name" : "source.tag.tpl",
+      "comment" : "sd",
+      "begin" : "</?\\s*(\\w+)",
+      "beginCaptures": {
+          "1": {"name": "keyword.tag.tpl"}
+      },
+      "end" : ">",
+      "patterns" : [
+        {"include":"$self"},
+        {"include":"#tag-stuff"}
+      ]
+    },
+    {
+      "name": "source.widget.tpl",
+      "comment" : "matches any widget + content : {@lib:Widget {options}} ... {/@lib:Widget} or {@lib:Widget {options}/}",
+      "begin": "\\{\\s*(@\\w+)\\:(\\w+)\\s*", 
+      "beginCaptures": {
+          "1": {"name": "support.function.tpl"},
+          "2": {"name": "keyword.tag.tpl"}
+      },
+      "end": "(?:(/\\})|\\{/\\s*(@\\w+)\\:(\\w+)\\s*?\\})",
+      "endCaptures": {
+          "1": {"name": "support.function.tpl"},
+          "2": {"name": "support.function.tpl"},
+          "3": {"name": "keyword.tag.tpl"}
+      },
+      "patterns": [
+        {"include": "$self"},
+        {"include": "source.js"}
+      ]
+    },{ 
+      "name": "source.macro.begin.tpl",
+      "comment": "match macro opening : {macro myMacro(args)}", 
+      "match": "\\{(macro)\\s+([a-zA-Z_$]\\w*)\\s*\\((.*?)\\)\\s*\\}", 
+      "captures": {
+          "1": {"name": "support.function.tpl"},
+          "3": {"name": "variable.parameter.function.tpl"}
+      }
+    },{
+      "name": "source.statement.bounds.tpl",
+      "comment": "match statement opening or ending: {xyz ...}, {/xyz} and short version {xyz/}", 
+      "begin": "\\{/?\\s*(\\w+)\\b", 
+      "beginCaptures": {
+        "1": {"name": "support.function.tpl"}
+      }, 
+      "end": "\\}",
+      "patterns": [
+        {"include": "$self"},
+        {"include": "source.js"}
+      ]
+    },
+    {"include" : "#expression"}
+  ],
+  "repository": {
+    "expression" : {
+      "comment" : "matches !!single line!! expressions : ${ ... }",
+      "match": "\\$\\{.*?(\\})(?=[^\\}]*?($|\\{))",  
+      "captures": {
+          "0": {"name": "constant.other.tpl"}
+      }
+    },
+    "keywords" : {
+      "match": "\\b(inArray|inView|inSortedView|bindRefreshTo|bindProcessingTo|to|inside|data)\\b", 
+      "name": "storage.tag.tpl"
+    },
+    "entities": {
+        "patterns": [
+            {"include": "#expression"},
+            {
+                "captures": {
+                    "1": {
+                        "name": "punctuation.definition.entity.html"
+                    }, 
+                    "3": {
+                        "name": "punctuation.definition.entity.html"
+                    }
+                }, 
+                "match": "(&)([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+)(;)", 
+                "name": "constant.character.entity.html"
+            }, 
+            {
+                "match": "&", 
+                "name": "invalid.illegal.bad-ampersand.html"
+            }
+        ]
+    },
+    "string-double-quoted": {
+        "begin": "\"", 
+        "beginCaptures": {
+            "0": {
+                "name": "punctuation.definition.string.begin.html"
+            }
+        }, 
+        "end": "\"", 
+        "endCaptures": {
+            "0": {
+                "name": "punctuation.definition.string.end.html"
+            }
+        }, 
+        "name": "string.quoted.double.html", 
+        "patterns": [
+            {
+                "include": "#entities"
+            }
+        ]
+    }, 
+    "string-single-quoted": {
+        "begin": "'", 
+        "beginCaptures": {
+            "0": {
+                "name": "punctuation.definition.string.begin.html"
+            }
+        }, 
+        "end": "'", 
+        "endCaptures": {
+            "0": {
+                "name": "punctuation.definition.string.end.html"
+            }
+        }, 
+        "name": "string.quoted.single.html", 
+        "patterns": [
+            {
+                "include": "#entities"
+            }
+        ]
+    }, 
+    "tag-generic-attribute": {
+        "match": "\\b([a-zA-Z\\-:]+)", 
+        "name": "entity.other.attribute-name.html"
+    }, 
+    "tag-id-attribute": {
+        "begin": "\\b(id)\\b\\s*(=)", 
+        "captures": {
+            "1": {
+                "name": "entity.other.attribute-name.id.html"
+            }, 
+            "2": {
+                "name": "punctuation.separator.key-value.html"
+            }
+        }, 
+        "end": "(?<='|\")", 
+        "name": "meta.attribute-with-value.id.html", 
+        "patterns": [
+            {
+                "begin": "\"", 
+                "beginCaptures": {
+                    "0": {
+                        "name": "punctuation.definition.string.begin.html"
+                    }
+                }, 
+                "contentName": "meta.toc-list.id.html", 
+                "end": "\"", 
+                "endCaptures": {
+                    "0": {
+                        "name": "punctuation.definition.string.end.html"
+                    }
+                }, 
+                "name": "string.quoted.double.html", 
+                "patterns": [
+                    {
+                        "include": "#entities"
+                    }
+                ]
+            }, 
+            {
+                "begin": "'", 
+                "beginCaptures": {
+                    "0": {
+                        "name": "punctuation.definition.string.begin.html"
+                    }
+                }, 
+                "contentName": "meta.toc-list.id.html", 
+                "end": "'", 
+                "endCaptures": {
+                    "0": {
+                        "name": "punctuation.definition.string.end.html"
+                    }
+                }, 
+                "name": "string.quoted.single.html", 
+                "patterns": [
+                    {
+                        "include": "#entities"
+                    }
+                ]
+            }
+        ]
+    }, 
+    "tag-stuff": {
+        "patterns": [
+            {
+                "include": "#tag-id-attribute"
+            }, 
+            {
+                "include": "#tag-generic-attribute"
+            }, 
+            {
+                "include": "#string-double-quoted"
+            }, 
+            {
+                "include": "#string-single-quoted"
+            }
+        ]
+    }
+  },
+  "uuid": "45dd46f3-4ff9-41c2-be21-662389784e9a"
+}
