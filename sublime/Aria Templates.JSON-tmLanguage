@@ -50,17 +50,12 @@
     {
       "name": "source.widget.tpl",
       "comment" : "matches any widget + content : {@lib:Widget {options}} ... {/@lib:Widget} or {@lib:Widget {options}/}",
-      "begin": "\\{\\s*(@\\w+)\\:(\\w+)\\s*", 
+      "begin": "\\{/?\\s*(@\\w+)\\:(\\w+)\\s*", 
       "beginCaptures": {
           "1": {"name": "support.function.tpl"},
           "2": {"name": "keyword.tag.tpl"}
       },
-      "end": "(?:(/\\})|\\{/\\s*(@\\w+)\\:(\\w+)\\s*?\\})",
-      "endCaptures": {
-          "1": {"name": "support.function.tpl"},
-          "2": {"name": "support.function.tpl"},
-          "3": {"name": "keyword.tag.tpl"}
-      },
+      "end": "\\}",
       "patterns": [
         {"include": "source.js"},
         {"include": "$self"}
@@ -93,14 +88,25 @@
       ]
     },
     "tpl-expression" : {
-      "comment" : "matches !!single line!! expressions : ${ ... }",
-      "match": "\\$\\{.*?(\\})(?=[^\\}]*?($|\\{))",  
+      "comment" : "matches single line expressions : ${ ... }.Matches $ not preceded by \\, followed by _{_ then _any_ until the first _}_ that precedes EOL or _{_ or // with no other _}_ ib between",
+      "match": "(?<!\\\\)\\$\\{.*?(\\})(?=[^\\}]*($|\\{|//))",  
       "captures": {
           "0": {"name": "constant.other.tpl"}
       }
     },
     "tpl-keyword" : {
-      "match": "\\b(inArray|inView|inSortedView|bindRefreshTo|bindProcessingTo|to|inside|data)\\b", 
+      "patterns": [
+        {"include": "#tpl-basic-keyword"},
+        {"include": "#tpl-fwk-keyword"}
+      ]
+    },
+    "tpl-basic-keyword" : {
+      "match": "\\b(data|bind|bindRefreshTo|bindProcessingTo|to|inside|inArray|inView|inSortedView)\\b", 
+      "name": "storage.tag.tpl"
+    },
+    "tpl-fwk-keyword" : {
+      "comment" : "matches all $ keywords",
+      "match": "\\$\\w+", 
       "name": "storage.tag.tpl"
     },
     "tag-entities": {
