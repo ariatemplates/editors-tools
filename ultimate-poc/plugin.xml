@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="poc.editors.POCEditor"
+            contributorClass="poc.editors.POCEditorActionBarContributor"
+            default="true"
+            extensions="tpl, tml"
+            id="POC.template"
+            name="Template Editor">
+      </editor>
+   </extension>
+   <!--extension
+         point="org.eclipse.ui.editors.documentProviders">
+      <provider
+            class="poc.document.DocumentProvider"
+            extensions="tpl"
+            id="poc.document.DocumentProvider">
+      </provider>
+   </extension>
+   <extension
+         point="org.eclipse.core.filebuffers.documentSetup">
+      <participant
+            class="poc.document.DocumentSetupParticipant"
+            extensions="tpl">
+      </participant>
+   </extension-->
+
+</plugin>

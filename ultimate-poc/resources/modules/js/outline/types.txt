@@ -1,0 +1,255 @@
+| 'Program'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'EmptyStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'BlockStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ExpressionStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'LabeledStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'IfStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'SwitchStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'WhileStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'DoWhileStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ForStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ForInStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'BreakStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ContinueStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'WithStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ReturnStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'TryStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ThrowStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'DebuggerStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'LetStatement'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'FunctionDeclaration'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'VariableDeclaration'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'VariableDeclarator'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'SequenceExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ConditionalExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'UnaryExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'BinaryExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'AssignmentExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'LogicalExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'UpdateExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'NewExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'CallExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'MemberExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'FunctionExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ArrayExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ObjectExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ThisExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'GraphExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'GraphIndexExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ComprehensionExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'GeneratorExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'YieldExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'LetExpression'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ArrayPattern'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ObjectPattern'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'PropertyPattern'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'SwitchCase'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'CatchClause'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'ComprehensionBlock'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'Identifier'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'Literal'
+	{
+		label: ''
+		children: unedfined
+	}
+| 'Property'
+	{
+		label: ''
+		children: unedfined
+	}
