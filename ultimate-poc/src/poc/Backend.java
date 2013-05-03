@@ -17,6 +17,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 public class Backend {
+	// FIXME Don't make it hard-coded and absolute!
+	// Use Eclipse preferences system
+	// Otherwise use PATH
+	// Otherwise use package node version, with a relative path
+	private static final String launcherPath = "C:\\Documents and Settings\\ymeine\\Application Data\\npm\\node_modules\\LiveScript\\bin\\lsc";
+	// FIXME Make it relative!
+	private static final String programPath = "G:/dev/git/editors-tools/ultimate-poc/resources";
+	
+	
+	
 	private static Backend singleton = null;
 	
 	public static Backend get() {
@@ -66,10 +76,10 @@ public class Backend {
 		if (!isRunning()) {
 			ProcessBuilder processBuilder = new ProcessBuilder(
 					"node",
-					"\"C:\\Documents and Settings\\ymeine\\Application Data\\npm\\node_modules\\LiveScript\\bin\\lsc\"",
+					"\"" + launcherPath + "\"",
 					"server"
 					);
-			processBuilder.directory(new File("G:/ws/eOwn/POC/resources"));
+			processBuilder.directory(new File(programPath));
 			
 			process = processBuilder.start();
 		}

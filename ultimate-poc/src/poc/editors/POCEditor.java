@@ -9,11 +9,27 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import poc.Backend;
+import poc.document.POCDocumentProvider;
 import poc.outline.POCOutline;
 
 public class POCEditor extends TextEditor {
 
 	private POCOutline contentOutlinePage = null; 
+
+	public POCEditor() {
+		super();
+		//setDocumentProvider(new POCDocumentProvider());
+	}
+	
+	
+
+	@Override
+	protected void initializeEditor() {
+		super.initializeEditor();
+		setSourceViewerConfiguration(new POCSourceViewerConfiguration());
+	}
+
+
 
 	// Setup
 	@Override
@@ -36,6 +52,9 @@ public class POCEditor extends TextEditor {
 		super.editorSaved();
 		try {
 			format();
+			highlight();
+			fold();
+			validate();
 			outline();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -43,9 +62,22 @@ public class POCEditor extends TextEditor {
 	}
 
 
+	
+	
+	
 	// TODO Process input on initialization
 	// FIXME This is too early to communicate, the backend is not totally setup
 
+	private void format() throws IOException {
+		IDocument document = this.getDocumentProvider()
+				.getDocument(this.getEditorInput());
+		Map<String, Object> argument = new HashMap<String, Object>();
+		argument.put("source", document.get());
+		
+		document.set(Backend.get().rpc("js", "format", argument).get("source").toString());
+		;
+	}
+	
 	private void outline() throws IOException {
 		Map<String, Object> argument = new HashMap<String, Object>();
 		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
@@ -53,12 +85,25 @@ public class POCEditor extends TextEditor {
 		contentOutlinePage.setInput(Backend.get().rpc("js", "outline", argument));
 	}
 	
-	private void format() throws IOException {
-		IDocument document = this.getDocumentProvider()
-				.getDocument(this.getEditorInput());
-		String argument = document.get();
+	private void highlight() throws IOException {
+		Map<String, Object> argument = new HashMap<String, Object>();
+		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
 		
-		document.set(Backend.get().rpc("js", "format", argument).get("source").toString());
-		;
+		System.out.println(Backend.get().rpc("js", "highlight", argument));
 	}
+	
+	private void fold() throws IOException {
+		Map<String, Object> argument = new HashMap<String, Object>();
+		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
+		
+		System.out.println(Backend.get().rpc("js", "fold", argument));
+	}
+	
+	private void validate() throws IOException {
+		Map<String, Object> argument = new HashMap<String, Object>();
+		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
+		
+		System.out.println(Backend.get().rpc("js", "validate", argument));
+	}
+	
 }

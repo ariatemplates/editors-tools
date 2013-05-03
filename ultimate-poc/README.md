@@ -62,3 +62,9 @@ This project should bring everything except the last part: a frontend is a consu
 However, as this is a work in progress, and for some prioritary requirements, everything is integrated into a frontend project: an Eclipse plugin.
 
 Later on, we could consider doing it for [Sublime Text](http://www.sublimetext.com/), [Notepad++](http://notepad-plus-plus.org/), [Cloud9](https://c9.io/), ...
+
+# Thoughts
+
+## Performances
+
+Maybe the use of JSON-RPC through RPC can be too heavy for very frequent and simple operations done while editing. I mostly think about updating the model (source, AST and so on) with content, positions, etc. while the user enters text. Think about using a custom protocol built on top of lower-level ones (TCP for instance).

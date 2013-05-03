@@ -21,6 +21,11 @@ public class POCDocumentProvider extends FileDocumentProvider {
 		
 		return document;
 	}
+
+	@Override
+	protected IDocument createEmptyDocument() {
+		return new POCDocument();
+	}
 	
 	
 

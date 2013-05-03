@@ -5,7 +5,6 @@
          point="org.eclipse.ui.editors">
       <editor
             class="poc.editors.POCEditor"
-            contributorClass="poc.editors.POCEditorActionBarContributor"
             default="true"
             extensions="tpl, tml"
             id="POC.template"
