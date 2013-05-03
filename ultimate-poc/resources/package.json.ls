@@ -42,5 +42,8 @@
 		'js-beautify': '*'
 		jshint: '*'
 		reflect: '*'
-		gauss: '*' # Why??
+		pegjs: '*'
+
+		# Why??
+		gauss: '*'
 }

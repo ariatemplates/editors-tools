@@ -2,7 +2,7 @@ This is the code of the server.
 
 The documentation will be written when the first item in the TODO section will be done, as it implies strong changes in the architecture, and thus in the corresponding documentation.
 
-Nonetheless, here are the few things you should to know for the moment:
+Nonetheless, the introduction section tells you the few things you should know for the moment.
 
 # Introduction
 
@@ -23,8 +23,8 @@ The handler is the function receiving the request and handling the response. Ref
 
 Each property will create a specific handler, and they follow precedence rules:
 
-1. `status`: if no `handler` nor `view` are specified, a handler sending this status will be automatically created
-1. `view`: if the handler is not defined, a  handling rendering this view will be automatically created
+1. `status`: a handler sending this status will be automatically created
+1. `view`: a  handling rendering this view will be automatically created
 1. `handler`: a custom function
 
 ## Server configuration
@@ -37,7 +37,7 @@ Here are the important properties:
 * `statics`
 	* `absolute` - Array of Strings: absolute paths to use as static serving locations
 	* `relative` - Array of Strings: relative paths to use as static serving locations
-* `log` - Boolean: wether or not to active console logging. Of course this makes sens only if the console is available. The logging system is a work in progress (consider using [winston](https://github.com/flatiron/winston))
+* `log` - Boolean: wether or not to active console logging. Of course this makes sense only if the console is available. The logging system is a work in progress (consider using [winston](https://github.com/flatiron/winston))
 
 ## Package
 
