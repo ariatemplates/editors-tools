@@ -287,37 +287,26 @@ module.exports = class JS
 
 		return ast
 
-	/** Last-minute change, for demo purpose, a complete override */
-	::outline = ({source, options}) ->
-		AST = esprima.parse source, {+raw, +tolerant}
-
-		# FIXME Open an LS issue for (in this context):
-		# - implicitely returned object literals assign to `prototype`
-		# - implicitely returned arrays return only the last element, but multiple times (instead of having as expected x different elements, we have x times the last element)
-		# It looks like it wants to apply the function to modify the prototype (come from `::outline`)
+	outline: ({source, options}) ->
 		simplifyTree = (node) ->
 			switch typeof! node
-			| 'Object' =>
-				array = for key, value of node
-					processed = simplifyTree value
-					switch typeof! processed
-					| 'String' => label = "#{key}: #value"; children = []
-					| 'Array' => label = "#key"; children = processed
-					| _ => throw 'Unexpected returned value'
-					obj = {label, children}
-				return array
-			| 'Array' =>
-				array = for value, index in node
-					processed = simplifyTree value
-					switch typeof! processed
-					| 'String' => label = "#{index}: #value"; children = []
-					| 'Array' => label = "#index"; children = processed
-					| _ => throw 'Unexpected returned value'
-					obj = {label, children}
-				return array
+			| 'Object' => for key, value of node
+				processed = simplifyTree value
+				switch typeof! processed
+				| 'String' => {label: "#{key}: #value", children: []}
+				| 'Array' => {label: "#key", children: processed}
+				| _ => throw 'Unexpected returned value'
+
+			| 'Array' => for value, index in node
+				processed = simplifyTree value
+				switch typeof! processed
+				| 'String' => {label: "#{index}: #value", children: []}
+				| 'Array' => {label: "#index", children: processed}
+				| _ => throw 'Unexpected returned value'
+
 			| _ => "#node"
 
-		result = {ast: simplifyTree AST}
+		{ast: simplifyTree esprima.parse source, {+raw, +tolerant}}
 
 
 	@instance = JS!
