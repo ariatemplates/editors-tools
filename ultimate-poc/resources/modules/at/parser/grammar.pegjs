@@ -1,131 +1,248 @@
+// TODO Reorganize the code
+
 // Initializer -----------------------------------------------------------------
 
 {
-	var Node = function(type, line, column, index) {
-		return {
-			type: type,
-			line: line,
-			column: column,
-			index: index
-		};
-	};
+	var lib = require('pegjs-parser/initializer');
+
+	var instancier = lib.NodeInstancier('at');
+	var Node = function() {return instancier.create(arguments)}
+
+	var ignored = [];
 }
 
-// Template grammar ------------------------------------------------------------
+
+
+// Grammar ---------------------------------------------------------------------
 
 // ------------------------------------------------------------------------ Root
 
-start = __ root:block __ {
-	var node = Node('template', line, column, offset);
-	node.root = root;
+start = ws0:__ elements:(elementList __)? {
+	var node = Node('root', line, column, offset);
+	node.addList('spaces.0', ws0);
+	node.addList('elements', lib.valueFromList(elements));
+	node.addList('spaces.1', elements[1]); // FIXME No check is done in case there is none
+	// node.ignored = ignored;
 	return node;
 }
+
+// -------------------------------------------------------------------- Elements
+// FIXME Is it always relevant to consider spaces/comments between elements? Sometimes I would like to include whitespaces only as an element. In this case, add the comment as an alternative element, and just consider whitespaces as free text.
+
+element =
+	text
+	/ statement
+
+elementList = head:element tail:(__ element)* {
+	return [head].concat(lib.arrayFromSequence(tail, 1));
+}
+
+// ------------------------------------------------------------------------ Text
+// The particularity of the text element, is that it is not delimited as other elements, it's just everything that is not an element. So to detect the end of a text, we need to check if another element starts.
+
+text = content:(!elementStart .)+ {
+	var node = Node(null, line, column, offset, null);
+	node.set('value', lib.valueFromGuardedSequence(content));
+	return node;
+}
+
+elementStart = "{" / "/*" / "//"
 
 // ------------------------------------------------------------------ Statements
-
-//
+// WARNING the precedence in alternatives is important!
 
 statement =
-	block
-	/ inline
+	inline
+	/ cdata
+	/ block
 
-// ------------------------------------------------------------- Block statement
+// ---------------------------------------------------------------------- Inline
+// FIXME
 
-block = open:opening __ elements:(element)* __ close:closing {
-	var node = Node('block', line, column, offset);
-	node.open = open;
-	node.elements = elements;
-	node.close = close;
+/*inline = "{" id:tagId " /}" {
+	var node = Node('inline', line, column, offset);
+	node.id = id;
+	return node;
+}*/
+inline = "{" tag:tagContent "/}" {
+	var node = Node('inline', line, column, offset);
+	node.set('id', tag.id);
+	node.set('param', tag.param);
 	return node;
 }
 
-// ------------------------------------------------- Block statement opening tag
+// ----------------------------------------------------------------------- CDATA
+
+cdata = "{" ws0:__ "CDATA" ws1:__ "}" content:(!endOfCdata .)* endOfCdata {
+	var node = Node('cdata', line, column, offset)
+	node.addList('spaces.0', ws0);
+	node.addList('spaces.1', ws1);
+	node.set('content', lib.valueFromGuardedSequence(content));
+	return node;
+}
+
+endOfCdata = "{/" __ "CDATA" __"}"
+
+// ----------------------------------------------------------------------- Block
+
+block = open:opening ws0:__ elements:(elementList __)? close:closing {
+	var node = Node('block', line, column, offset);
+	node.add('openTag', open);
+	node.addList('spaces.0', ws0);
+	node.addList('elements', lib.valueFromList(elements));
+	node.addList('spaces.1', elements[1]); // FIXME Check existence
+	node.add('closeTag', close);
+	return node;
+}
 
 opening = "{" content:tagContent "}" {
 	var node = Node('opening', line, column, offset);
-	node.id = content.id;
-	node.param = content.param;
+	node.add('id', content.id);
+	node.set('param', content.param);
 	return node;
 }
 
-// ------------------------------------------------- Block statement closing tag
-
-closing = "{/" id:statementid __ "}" {
+closing = "{/" ws0:__ id:tagId ws1:__ "}" {
 	var node = Node('closing', line, column, offset);
-	node.id = id;
+	node.addList('spaces.0', ws0);
+	node.add('id', id);
+	node.addList('spaces.1', ws1);
 	return node;
 }
 
-// ----------------------------------------- Inline statement / self-closing tag
 
-inline = "{" content:tagContent "/}" {
-	var node = Node('inline', line, column, offset);
-	node.id = content.id;
-	node.param = content.param;
+// ------------------------------------------------------------------------- Tag
+// FIXME Check the id specification
+// FIXME Check the widget id
+
+tagId =
+	widgetId
+	/ standardId
+
+widgetId = "@" ws0:__ ns:id ws1:__ ":" ws2:__ widget:id {
+	var node = Node('widgetId', line, column, offset);
+	node.addList('spaces.0', ws0);
+	node.set('namespace', ns);
+	node.addList('spaces.1', ws1);
+	node.addList('spaces.2', ws2);
+	node.set('widget', widget);
 	return node;
 }
 
-// ----------------------------------------------------------------- Tag content
+standardId = id:id {
+	var node = Node('id', line, column, offset);
+	node.set('value', id);
+	return node;
+}
 
-tagContent = id:statementid param:(ws statementParam)? __ {
+// ----------------------------------------------------------------------- Param
+
+tagContent = __ id:tagId param:(ws statementParam)? {
 	return {
 		id: id,
 		param: param[1] || ""
 	}
 }
 
-// --------------------------------------------------------------------- Tag ids
-
-statementid = widgetid / id
-
-// ------------------------------------------------------------------- Widget id
-
-widgetid = "@" ns:id ":" widget:id {
-	var node = Node('widgetid', line, column, offset);
-	node.namespace = ns;
-	node.widget = widget;
-	return node;
-}
-
-
-
-// FIXME This has been simplified for tests
-element =
-	statement
-	/ (!"{" .)
-
-nonstatement = (!statement .*)
-
-
+// FIXME This won't work for inline statements, as this will eat the "/" of "/}"
 // FIXME There can be some }, depending on the context: JS Object, string, comment, ...
+
 statementParam = contentWithCurlyEnclosed
+
 contentWithCurlyEnclosed = chars:([^\{\}] / enclosedWithCurly)* {
 	return chars.join('');
 }
+
 enclosedWithCurly = "{" content:contentWithCurlyEnclosed "}" {
 	return "{" + content + "}"
 }
 
+// -------------------------------------------------------------------- Comments
 
-// Primitives ------------------------------------------------------------------
+comment =
+	multiLineComment
+	/ singleLineComment
 
-id = start:idstart rest:idrest* {return start + rest.join('')}
-idstart = "$" / alpha
-idrest = idstart / digit
-
-__ = (ws / comment)*
-
-comment = "/*" chars:(!"*/" .)* "*/" {
-	var value = [];
-	for (var i = 0; i < chars.length; i++) {
-		value.push(chars[i][1]);
-	}
-
+multiLineComment = "/*" content:(!"*/" .)* "*/" {
 	var node = Node('multi-line-comment', line, column, offset);
-	node.value = value.join('');
+	node.set('value', lib.valueFromGuardedSequence(content));
 	return node;
 }
 
+singleLineComment = "//" content:(!eol .)* eol {
+	var node = Node('single-line-comment', line, column, offset);
+	node.set('value', lib.valueFromGuardedSequence(content));
+	return node;
+}
+
+// --------------------------------------------------------------------- Various
+
+__ = elements:(wsSequence / comment)* {
+	ignored = ignored.concat(elements);
+	return elements;
+}
+
+// Primitives ------------------------------------------------------------------
+
+// -------------------------------------------------------------------------- ID
+
+id = start:idstart rest:idrest* {return start + rest.join('')}
+special = [$_]
+idchars = alpha / special
+idstart = idchars
+idrest = idchars / digit
+
+// ---------------------------------------------------------------- White spaces
+
 ws = [ \r\n\t]
-alpha = [a-zA-Z_]
+
+wsSequence =
+	spaces
+	/ tabs
+	/ eol
+
+spaces = content:" "+ {
+	var node = Node('spaces', line, column, offset);
+	node.set('size', content.length);
+	return node;
+}
+
+tabs = content:"\t"+ {
+	var node = Node('tabs', line, column, offset);
+	node.set('size', content.length);
+	return node;
+}
+
+eol = value:("\r" / "\n" / "\r\n") {
+	var node = Node('eol', line, column, offset);
+	node.set('value', value);
+	return node;
+}
+
+// --------------------------------------------------------------------- Various
+
+alpha = [a-zA-Z]
 digit = [0-9]
+
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// ----------------------------------------------------------------------- Tests
+
+// XXX Add a semantic dimension, like:
+// - it's the opening of a tag
+// - ...
+// In fact, only __ between terminals avoids computing the position of elements.
+
+openingCurlyBracket = "{" {
+	var node = Node('token.bracket.curly.opening', line, column, offset);
+	node.set('char', lib.openingCurlyBracket); // Hack to conform to PEG.js syntax
+	return node;
+}
+
+
+closingCurlyBracket = "}" {
+	var node = Node('token.bracket.curly.closing', line, column, offset);
+	node.set('char', lib.closingCurlyBracket); // Hack to conform to PEG.js syntax
+	return node;
+}
+

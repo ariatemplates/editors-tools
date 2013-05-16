@@ -3,7 +3,15 @@
 	$classpath: "Main"
 }}
 
+	{macro main()}
 
-{call other() /}
+		<div>/*Comment*/</d//iv>
+		{CDATA}
+			{Template}
+			<div>
+			{/Template}
+		{/CDATA}
+
+	{/macro}
 
 {/Template}

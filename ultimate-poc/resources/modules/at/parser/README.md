@@ -1,6 +1,27 @@
+___THIS MODULE NEEDS REVIEW___
+
+If you read it, take it carefully:
+
+* some information might be obsolete
+* there can be some senseless parts:
+	* unfinished sentences
+	* paraphrased paragraphs
+* there can be a lot of grammatical and typo mistakes
+* it still needs some reorganization
+
+----
+
 We want to create a parser for the Aria Templates language, and the generated parser should target JavaScript.
 
-# Introduction
+# FIXME
+
+* the parser fails at parsing single-tag/self-closing/inline statements: the problem comes from the extraction of the statement parameter, which eats everything until a curly bracket. In this case, it also eats the slash before, considering it as part of the parameter.
+
+# Parser
+
+This section discusses about the creation of the parser.
+
+## Introduction
 
 There are always several solutions to a problem. Here are a few concerning parsing:
 
@@ -21,7 +42,7 @@ So, what's next?
 1. Determine which model our languages corresponds to, then we'll be able to know which kind of grammar we can use to define it.
 1. Choose a flexible enough tool to generate a parser for this language in JavaScript
 
-# Requirements
+## Requirements
 
 Here are the requirements of the parser:
 
@@ -29,7 +50,7 @@ Here are the requirements of the parser:
 * keep location information, both as ranges (indexes in the full string of code) and coordinates (line/column model)
 * ...
 
-# Choice
+## Choice
 
 As all the points mentionned above involve a strong knowledge of both the language we want to manage and the theory of formal languages, we won't have time to totally proces like this.
 
@@ -37,7 +58,26 @@ We will refer to a strong power which is the community.
 
 One of the most famous tool to generate parsers in JavaScript is [PEG.js](http://pegjs.majda.cz/). It uses the [parsing expression grammar](http://en.wikipedia.org/wiki/Parsing_expression_grammar) model, which is apparentlt more powerful than other more traditional ones.
 
-# Model of a template
+# Model
+
+## Syntactic
+
+* A template is a set of elements
+* An element is either a statement or something else (this "something else" can be anything that doesn't look like a statement)
+* A statement can be an inline statement or a block statement
+* The single tag of the inline statement and the opening tag of a block statement have:
+	* An id: the name of the statement
+	* A possible parameter, which is "anything until the tag is closed"
+* The closing tag of a block statement only has an id
+* A block statement has a list of elements
+
+In this model, there are two components left "fuzzy":
+
+* The parameter of a statement: it's often pure JavaScript, like JSON objects for widgets, for loops parameters, pure expression for variable declaration, but sometimes it's a custom syntax, like for [foreach loops](http://ariatemplates.com/usermanual/Writing_Templates#foreach)
+* Everything else that is not a statement: depending on the kind of template, it will be either HTML, CSS or free text, that would need to be parsed _externally_ depending on the needs.
+
+
+## Semantic
 
 Here are some important general rules:
 
