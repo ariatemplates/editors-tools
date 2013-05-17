@@ -21,13 +21,15 @@ start = ws0:__ elements:(elementList __)? {
 	var node = Node('root', line, column, offset);
 	node.addList('spaces.0', ws0);
 	node.addList('elements', lib.valueFromList(elements));
-	node.addList('spaces.1', elements[1]); // FIXME No check is done in case there is none
+	if (elements !== "") {
+		node.addList('spaces.1', elements[1]);
+	}
 	// node.ignored = ignored;
 	return node;
 }
 
 // -------------------------------------------------------------------- Elements
-// FIXME Is it always relevant to consider spaces/comments between elements? Sometimes I would like to include whitespaces only as an element. In this case, add the comment as an alternative element, and just consider whitespaces as free text.
+// FIXME Is it always relevant to tell there can be some spaces between elements? I mean, these spaces could be part of the elment itself: think for instance of free text immediately following an opening tag, but think also that sometimes in some languages you consider this prepended spaces as an initial indent, for output formatting purposes. In this case, add the comment as an alternative element, and just consider whitespaces as free text.
 
 element =
 	text
@@ -40,35 +42,58 @@ elementList = head:element tail:(__ element)* {
 // ------------------------------------------------------------------------ Text
 // The particularity of the text element, is that it is not delimited as other elements, it's just everything that is not an element. So to detect the end of a text, we need to check if another element starts.
 
-text = content:(!elementStart .)+ {
+text = content:(!statementStart .)+ {
 	var node = Node(null, line, column, offset, null);
 	node.set('value', lib.valueFromGuardedSequence(content));
 	return node;
 }
 
-elementStart = "{" / "/*" / "//"
+statementStart = "${" / "{" / "/*" / "//"
 
 // ------------------------------------------------------------------ Statements
 // WARNING the precedence in alternatives is important!
 
 statement =
-	inline
+	expression
+	/ inline
 	/ cdata
 	/ block
 
-// ---------------------------------------------------------------------- Inline
-// FIXME
+// ------------------------------------------------------------------ Expression
+// TODO Really parse the content of the expression: "expr(|arg(:value)?)*"
+// TODO Add this start
 
-/*inline = "{" id:tagId " /}" {
-	var node = Node('inline', line, column, offset);
-	node.id = id;
+expression = "${" ws0:__ param:blockStatementParam? ws1:__ "}" {
+	var node = Node('expression', line, column, offset);
+	node.addList('spaces.0', ws0);
+	node.set('param', param);
+	node.addList('spaces.1', ws1);
 	return node;
-}*/
-inline = "{" tag:tagContent "/}" {
+}
+
+// TODO Handle escaped pipes
+expressionContent = value:expressionValue? parameters:(expressionParameter)* {
+
+}
+expressionValue = content:(!"|" .)+ {return lib.valueFromGuardedSequence(content)}
+expressionParameter = value:expressionParameterValue args:(":" expressionParameterArg)? {
+
+}
+expressionParameterValue = content:(!":" .)+ {return lib.valueFromGuardedSequence(content)}
+// TODO Split args with commas?
+expressionParameterArg = content:(!"|" .)+ {return lib.valueFromGuardedSequence(content)}
+
+// ---------------------------------------------------------------------- Inline
+
+inline = "{" __ id:tagId param:(ws inlineStatementParam)? "/}" {
 	var node = Node('inline', line, column, offset);
-	node.set('id', tag.id);
-	node.set('param', tag.param);
+	node.add('id', id);
+	node.set('param', param[1] || "");
 	return node;
+}
+
+inlineStatementParam = content:(!"/}" bracedContent)* {
+	return lib.valueFromGuardedSequence(content);
 }
 
 // ----------------------------------------------------------------------- CDATA
@@ -90,16 +115,22 @@ block = open:opening ws0:__ elements:(elementList __)? close:closing {
 	node.add('openTag', open);
 	node.addList('spaces.0', ws0);
 	node.addList('elements', lib.valueFromList(elements));
-	node.addList('spaces.1', elements[1]); // FIXME Check existence
+	if (elements !== "") {
+		node.addList('spaces.1', elements[1]);
+	}
 	node.add('closeTag', close);
 	return node;
 }
 
-opening = "{" content:tagContent "}" {
+opening = "{" __ id:tagId param:(ws blockStatementParam)? "}" {
 	var node = Node('opening', line, column, offset);
-	node.add('id', content.id);
-	node.set('param', content.param);
+	node.add('id', id);
+	node.set('param', param[1] || "");
 	return node;
+}
+
+blockStatementParam = content:(!"}" bracedContent)* {
+	return lib.valueFromGuardedSequence(content);
 }
 
 closing = "{/" ws0:__ id:tagId ws1:__ "}" {
@@ -136,26 +167,16 @@ standardId = id:id {
 }
 
 // ----------------------------------------------------------------------- Param
-
-tagContent = __ id:tagId param:(ws statementParam)? {
-	return {
-		id: id,
-		param: param[1] || ""
-	}
-}
-
-// FIXME This won't work for inline statements, as this will eat the "/" of "/}"
 // FIXME There can be some }, depending on the context: JS Object, string, comment, ...
+// FIXME Handle escaped braces
 
-statementParam = contentWithCurlyEnclosed
-
-contentWithCurlyEnclosed = chars:([^\{\}] / enclosedWithCurly)* {
-	return chars.join('');
+braced = "{" content:bracedContent* "}" {
+	return "{" + content.join('') + "}"
 }
 
-enclosedWithCurly = "{" content:contentWithCurlyEnclosed "}" {
-	return "{" + content + "}"
-}
+bracedContent = braced / nonbraced
+
+nonbraced = [^{}] / "\\{" / "\\}"
 
 // -------------------------------------------------------------------- Comments
 
