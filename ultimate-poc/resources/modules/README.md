@@ -1,4 +1,4 @@
-___THIS MODULE NEEDS REVIEW___
+___THIS DOCUMENTATION NEEDS REVIEW___
 
 If you read it, take it carefully:
 

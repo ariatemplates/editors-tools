@@ -1,4 +1,4 @@
-___THIS MODULE NEEDS REVIEW___
+___THIS DOCUMENTATION NEEDS REVIEW___
 
 If you read it, take it carefully:
 
@@ -15,7 +15,16 @@ We want to create a parser for the Aria Templates language, and the generated pa
 
 # FIXME
 
-* the parser fails at parsing single-tag/self-closing/inline statements: the problem comes from the extraction of the statement parameter, which eats everything until a curly bracket. In this case, it also eats the slash before, considering it as part of the parameter.
+Everything that is left not parsed in statement parameters can contain Aria Templates elements, which thus would not be handled. For instance:
+
+* comments
+* escaped characters like braces
+
+These elements should be stripped off when applying another parser on it, however, their position and existence is important for edition purposes.
+
+The ideal would be to do like with free text: free text can be broken with any AT statement, comment.
+
+Statement parameters parsing should then follow the same pattern, like _eating everything until I encounter the beginning of something that can occur_ (here comments and escaped braces), or the end of the tag. However, mixing this with the hack made to handle brace pairs could be hard.
 
 # Parser
 
