@@ -197,11 +197,11 @@ __ = elements:(wsSequence / comment)* {
 
 // -------------------------------------------------------------------------- ID
 
-id = start:idstart rest:idrest* {return start + rest.join('')}
-special = [$_]
-idchars = alpha / special
-idstart = idchars
-idrest = idchars / digit
+id = head:idhead tail:idtail* {return head + tail.join('')}
+idhead = idchars
+idtail = "-" / digit / idchars
+idchars = alpha / idspecial
+idspecial = [$_]
 
 // ---------------------------------------------------------------- White spaces
 
