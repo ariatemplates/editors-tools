@@ -1,1 +1,1 @@
-call lsc -cj package.json
+call lsc -cj package.json.ls

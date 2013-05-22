@@ -23,7 +23,12 @@ public class Backend {
 	// Otherwise use package node version, with a relative path
 	private static final String launcherPath = "C:\\Documents and Settings\\ymeine\\Application Data\\npm\\node_modules\\LiveScript\\bin\\lsc";
 	// FIXME Make it relative!
-	private static final String programPath = "G:/dev/git/editors-tools/ultimate-poc/resources";
+	private static final String programPath = "G:/dev/git/editors-tools/ultimate-poc/resources/app/";
+	private static final String[] command = {
+		"node",
+		"\"" + launcherPath + "\"",
+		"index"
+	};
 	
 	
 	
@@ -74,11 +79,7 @@ public class Backend {
 	
 	public Process start() throws IOException {
 		if (!isRunning()) {
-			ProcessBuilder processBuilder = new ProcessBuilder(
-					"node",
-					"\"" + launcherPath + "\"",
-					"server"
-					);
+			ProcessBuilder processBuilder = new ProcessBuilder(command);
 			processBuilder.directory(new File(programPath));
 			
 			process = processBuilder.start();
