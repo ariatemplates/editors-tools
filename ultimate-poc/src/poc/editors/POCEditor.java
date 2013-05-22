@@ -51,10 +51,10 @@ public class POCEditor extends TextEditor {
 	protected void editorSaved() {
 		super.editorSaved();
 		try {
-			format();
-			highlight();
-			fold();
-			validate();
+			//format();
+			//highlight();
+			//fold();
+			//validate();
 			outline();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -74,7 +74,7 @@ public class POCEditor extends TextEditor {
 		Map<String, Object> argument = new HashMap<String, Object>();
 		argument.put("source", document.get());
 		
-		document.set(Backend.get().rpc("js", "format", argument).get("source").toString());
+		document.set(Backend.get().rpc("at", "format", argument).get("source").toString());
 		;
 	}
 	
@@ -82,28 +82,28 @@ public class POCEditor extends TextEditor {
 		Map<String, Object> argument = new HashMap<String, Object>();
 		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
 		
-		contentOutlinePage.setInput(Backend.get().rpc("js", "outline", argument));
+		contentOutlinePage.setInput(Backend.get().rpc("at", "outline", argument));
 	}
 	
 	private void highlight() throws IOException {
 		Map<String, Object> argument = new HashMap<String, Object>();
 		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
 		
-		System.out.println(Backend.get().rpc("js", "highlight", argument));
+		System.out.println(Backend.get().rpc("at", "highlight", argument));
 	}
 	
 	private void fold() throws IOException {
 		Map<String, Object> argument = new HashMap<String, Object>();
 		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
 		
-		System.out.println(Backend.get().rpc("js", "fold", argument));
+		System.out.println(Backend.get().rpc("at", "fold", argument));
 	}
 	
 	private void validate() throws IOException {
 		Map<String, Object> argument = new HashMap<String, Object>();
 		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
 		
-		System.out.println(Backend.get().rpc("js", "validate", argument));
+		System.out.println(Backend.get().rpc("at", "validate", argument));
 	}
 	
 }
