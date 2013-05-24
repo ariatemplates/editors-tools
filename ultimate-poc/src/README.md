@@ -1,3 +1,19 @@
+Eclipse plugin code, making use of the backend to provide source code edition tools.
+
+# File system layout
+
+* `README.md`: this current file
+* `poc`: the root package of the Eclipse plugin code
+
+# Versioning
+
+To version:
+
+* `README.md`
+* `poc`
+
+To ignore: _none_.
+
 # References
 
 ## Tutorials
