@@ -4,7 +4,7 @@
 	name:  'ultimate-editor-services'
 	version: '0.0.1'
 	decription: '''
-
+		A server providing common services for source code edition.
 	'''
 	keywords: <[
 		editor

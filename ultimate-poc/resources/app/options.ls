@@ -5,7 +5,7 @@ module.exports = {
 
 # Network preferences ----------------------------------------------------------
 	network:
-		host: \localhost
+		hostname: \localhost
 		ports:
 			prefered: 3000
 			min: 49152

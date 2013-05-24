@@ -1,60 +1,88 @@
-___TODO___
+This is the bootstrap of the backend application.
 
-The code of the server is being refactored and migrated to a custom module. This documentation should be adapted:
+The application is a generic server communicating through JSON-RPC and serving source code edition modules.
 
-* notions related to the server will be put along with the code of the server: routes, configuration, ...
-* the file system layout however is just a convenient way to define data to be used with the server module, this stays here, and links to notions of the server module
-* things like `package.json` stay here, completely
+# File system layout
 
-----
+Files:
 
-This is the code of the server.
+* `index.ls`: the main application file
+* `README.md`: this current file
+* `.gitignore`: Git related file
+* `routes.ls`: the list of routes to pass to the server
+* `options.ls`: the options to pass to the server
+* `logger.ls`: defines a unique logger to be used throughout the whole application
+* `log.log`: the logs of the application
 
-The documentation will be written when the first item in the TODO section will be done, as it implies strong changes in the architecture, and thus in the corresponding documentation.
+Folders:
 
-Nonetheless, the introduction section tells you the few things you should know for the moment.
+* `node_modules`: the modules constituting the application
 
-# Introduction
+# Versioning
 
-## Routes
+To version:
 
-The file `routes.ls` is where you can define your routes.
+* `index.ls`
+* `README.md`
+* `.gitignore`
+* `routes.ls`
+* `options.ls`
+* `logger.ls`
+* `node_modules`
 
-The routes are put in a native JavaScript array exported by the module, and defined as native JavaScript objects.
+To ignore:
 
-Here is the format of a route:
+* `log.log`: persistent file generated/altered at runtime, relevant only for _production_, not development
 
-* `method`: the HTTP method name (you can use any case you want)
-* `url`: the path from the root of the server
+# Contribute
 
-Then, you can specify a handler in different ways.
+## Pre-requisites
 
-The handler is the function receiving the request and handling the response. Refer to the [zappajs](http://zappajs.github.io/zappajs/) documentation for more details.
+* Node.js
+* LiveScript
 
-Each property will create a specific handler, and they follow precedence rules:
+## Introduction
 
-1. `status`: a handler sending this status will be automatically created
-1. `view`: a  handling rendering this view will be automatically created
-1. `handler`: a custom function
+The application is implemented as a generic server providing services under JSON-RPC requests.
 
-## Server configuration
+It uses the `server` module for that, please refer to its documentation.
 
-The file `serverconf.ls` holds some constants used by the server as well as some options you can set. This is not ideal and will be split in two different files: _configuration_ and _options_. As a developer, you will modify the _configuration_ file, and as a user the _options_ one.
+The services it provides are all stored in the `modes` module, which contains modules for source code edition: once again, please refer to its documentation.
 
-Here are the important properties:
+## Use
 
-* `network: ports: prefered` - Number: the ports you would like to use to run the server, if available
-* `statics`
-	* `absolute` - Array of Strings: absolute paths to use as static serving locations
-	* `relative` - Array of Strings: relative paths to use as static serving locations
-* `log` - Boolean: wether or not to active console logging. Of course this makes sense only if the console is available. The logging system is a work in progress (consider using [winston](https://github.com/flatiron/winston))
+Launch the _index_ file:
 
-## Package
+* `lsc index`
 
-The `package.json.ls` file is the [LiveScript](http://livescript.net/) equivalent of the [npm](https://npmjs.org/) `package.json` [specification](https://npmjs.org/doc/json.html). It's just that I prefer LiveScript anyway.
+## Development
 
-You can use the `compile.bat` convenient script to compile this file into JSON, so that npm can use it.
+### Routes
 
-# TODO
+The concept of routes is common in server-side technologies, and for more information about the implementation in this project, please refer to the `server` module.
 
-* this code has been duplicated and adapted in multiple projects: gather all the versions and build one common taking the best of each
+Know that you can define the list of routes the server will setup in the _routes_ module file.
+
+This module must export a collection (array) of routes.
+
+### Options
+
+The options to run the server are defined in the _options_ module file, for convenience. Please refer to the `server` module for more information.
+
+This module must return an object that follows the input format the server module accepts.
+
+### Logging
+
+You can setup a unique logger for the whole application in the _logger_ module file.
+
+This module must export an instance of a logger, that is an object which must repect the following interface:
+
+* info
+* log
+* error
+* warn
+
+# References
+
+* [LiveScript](http://livescript.net/)
+* [Node.js](http://nodejs.org/)
