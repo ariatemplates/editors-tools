@@ -1,6 +1,6 @@
 This is the bootstrap of the backend application.
 
-The application is a generic server communicating through JSON-RPC and serving source code edition modules.
+The application is based on a generic server library, using JSON-RPC communication, and is specific in the extent that it provides source code edition services thanks to this system.
 
 # File system layout
 
@@ -38,7 +38,6 @@ To ignore:
 
 ## Pre-requisites
 
-* Node.js
 * LiveScript
 
 ## Introduction
@@ -51,9 +50,7 @@ The services it provides are all stored in the `modes` module, which contains mo
 
 ## Use
 
-Launch the _index_ file:
-
-* `lsc index`
+Launch the _index_ file: `lsc index`.
 
 ## Development
 
@@ -61,15 +58,15 @@ Launch the _index_ file:
 
 The concept of routes is common in server-side technologies, and for more information about the implementation in this project, please refer to the `server` module.
 
-Know that you can define the list of routes the server will setup in the _routes_ module file.
+Know that you can define the list of routes that the server will setup in the _routes_ module file.
 
-This module must export a collection (array) of routes.
+This module must export a collection (array) of route specifications.
 
 ### Options
 
 The options to run the server are defined in the _options_ module file, for convenience. Please refer to the `server` module for more information.
 
-This module must return an object that follows the input format the server module accepts.
+This module must return an object that follows the input format that the server module accepts.
 
 ### Logging
 
@@ -77,12 +74,13 @@ You can setup a unique logger for the whole application in the _logger_ module f
 
 This module must export an instance of a logger, that is an object which must repect the following interface:
 
-* info
-* log
-* error
-* warn
+Methoods:
+
+* `info`
+* `log`
+* `error`
+* `warn`
 
 # References
 
 * [LiveScript](http://livescript.net/)
-* [Node.js](http://nodejs.org/)

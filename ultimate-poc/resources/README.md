@@ -1,21 +1,22 @@
-Backend implementation.
+Backend application.
 
-The tricky file system layout comes from the way the module system works for Node.js, and a will not to mix application modules and third-parties modules.
+The tricky file system layout comes from the way the module system works for Node.js and a will not to mix application modules and third-party modules.
 
 # File system layout
 
 * `README.md`: this current file
 * `.gitignore`: Git related file
+* `node_modules`: all third-party libraries used by the application.
 
 ## `app`
 
-All files of the applications.
+Applications files.
 
-Parts of the application are modules, and are mixed with other own _standard_ modules (that you could see duplicated in other projects, as they are not integrated to the package management system - _npm_ here)
+The application follows a modular architecture, and all the module are hierarchically organized into this root folder.
 
-## `node_modules`
+Under this root, there are _pseudo-standard_ modules and modules of the application: this is described in the respective documentation.
 
-All 3rd party libraries used by the modules in `app`.
+A _pseudo-standard_ module is a module that is not installed through the package management system (_npm_ here) since it is _home-made_. However this is a module that is not specific to this application, it could be re-used in many other ones.
 
 ## Package
 
@@ -29,6 +30,7 @@ To version:
 
 * `README.md`
 * `.gitignore`
+* `package.json.ls`
 * `app`
 
 Optional:
@@ -53,14 +55,10 @@ To ignore:
 ### Process
 
 1. Generate `package.json` from `package.json.ls`
-	* LiveScript must be installed
-	* if LiveScript is installed globally
-		* if the `compile.bat` script is present, launch it
-		* otherwise launch the following command: `lsc -cj package.json.ls`
-	* otherwise if it's locally, launch the LiveScript program with the following arguments: `-cj package.json.ls`
+	* if the `compile.bat` script is present and the LiveScript program is globally available (put in the `PATH` environement variable), launch the former
+	* otherwise launch the LiveScript program with the following arguments: `-cj package.json.ls`
 1. Install the node modules
-	* npm must be installed
-	* launch the following command: `npm install`
+	* launch the _npm_ program with the argument `install` and with the _current working directory_ set to the folder containing the previously generated `package.json`
 
 ## Development
 
@@ -68,7 +66,7 @@ To ignore:
 
 You can update the package by modifying the content of the `package.json.ls` file.
 
-For that, you must know a bit the LiveScript language to write this file, and you'll need to know the `package.json` specifications for npm.
+For that, you must know a bit the LiveScript language, and you'll need to know the _npm_ `package.json` specifications.
 
 ### Application code
 
