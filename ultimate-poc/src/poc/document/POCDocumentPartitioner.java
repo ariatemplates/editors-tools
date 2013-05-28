@@ -4,55 +4,53 @@ import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.ITypedRegion;
+import org.eclipse.jface.text.TypedRegion;
 
 public class POCDocumentPartitioner implements IDocumentPartitioner {
-
+	
+	private IDocument document = null;
+	private ITypedRegion region = null;
+	
 	@Override
 	public void connect(IDocument document) {
-		// TODO Auto-generated method stub
-		
+		this.document = document;
 	}
 
 	@Override
 	public void disconnect() {
-		// TODO Auto-generated method stub
-		
+		this.document = null;
 	}
 
 	@Override
 	public void documentAboutToBeChanged(DocumentEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public boolean documentChanged(DocumentEvent event) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public String[] getLegalContentTypes() {
-		// TODO Auto-generated method stub
-		return null;
+		String[] types = {"MAIN"};
+		return types;
 	}
 
 	@Override
 	public String getContentType(int offset) {
-		// TODO Auto-generated method stub
-		return null;
+		return "MAIN";
 	}
 
 	@Override
 	public ITypedRegion[] computePartitioning(int offset, int length) {
-		// TODO Auto-generated method stub
-		return null;
+		this.region = new TypedRegion(offset, length, "MAIN");
+		ITypedRegion[] regions = {this.region};
+		return regions;
 	}
 
 	@Override
 	public ITypedRegion getPartition(int offset) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.region;
 	}
 
 
