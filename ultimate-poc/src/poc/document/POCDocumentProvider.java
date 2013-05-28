@@ -2,6 +2,7 @@ package poc.document;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
 
 public class POCDocumentProvider extends FileDocumentProvider {
@@ -16,16 +17,17 @@ public class POCDocumentProvider extends FileDocumentProvider {
 		IDocument document = super.createDocument(element);
 		
 		if (document != null) {
-			//IDocumentPartitioner partitioner = new POCPartitioner();
+			IDocumentPartitioner partitioner = new POCDocumentPartitioner();
+			document.setDocumentPartitioner(partitioner);
 		}
 		
 		return document;
 	}
 
-	@Override
+	/*@Override
 	protected IDocument createEmptyDocument() {
 		return new POCDocument();
-	}
+	}*/
 	
 	
 

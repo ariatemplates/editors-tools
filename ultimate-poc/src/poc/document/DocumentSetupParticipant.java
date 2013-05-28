@@ -8,7 +8,6 @@ public class DocumentSetupParticipant implements IDocumentSetupParticipant {
 	@Override
 	public void setup(IDocument document) {
 		document.setDocumentPartitioner(new POCDocumentPartitioner());
-		//document.
 	}
 
 }

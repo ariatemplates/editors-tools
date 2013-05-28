@@ -16,19 +16,31 @@ public class POCSourceViewerConfiguration extends SourceViewerConfiguration {
 		
 	}
 
+	
+	
+	////////////////////////////////////////////////////////////////////////////
+	// General configuration
+	////////////////////////////////////////////////////////////////////////////
+	
 	@Override
 	public int getTabWidth(ISourceViewer sourceViewer) {
 		// TODO Use the value from the backend general configuration
 		return 4;
 	}
 
+	
+	
+	////////////////////////////////////////////////////////////////////////////
+	// Highlighting
+	////////////////////////////////////////////////////////////////////////////
+	
 	@Override
 	public IPresentationReconciler getPresentationReconciler(
 			ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new PresentationReconciler();
 		DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getTagScanner());
-		reconciler.setDamager(dr, "js");
-		reconciler.setRepairer(dr, "js");
+		reconciler.setDamager(dr, "MAIN");
+		reconciler.setRepairer(dr, "MAIN");
 		
 		return reconciler;
 	}
@@ -37,6 +49,12 @@ public class POCSourceViewerConfiguration extends SourceViewerConfiguration {
 		return new POCTokenScanner();
 	}
 
+	
+	
+	////////////////////////////////////////////////////////////////////////////
+	// Pending implementation
+	////////////////////////////////////////////////////////////////////////////
+	
 	@Override
 	public IContentFormatter getContentFormatter(ISourceViewer sourceViewer) {
 		// TODO Auto-generated method stub

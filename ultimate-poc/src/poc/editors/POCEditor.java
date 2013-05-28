@@ -14,11 +14,14 @@ import poc.outline.POCOutline;
 
 public class POCEditor extends TextEditor {
 
+	// FIXME Make it customizable, and in fact related to the document type 
+	private static final String mode = "js";
+	
 	private POCOutline contentOutlinePage = null; 
 
 	public POCEditor() {
 		super();
-		//setDocumentProvider(new POCDocumentProvider());
+		setDocumentProvider(new POCDocumentProvider());
 	}
 	
 	
@@ -74,7 +77,7 @@ public class POCEditor extends TextEditor {
 		Map<String, Object> argument = new HashMap<String, Object>();
 		argument.put("source", document.get());
 		
-		document.set(Backend.get().rpc("at", "format", argument).get("source").toString());
+		document.set(Backend.get().rpc(mode, "format", argument).get("source").toString());
 		;
 	}
 	
@@ -82,28 +85,28 @@ public class POCEditor extends TextEditor {
 		Map<String, Object> argument = new HashMap<String, Object>();
 		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
 		
-		contentOutlinePage.setInput(Backend.get().rpc("at", "outline", argument));
+		contentOutlinePage.setInput(Backend.get().rpc(mode, "outline", argument));
 	}
 	
 	private void highlight() throws IOException {
 		Map<String, Object> argument = new HashMap<String, Object>();
 		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
 		
-		System.out.println(Backend.get().rpc("at", "highlight", argument));
+		System.out.println(Backend.get().rpc(mode, "highlight", argument));
 	}
 	
 	private void fold() throws IOException {
 		Map<String, Object> argument = new HashMap<String, Object>();
 		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
 		
-		System.out.println(Backend.get().rpc("at", "fold", argument));
+		System.out.println(Backend.get().rpc(mode, "fold", argument));
 	}
 	
 	private void validate() throws IOException {
 		Map<String, Object> argument = new HashMap<String, Object>();
 		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
 		
-		System.out.println(Backend.get().rpc("at", "validate", argument));
+		System.out.println(Backend.get().rpc(mode, "validate", argument));
 	}
 	
 }

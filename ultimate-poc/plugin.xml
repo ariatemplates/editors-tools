@@ -18,13 +18,13 @@
             extensions="tpl"
             id="poc.document.DocumentProvider">
       </provider>
-   </extension>
+   </extension-->
    <extension
          point="org.eclipse.core.filebuffers.documentSetup">
       <participant
             class="poc.document.DocumentSetupParticipant"
             extensions="tpl">
       </participant>
-   </extension-->
+   </extension>
 
 </plugin>
