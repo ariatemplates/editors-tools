@@ -21,7 +21,7 @@ class RPCProxy
 
 		if @module[method]?
 			try
-				route.json if typeof! that isnt 'Function' => that else @module[method] argument
+				route.json if typeof! @module[method] isnt 'Function' => @module[method] else @module[method] argument
 			catch exception
 				@logger.error exception
 				route.send http.codes.InternalError, "#exception"
