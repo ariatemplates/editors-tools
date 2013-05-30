@@ -11,9 +11,12 @@ public class POCOutline extends ContentOutlinePage {
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
+		
 		getTreeViewer().setContentProvider(new POCOutlineContentProvider());
 		getTreeViewer().setLabelProvider(new POCOutlineLabelProvider());
 	}
+	
+	
 	
 	public void setInput(Object input) {
 		this.input = input;

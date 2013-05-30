@@ -3,10 +3,10 @@ Manages a document, a document being the model used to handle data that can be e
 # File system layout
 
 * `README.md`: this current file
-* `POCDocument.java`: the document implementation
-* `DocumentSetupParticipant.java`:
-* `POCDocuumentPartitioner.java`:
-* `POCDocumentProvider.java`:
+* `POCDocument.java`: __NOT USED__ the document implementation
+* `DocumentSetupParticipant.java`: __NOT USED__ a class that sets up a document
+* `POCDocumentPartitioner.java`: a generic simple partitioner
+* `POCDocumentProvider.java`: a class that is able to return a document instance given a document input
 
 # Versioning
 
@@ -15,6 +15,8 @@ To version: _everything_.
 # Documentation
 
 ## Document
+
+__IS NOT USED__: it doesn't implement properly the class it extends, so for now the document used is the default one provided by the document provider.
 
 __Does nothing special for the moment, as it is configured by the document provider__.
 
@@ -40,13 +42,11 @@ For now it only sets up a document partitioner.
 
 Sets up big partitions of a document.
 
-This is more likely to be used in order to handle multiple languages in a same docuement. However, the backend implementation already handles this, so there would be only one partition per document, corresponding to the _master_ language of the file.
+This is more likely to be used in order to handle multiple languages in a same document.
 
-__In this case, is it really useful to have a partitioner?__
+However, the backend implementation already handles this, so there would be only one partition per document, corresponding to the _master_ language of the file.
 
-# TODO
-
-* Set up a valid document partitioner
+__For now the document always returns a unique partition for the whole document with the generic name: `MAIN`__.
 
 # FIXME
 

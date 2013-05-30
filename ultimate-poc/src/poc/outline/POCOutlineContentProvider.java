@@ -9,32 +9,40 @@ import org.eclipse.jface.viewers.Viewer;
 
 public class POCOutlineContentProvider implements ITreeContentProvider {
 	
+	private static final String ROOT_KEY = "ast";
+	private static final String CHILDREN_KEY = "children";
+	
+	////////////////////////////////////////////////////////////////////////////
+	// Overrides
+	////////////////////////////////////////////////////////////////////////////
+	
 	@Override
-	@SuppressWarnings("unchecked")
 	public Object[] getElements(Object inputElement) {
-		Map<String, Object> json = (Map<String, Object>) inputElement;
-		
-		List<Map<String, Object>> ast = (List<Map<String, Object>>) json.get("ast");
-		
-		return ast.toArray();
+		return this.getList(inputElement, ROOT_KEY);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		Map<String, Object> node = (Map<String, Object>) parentElement;
-		
-		List<Map<String, Object>> ast = (List<Map<String, Object>>) node.get("children");
-		
-		return ast.toArray();
+		return this.getList(parentElement, CHILDREN_KEY);
 	}
-
+	
 	@Override
 	public boolean hasChildren(Object element) {
-		return (this.getChildren(element).length > 0);
+		return this.getChildren(element).length > 0;
 	}
 	
+	@SuppressWarnings("unchecked")
+	private Object[] getList(Object element, String key) {
+		Map<String, Object> node = (Map<String, Object>) element;
+		
+		List<Map<String, Object>> elements = (List<Map<String, Object>>) node.get(key);
+		
+		return elements.toArray();
+	}
 	
+	////////////////////////////////////////////////////////////////////////////
+	// Unused
+	////////////////////////////////////////////////////////////////////////////
 	
 	@Override
 	public void dispose() {

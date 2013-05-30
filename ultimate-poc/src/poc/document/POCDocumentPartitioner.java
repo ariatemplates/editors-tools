@@ -8,17 +8,19 @@ import org.eclipse.jface.text.TypedRegion;
 
 public class POCDocumentPartitioner implements IDocumentPartitioner {
 	
-	private IDocument document = null;
+	public static final String PARTITION_NAME = "MAIN" ;
+	
+	//private IDocument document = null;
 	private ITypedRegion region = null;
 	
 	@Override
 	public void connect(IDocument document) {
-		this.document = document;
+		//this.document = document;
 	}
 
 	@Override
 	public void disconnect() {
-		this.document = null;
+		//this.document = null;
 	}
 
 	@Override
@@ -32,18 +34,18 @@ public class POCDocumentPartitioner implements IDocumentPartitioner {
 
 	@Override
 	public String[] getLegalContentTypes() {
-		String[] types = {"MAIN"};
+		String[] types = {PARTITION_NAME};
 		return types;
 	}
 
 	@Override
 	public String getContentType(int offset) {
-		return "MAIN";
+		return PARTITION_NAME;
 	}
 
 	@Override
 	public ITypedRegion[] computePartitioning(int offset, int length) {
-		this.region = new TypedRegion(offset, length, "MAIN");
+		this.region = new TypedRegion(offset, length, PARTITION_NAME);
 		ITypedRegion[] regions = {this.region};
 		return regions;
 	}
