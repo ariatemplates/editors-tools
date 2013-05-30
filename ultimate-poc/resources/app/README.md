@@ -34,6 +34,29 @@ To ignore:
 
 * `log.log`: persistent file generated/altered at runtime, relevant only for _production_, not development
 
+# Documentation
+
+Services.
+
+## RPC
+
+The path `/rpc` is the entry point for RPC requests.
+
+## Ping
+
+On path `/ping` sends a valid HTTP code status.
+
+## GUID identification
+
+On path `/80d007698d534c3d9355667f462af2b0` sends the content `e531ebf04fad4e17b890c0ac72789956`
+
+This is generally used to identify the server as being an instance of this backend.
+
+## Info
+
+__To come__
+
+
 # Contribute
 
 ## Pre-requisites

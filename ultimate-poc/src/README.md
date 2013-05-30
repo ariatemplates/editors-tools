@@ -9,10 +9,6 @@ Eclipse plugin code, making use of the backend to provide source code edition to
 
 To version: _everything_.
 
-# TODO
-
-* Add documentation for this Eclipse plugin, inside from the root package, mainly explaining the architecture of the plugin.
-
 # References
 
 ## Tutorials

@@ -35,6 +35,12 @@ public class Backend {
 		"index"
 	};
 	
+	private static final String inputGUID = "80d007698d534c3d9355667f462af2b0";
+	private static final String outputGUID = "e531ebf04fad4e17b890c0ac72789956";
+	
+	private static final int pollingSleepTime = 50; // ms
+	private static final int pollingTimeOut = 1000; // ms
+	
 	
 	
 	////////////////////////////////////////////////////////////////////////////
@@ -61,6 +67,8 @@ public class Backend {
 	// Backend class
 	////////////////////////////////////////////////////////////////////////////
 	
+	private Boolean isManagedExternally = null;
+	
 	private Process process = null;
 	
 	private DefaultHttpClient httpclient = null;
@@ -68,6 +76,7 @@ public class Backend {
 	private HttpPost rpc = null;
 	private HttpGet shutdown = null;
 	private HttpGet ping = null;
+	private HttpGet guid = null;
 	
 	private Gson gson = null;
 	
@@ -88,6 +97,7 @@ public class Backend {
 		
 		shutdown = new HttpGet(domain + "shutdown");
 		ping = new HttpGet(domain + "ping");
+		guid = new HttpGet(domain + inputGUID);
 		
 		gson = new Gson();
 	}
@@ -101,9 +111,29 @@ public class Backend {
 	/**
 	 * Tells whether the backend is running or not.
 	 * 
-	 * @return true if the backedn is running, false otherwise.
+	 * @return true if the backend is running, false otherwise.
+	 * @throws IOException 
 	 */
-	public Boolean isRunning() {
+	public Boolean isRunning() throws IOException {
+		// We don't know if it is an external process or not yet
+		if (this.isManagedExternally == null) {
+			try {
+				if (this.get(guid).equals(outputGUID)) {
+					this.isManagedExternally = true;
+					return true;
+				}
+			} catch (IOException exception) {
+				this.isManagedExternally = false;
+			}
+		} 
+		
+		// Externally managed
+		if (this.isManagedExternally) {
+			// TODO Maybe we could use the ping, but this method is safer to ensure the server has not been replaced.
+			return this.get(guid) == outputGUID;
+		}
+		
+		// We manage the process ourself
 		if (process == null) return false;
 		try {
 			process.exitValue();
@@ -117,44 +147,54 @@ public class Backend {
 	 * If not running, starts the backend.
 	 * 
 	 * @return the created Process instance behind 
+	 * @throws InterruptedException 
 	 */
-	public Process start() throws IOException {
+	public Process start() throws IOException, InterruptedException {
 		if (!isRunning()) {
 			ProcessBuilder processBuilder = new ProcessBuilder(command);
 			processBuilder.directory(new File(programPath));
 			
 			process = processBuilder.start();
-		}
-		
-		boolean started = false; 
-		while (!started) {
-			try {
-				this.get(ping);
-				started = true;
-			} catch (IOException ex) {}
+
+			// Polling to check the backend is fully set up
+			boolean started = false; 
+			int time = 0; 
+			while (!started && time < pollingTimeOut) {
+				try {
+					this.get(ping);
+					started = true;
+				} catch (IOException ex) {
+					Thread.sleep(pollingSleepTime);
+					time += pollingSleepTime;
+				}
+			}
 		}
 		
 		return process;
 	}
 	
 	/**
-	 * If running, stops the backend by sending a specific request, and ensures the process is stopped with process utilities.
+	 * If we manage the backend process ourself and it is running, stops it by sending a specific request, and ensures the process is stopped with process utilities.
 	 * 
 	 * @return If the backend properly stopped under the request, returns its response (see <code>get</code>), otherwise returns <code>null</code>.
 	 * 
+	 * @see isRunning
 	 * @see get
 	 * 
 	 * @throws IOException
 	 */
 	public String stop() throws IOException {
-		if (isRunning()) {
-			String response = get(shutdown);
-			process.destroy();
+		if (!this.isManagedExternally) {
+			String response = null;
+			if (isRunning()) {
+				response = get(shutdown);
+				process.destroy();
+			}
 			process = null;
 			return response;
+		} else {
+			return null;
 		}
-		process = null;
-		return null;
 	}
 	
 	
@@ -191,6 +231,10 @@ public class Backend {
 		rpc.setEntity(content);
 		
 		return postJson(rpc);
+	}
+	
+	public Map<String, Object> rpc(String module, String member) throws IOException {
+		return this.rpc(module, member, null);
 	}
 	
 	/**

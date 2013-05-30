@@ -11,7 +11,7 @@ Eclipse plugin client for source code edition tools.
 
 # Versioning
 
-To version: _evrything_.
+To version: _everything_.
 
 # Documentation
 
@@ -23,21 +23,35 @@ Here when the plugin starts, the activator launches a unique backend, using a si
 
 ## Backend
 
-The `Backend` class has the role to ease management of a backend and generic communication with it.
+The `Backend` class has the role to ease management of a backend as well as generic communication with it.
 
 Every service the backend will provide will have a bridge implemented in this class. For instance, from basic HTTP requests to RPC.
 
 Please refer to the JavaDoc of the class itself for more information on what has been implemented, and also to the documentation of the real backend.
 
-### TODO
+### Re-use
 
-* Be able to re-use an existing process. For this, check that the running process listening on default port, if it exists, is the good process. For that, we could imagine using a pair of keys: on `GET hostname:3000/{inputkey}` it returns the proper `{outputkey}`
+If a backend is already available on port 3000, we should be able to re-use it (for now we do).
 
-# FIXME
+For that, we need to know if there is a server listening on port 3000, and if it looks like a backend.
 
-## Backend start
+For that, the server provides a GUID identification system, and answer with a specific GUID as response to a GET request on a path built with another specific GUID key.
 
-The plugin doesn't wait for the backend to be completely launched, as this is an asynchronous process. We should wait for it:
+Concretely, if a HTTP GET Request on port 3000 with ther URL path `80d007698d534c3d9355667f462af2b0` receives a response with content `e531ebf04fad4e17b890c0ac72789956`, it's considered to be a backend.
 
-* by pooling with a simple ping - until some timeout is reached (to avoid infinite try)
-* by waiting for a request from the backend: this is too cumbersome, as this means chossing another convention for the port number, creating several connections, ...
+__REFER TO THE BACKEND DOCUMENTATION TO BE SURE TO HAVE THE REAL VALUES__
+
+### Launch
+
+The plugin needs to wait for the backend to be completely launched, as this is an asynchronous process. Solutions:
+
+* _CURRENT SOLUTION_ polling with a simple ping (until some timeout is reached - to avoid infinite try)
+* by waiting for a request from the backend: this is too cumbersome, as this means choosing another convention for the port number, creating several connections, etc.
+
+# TODO
+
+* configure the JSON library if possible in order not to create Double for numbers but integers instead
+	* registering a type-adapter
+	* defining explicit classes with proper field types and use it for deserializing
+	* ...
+
