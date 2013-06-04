@@ -20,11 +20,12 @@
       </provider>
    </extension-->
    <extension
-         point="org.eclipse.core.filebuffers.documentSetup">
-      <participant
-            class="poc.document.DocumentSetupParticipant"
-            extensions="tpl">
-      </participant>
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="poc.data.POCWorkbenchPreferencePage"
+            id="POC.page1"
+            name="Ultimate Editor">
+      </page>
    </extension>
 
 </plugin>
