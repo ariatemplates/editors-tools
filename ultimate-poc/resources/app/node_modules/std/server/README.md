@@ -72,6 +72,7 @@ There is no interface restriction. It is in fact a simple bridge between a netwo
 #### TODO
 
 * Be able to handle module specifications passed as relative paths. It means knowing what was the root path considered when the user defined the list of modules. I don't see a lot of solutions, from getting the path of the parent module but this can be only an intermediate, to requiring the user to specify the root in case he gives relative paths (this would change the format from an array to an object)
+* Allow lazy loading of modules: however this can be made only using paths, passed module are not handled by the RPC manager
 
 ## Model
 
