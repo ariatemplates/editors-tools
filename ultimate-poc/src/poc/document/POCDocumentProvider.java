@@ -1,7 +1,5 @@
 package poc.document;
 
-import java.io.IOException;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
@@ -10,7 +8,8 @@ import org.eclipse.ui.editors.text.FileDocumentProvider;
 import poc.Backend;
 
 public class POCDocumentProvider extends FileDocumentProvider {
-	private static final String mode = "js";
+	// FIXME Should be inferred from extension or something like that
+	private static final String mode = "at";
 
 	@Override
 	protected IDocument createDocument(Object element) throws CoreException {
@@ -26,8 +25,7 @@ public class POCDocumentProvider extends FileDocumentProvider {
 		try {
 			document.setGUID((String) Backend.get().rpc(mode, "init").get("guid"));
 			document.addDocumentListener(new POCDocumentListener(document));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		

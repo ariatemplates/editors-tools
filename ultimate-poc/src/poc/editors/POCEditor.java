@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -25,9 +24,6 @@ import poc.document.POCDocumentProvider;
 import poc.outline.POCOutline;
 
 public class POCEditor extends TextEditor {
-
-	// FIXME Make it customizable, and in fact related to the document type 
-	private static final String mode = "js";
 	
 	private POCOutline contentOutlinePage = null;
 
@@ -158,7 +154,7 @@ public class POCEditor extends TextEditor {
 			//validate();
 			this.outline();
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}		
 	}
@@ -169,7 +165,7 @@ public class POCEditor extends TextEditor {
 	
 	// TODO Process input on initialization
 
-	private void format() throws IOException {
+	/*private void format() throws IOException {
 		POCDocument document = (POCDocument) this.getDocumentProvider().getDocument(this.getEditorInput());
 		
 		Map<String, Object> argument = new HashMap<String, Object>();
@@ -177,7 +173,7 @@ public class POCEditor extends TextEditor {
 		Map<String, Object> formatted = Backend.get().rpc(document.getMode(), "format", argument);
 		
 		document.set(formatted.get("source").toString());
-	}
+	}*/
 	
 	private void outline() throws IOException {
 		POCDocument document = (POCDocument) this.getDocumentProvider().getDocument(this.getEditorInput());
@@ -189,11 +185,13 @@ public class POCEditor extends TextEditor {
 		contentOutlinePage.setInput(outline);
 	}
 	
-	private void validate() throws IOException {
-		Map<String, Object> argument = new HashMap<String, Object>();
-		argument.put("source", this.getDocumentProvider().getDocument(this.getEditorInput()).get());
+	/*private void validate() throws IOException {
+		POCDocument document = (POCDocument) this.getDocumentProvider().getDocument(this.getEditorInput());
 		
-		System.out.println(Backend.get().rpc(mode, "validate", argument));
-	}
+		Map<String, Object> argument = new HashMap<String, Object>();
+		argument.put("source", document.get());
+		
+		System.out.println(Backend.get().rpc(document.getMode(), "validate", argument));
+	}*/
 	
 }

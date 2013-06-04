@@ -7,31 +7,31 @@ import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 public class POCOutline extends ContentOutlinePage {
 
 	private Object input = null;
-	
+
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		
-		getTreeViewer().setContentProvider(new POCOutlineContentProvider());
-		getTreeViewer().setLabelProvider(new POCOutlineLabelProvider());
+
+		this.getTreeViewer().setContentProvider(new POCOutlineContentProvider());
+		this.getTreeViewer().setLabelProvider(new POCOutlineLabelProvider());
 	}
-	
-	
-	
+
+
+
 	public void setInput(Object input) {
 		this.input = input;
 		update();
 	}
-	
+
 	public void update() {
-		if (input !=  null) {
-			TreeViewer viewer = getTreeViewer();
+		if (input != null) {
+			TreeViewer viewer = this.getTreeViewer();
 			if (viewer != null) {
 				viewer.setInput(input);
 			}
 		}
 	}
-	
-	
+
+
 
 }

@@ -3,8 +3,8 @@ Manages a document, a document being the model used to handle data that can be e
 # File system layout
 
 * `README.md`: this current file
-* `POCDocument.java`: __NOT USED__ the document implementation
-* `DocumentSetupParticipant.java`: __NOT USED__ a class that sets up a document
+* `POCDocument.java`: a custom document implementation, considering the sepcificities the backend introduces with the document model
+* `POCDocumentListener.java`: a class used to intercept and handle changes in a document
 * `POCDocumentPartitioner.java`: a generic simple partitioner
 * `POCDocumentProvider.java`: a class that is able to return a document instance given a document input
 
@@ -16,9 +16,11 @@ To version: _everything_.
 
 ## Document
 
-__IS NOT USED__: it doesn't implement properly the class it extends, so for now the document used is the default one provided by the document provider.
+Extends a standard document implementation.
 
-__Does nothing special for the moment, as it is configured by the document provider__.
+The things it adds is related to the way a document is handled by the backend: things like document id for sessions, mode to know which mode the backend should use for it, etc.
+
+__Note: using a session, the mode would be obsolete, as we could store this mode in the session data. Then there would be only one module used through RPC, a master mode manager, which would use the session data to call the proper mode.__
 
 ## Document provider
 
@@ -32,12 +34,6 @@ __For now nothing is done__: I began applying a document partitioner, but this c
 
 __In the future__: this class will be useful to implement what it's done for, that is a custom document providing.
 
-## Document setup participant
-
-Applies setup on a document.
-
-For now it only sets up a document partitioner.
-
 ## Document partitioner
 
 Sets up big partitions of a document.
@@ -48,7 +44,12 @@ However, the backend implementation already handles this, so there would be only
 
 __For now the document always returns a unique partition for the whole document with the generic name: `MAIN`__.
 
-# FIXME
+# Questions
 
-* how is the document setup participant activated/used?
-* be consistent in file naming: `DocumentSetupParticipant` should become `POCDocumentSetupParticipant`, otherwise remove all `POC` prefixes, which are useless btw I guess, except for a few naming conflicts while subclassing, and this can be fixed by using fully qualified names
+> How do we handle document changes?
+
+By setting up a document listener on a document. This listener get notified by a document event object of changes made in the document.
+
+> But what is the strategy to consider changes? Does any keystroke trigger an event?
+
+__We don't know yet, it has to be checked.__ Hopefully the document implementation used concatenates quick changes and applies squashing algorithm.

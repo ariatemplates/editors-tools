@@ -1,6 +1,5 @@
 package poc.editors;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.eclipse.jface.text.contentassist.IContentAssistant;
@@ -16,7 +15,9 @@ import poc.document.POCDocumentPartitioner;
 
 public class POCSourceViewerConfiguration extends SourceViewerConfiguration {
 
-	private static final String mode = "js";
+	// FIXME Should be taken from somewhere. But I don't see, as a mode is related to a document, and here the viewer configuration is agnostic of the document.
+	// A solution would be to take a reference to the editor, that way we could be able to request from it the document. Then the mode. But in that case, there is no pre-fetch of the configuration data. 
+	private static final String mode = "at";
 	
 	private Map<String, Object> configuration = null;
 	
@@ -26,7 +27,7 @@ public class POCSourceViewerConfiguration extends SourceViewerConfiguration {
 		super();
 		try {
 			configuration = Backend.get().rpc(mode, CONFIGURATION_WIDTH_KEY);
-		} catch (IOException e) {
+		} catch (Exception e) {
 		}
 	}
 

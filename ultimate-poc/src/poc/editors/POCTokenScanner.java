@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IToken;
@@ -69,7 +68,7 @@ public class POCTokenScanner implements ITokenScanner {
 			tokens = (List<Map<String, Object>>) Backend.get().rpc(mode, TOKENIZE_MEMBER_KEY, argument).get(TOKENS_KEY);
 			
 			tokensIterator = tokens.iterator();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -137,7 +136,7 @@ public class POCTokenScanner implements ITokenScanner {
 	
 	@Override
 	public IToken nextToken() {
-		if (!this.tokensIterator.hasNext()) {
+		if (this.tokensIterator == null || !this.tokensIterator.hasNext()) {
 			return Token.EOF;
 		}
 		
