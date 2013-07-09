@@ -6,12 +6,12 @@ The application is based on a generic server library, using JSON-RPC communicati
 
 Files:
 
-* `index.ls`: the main application file
+* `index.js`: the main application file
 * `README.md`: this current file
 * `.gitignore`: Git related file
-* `routes.ls`: the list of routes to pass to the server
-* `options.ls`: the options to pass to the server
-* `logger.ls`: defines a unique logger to be used throughout the whole application
+* `routes.js`: the list of routes to pass to the server
+* `options.js`: the options to pass to the server
+* `logger.js`: defines a unique logger to be used throughout the whole application
 * `log.log`: the logs of the application
 
 Folders:
@@ -22,12 +22,12 @@ Folders:
 
 To version:
 
-* `index.ls`
+* `index.js`
 * `README.md`
 * `.gitignore`
-* `routes.ls`
-* `options.ls`
-* `logger.ls`
+* `routes.js`
+* `options.js`
+* `logger.js`
 * `node_modules`
 
 To ignore:
@@ -59,10 +59,6 @@ __To come__
 
 # Contribute
 
-## Pre-requisites
-
-* LiveScript
-
 ## Introduction
 
 The application is implemented as a generic server providing services under JSON-RPC requests.
@@ -73,7 +69,7 @@ The services it provides are all stored in the `modes` module, which contains mo
 
 ## Use
 
-Launch the _index_ file: `lsc index`.
+Launch the _index_ file: `node index`.
 
 ## Development
 
@@ -97,13 +93,9 @@ You can setup a unique logger for the whole application in the _logger_ module f
 
 This module must export an instance of a logger, that is an object which must repect the following interface:
 
-Methoods:
+Methods:
 
 * `info`
 * `log`
 * `error`
 * `warn`
-
-# References
-
-* [LiveScript](http://livescript.net/)

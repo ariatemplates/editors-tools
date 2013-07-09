@@ -13,14 +13,14 @@ public class POCDocumentProvider extends FileDocumentProvider {
 
 	@Override
 	protected IDocument createDocument(Object element) throws CoreException {
-		// In practice element is a FileDocumentInput
+		// In practice `element` is a FileDocumentInput
 		POCDocument document = (POCDocument) super.createDocument(element);
-		
+
 		if (document != null) {
 			IDocumentPartitioner partitioner = new POCDocumentPartitioner();
 			document.setDocumentPartitioner(partitioner);
 		}
-		
+
 		document.setMode(mode);
 		try {
 			document.setGUID((String) Backend.get().rpc(mode, "init").get("guid"));
@@ -28,7 +28,7 @@ public class POCDocumentProvider extends FileDocumentProvider {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return document;
 	}
 

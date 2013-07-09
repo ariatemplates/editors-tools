@@ -12,6 +12,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Name: POC
 Bundle-Activator: poc.Activator
 Bundle-ManifestVersion: 2
-Bundle-SymbolicName: POC;singleton:=true
+Bundle-SymbolicName: com.ariatemplates.tools.ide;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Vendor: Amadeus SAS
 

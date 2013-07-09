@@ -216,7 +216,7 @@ public class Backend {
 	 */
 	public Map<String, Object> call(String guid, String member, Map<String, Object> argument) throws ParseException, IOException, JsonSyntaxException {
 		argument.put(Backend.GUID_KEY, guid);
-		return this.rpc(Backend.MODE_MANAGER_MODULE_NAME, member);
+		return this.rpc(Backend.MODE_MANAGER_MODULE_NAME, member, argument);
 	}
 
 

@@ -1,0 +1,62 @@
+{
+	"name": "ultimate-editor-services",
+	"version": "0.5.0",
+	"keywords": [
+		"editor",
+		"ide"
+	],
+
+
+
+	"decription": "A server providing common services for source code edition.",
+	"url": "https://github.com/ymeine/editors-tools/tree/ultimate-poc/ultimate-poc",
+	"bugs": "https://github.com/ymeine/editors-tools/issues",
+
+
+	"contributors": [
+		{
+			"name": "Yannick Meine",
+			"email": "yannick.meine@amadeus.com",
+			"url": "https://github.com/ymeine"
+		}
+	],
+	"licenses": [
+		{
+			"type": "Apache License, Version 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0"
+		}
+	],
+
+
+
+	"scripts": {
+		"start": "node app/index.js"
+	},
+	"bin": {
+		"editor-svc": "app/index.js"
+	},
+
+
+
+	"preferGlobal": false,
+	"private": true,
+
+
+	"engineStrict": false,
+	"engines": {
+		"node": "*"
+	},
+	"dependencies": {
+		"lodash": "*",
+		"prelude-ls": "*",
+		"jsclass": "*",
+		"zappajs": "*",
+		"portscanner": "*",
+		"winston": "*",
+		"pegjs": "*",
+		"esprima": "*",
+		"js-beautify": "*",
+		"jshint": "*",
+		"reflect": "*"
+	}
+}
