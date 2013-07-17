@@ -4,60 +4,30 @@ The application is based on a generic server library, using JSON-RPC communicati
 
 # File system layout
 
-Files:
-
-* `index.js`: the main application file
 * `README.md`: this current file
 * `.gitignore`: Git related file
+
+Application:
+
+* `index.js`: the main application file
+* `node_modules`: the modules constituting the application
+
+Server related:
+
 * `routes.js`: the list of routes to pass to the server
 * `options.js`: the options to pass to the server
 * `logger.js`: defines a unique logger to be used throughout the whole application
 * `log.log`: the logs of the application
 
-Folders:
-
-* `node_modules`: the modules constituting the application
-
 # Versioning
-
-To version:
-
-* `index.js`
-* `README.md`
-* `.gitignore`
-* `routes.js`
-* `options.js`
-* `logger.js`
-* `node_modules`
 
 To ignore:
 
 * `log.log`: persistent file generated/altered at runtime, relevant only for _production_, not development
 
+To version: _everything else_.
+
 # Documentation
-
-Services.
-
-## RPC
-
-The path `/rpc` is the entry point for RPC requests.
-
-## Ping
-
-On path `/ping` sends a valid HTTP code status.
-
-## GUID identification
-
-On path `/80d007698d534c3d9355667f462af2b0` sends the content `e531ebf04fad4e17b890c0ac72789956`
-
-This is generally used to identify the server as being an instance of this backend.
-
-## Info
-
-__To come__
-
-
-# Contribute
 
 ## Introduction
 
@@ -67,13 +37,7 @@ It uses the `server` module for that, please refer to its documentation.
 
 The services it provides are all stored in the `modes` module, which contains modules for source code edition: once again, please refer to its documentation.
 
-## Use
-
-Launch the _index_ file: `node index`.
-
-## Development
-
-### Routes
+## Routes
 
 The concept of routes is common in server-side technologies, and for more information about the implementation in this project, please refer to the `server` module.
 
@@ -81,13 +45,13 @@ Know that you can define the list of routes that the server will setup in the _r
 
 This module must export a collection (array) of route specifications.
 
-### Options
+## Options
 
 The options to run the server are defined in the _options_ module file, for convenience. Please refer to the `server` module for more information.
 
 This module must return an object that follows the input format that the server module accepts.
 
-### Logging
+## Logging
 
 You can setup a unique logger for the whole application in the _logger_ module file.
 
@@ -99,3 +63,87 @@ Methods:
 * `log`
 * `error`
 * `warn`
+
+## Services
+
+This section is structured the same way the services are provided by the server: there is one subsection per route, that is per service.
+
+### RPC
+
+`/rpc` is the entry point for RPC requests. __This is a standard route provided by the server library__.
+
+The RPC request are handled by an external module, in the standard library, please refer to its own documentation.
+
+For quick reminder, __as the time of writing__, RPC is made through a POST HTTP request, with `application/json` content type, sending JSON formatted data with the following properties:
+
+* `module`: the name of the module to call, this module being registered by the RPC manager
+* `method`: the name of the member of the module to access; `method` is an historical name, actually you can both access properties values and call methods (but you can't get the value of a function, but this doesn't make sense in this context)
+* `arguments`: a JSON object; this forces to name arguments, and avoids the confusion by making a choice on the convention (versus array, even defining an array with a single item being an object is still possible)
+
+#### Modules
+
+The modules registered against the RPC manager are all the modes. Please refer to the respective documentation in the `node_modules/modes` subfolder for more information.
+
+In the future we might imagine a single mode manager being created, in which case we register only this module (making the `module` property in the RPC request potentially useless).
+
+### Ping
+
+The `/ping` route sends a valid HTTP code status (200). __This is a standard route provided by the server library__.
+
+This is made for different purposes, the main idea being to tell that the server is responding.
+
+You can use it for testing purposes, but also for functional ones, like checking there is a valid server already running on the machine - however we advise using rather the GUID identification system for that.
+
+### GUID identification
+
+The `/80d007698d534c3d9355667f462af2b0` route sends the content `e531ebf04fad4e17b890c0ac72789956`.
+
+This is generally used to identify the server as being an instance of this backend. Indeed, there is a very low probability (which could be calculated) to encounter the same context with another server:
+
+* port
+* protocol handled: HTTP
+* request type: POST
+* route/response pair: using only one GUID introduces already a high level of collision avoidance, but using a pair of that is even FAR higher
+
+### Info
+
+__To come__
+
+Route: `/info`
+
+This should send a bunch of data to describe the properties of the server.
+
+For instance (you can complete this list):
+
+* port
+* routes
+	* path
+	* HTTP verb
+* stats
+	* time running
+	* number of request (per route)
+* logs: we might keep logs of everything (handling logs persistence can cost a huge time, this should be made when the backend is not requested too much - basically when we detect that the user stopped typing text)
+* ...
+
+# Contribute
+
+## Use
+
+Launch the _index_ file: `node index`.
+
+You can tweak the `options` file, but __take care about versioning issues__ behind.
+
+## Development
+
+### Refactoring
+
+Make the server module from the std library official or bring it back here.
+
+### Logging
+
+Improve the logging system.
+
+* Learn how to use the library `winston`, configure it more.
+* Find how to use the logger more globally, in other submodules.
+
+Remove the old logging system used in routes.

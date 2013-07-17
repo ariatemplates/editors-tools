@@ -41,8 +41,6 @@ The token scanner basically receives a document and a range, and must be able th
 
 For the time being, the token scanner is used only for highlighting, so it will return tokens with styling data.
 
-### Notes
-
 __Be careful!__
 
 This is not obvious, but the process for highlighting expects the token scanner to return tokens __for the whole input__, I mean that if you _concatenate_ every range of each token, you must get a continuous range equaling the whole input. In clearer words: every whitespace must be taken into account.

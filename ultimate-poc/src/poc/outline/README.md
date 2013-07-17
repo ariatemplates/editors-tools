@@ -7,9 +7,6 @@ Outline view of a document.
 * `POCOutlineContentProvider.java`: provides the nodes for the outline tree
 * `POCOutlineLabelProvider.java`: provides labels for the nodes of the outline tree
 
-## TODO
-
-* Rename the files for more conciseness and proper naming (like `POCOutline` to `Outline` and `POCOutlineLabelProvider` to `LabelProvider`, moreover this won't be a PoC anymore in the future)
 
 # Versioning
 
@@ -29,6 +26,14 @@ The concept behind is simple:
 * a tree provider mechanism is used to display the tree
 
 # Contribute
+
+## File system layout
+
+Rename the files for more conciseness and proper naming.
+
+Like `POCOutline` to `Outline` and `POCOutlineLabelProvider` to `LabelProvider`.
+
+Moreover this won't be a PoC anymore in the future, so this makes even more sense.
 
 ## Partial update
 

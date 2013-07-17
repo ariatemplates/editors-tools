@@ -22,17 +22,17 @@ Please see the `documentation.md` file __before reading or WRITING any documenta
 * `.gitignore`: Git related file
 * `bin`: folder containing the build, that contains both the Eclipse plugin and the backend for now
 
-## Documentation
+Documentation:
 
 * `README.md`: this current file
 * `introduction.md`: an introduction to the project
 * `documentation.md`: a documentation about the documentation in this project
 
-## Backend code
+Backend code:
 
 * `resources`: the sources of the backend
 
-## Eclipse code
+Eclipse code:
 
 * `src`: the sources of the Eclipse plugin
 * `build.properties`, `plugin.xml`, `META-INF`: files and folders contributing to the Eclipse plugin definition
@@ -140,9 +140,11 @@ At this current level, you can work on the global architecture, as described in 
 
 1. Complete the procedure to recreate the Eclipse Project in section `Contribute > Setup`
 1. Review documentation
-	1. Documentation of the documentation (meta)
+	* Documentation of the documentation (meta)
 		* I would prefer using a `Backlog` section inside the `Contribute` one (as I'm doing here) instead of a `TODO` section. I don't know about the `FIXME`, probably keep it.
 		* finish writing it, especially the guidelines section
+	* Choose wether to put the `Documentation` section before the `Contribute` one or vice versa? Seems like the first one is the one mostly used.
+	* Check the `Contribute` section: do we put a `Development` section (like here) then a nested `Backlog` section for _non-classified_ stuff and any other section for the rest?
 
 #### Wiki
 

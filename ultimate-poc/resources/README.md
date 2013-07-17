@@ -21,31 +21,26 @@ A _pseudo-standard_ module is a module that is not installed through the package
 
 # Versioning
 
-To version:
-
-* `README.md`
-* `.gitignore`
-* `package.json`
-* `app`
-
 To ignore:
 
 * `node_modules`: can be installed from the `package.json` data with the use of npm
 
-# Contribute
+To version: _everything else_.
 
+# Contribute
 
 ## Pre-requisites
 
-* Node.js
-* npm
+* [Node.js](http://nodejs.org/)
+* [npm](https://npmjs.org/)
 
 ## Setup
 
-1. Install the node modules, by launching the program with the following properties:
-	* program name: `npm`
-	* program arguments (command in this case): `install`
-	* current working directory (context): the folder containing `package.json`
+Install the node modules, by launching the program with the following properties:
+
+* program name: `npm`
+* program arguments (command in this case): `install`
+* current working directory (context): the folder containing `package.json`
 
 ## Development
 
@@ -69,6 +64,4 @@ Please refer to the content of the `app` folder.
 
 # References
 
-* [Node.js](http://nodejs.org/)
-* [npm](https://npmjs.org/)
-	* [`package.json`](https://npmjs.org/doc/json.html)
+* npm [`package.json`](https://npmjs.org/doc/json.html)

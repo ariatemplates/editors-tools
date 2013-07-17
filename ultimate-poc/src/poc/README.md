@@ -2,7 +2,7 @@ Root package of the Eclipse plugin code.
 
 # File system layout
 
-Documentation
+Documentation:
 
 * `README.md`: this current file
 

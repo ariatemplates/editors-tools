@@ -87,6 +87,14 @@ This section must decribe:
 * what to do for code (development)
 * what to do for documentation
 
+Here are some usual subsections we can find in the section concerning development of the project:
+
+* Consistency: work on consistency, either for files naming, or code itself
+* Cleaning
+* Refactoring
+* Performances: there is always something that can be done to improve peformances
+* ...
+
 ## Documentation
 
 Position: __fourth main section__
