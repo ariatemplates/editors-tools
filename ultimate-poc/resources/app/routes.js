@@ -1,11 +1,15 @@
+function serveApp() {
+	return this.res.sendfile('public/index.html');
+}
+
 module.exports = [
 	{
 		type: 'rpc',
-		modules: [
-			'modes/js',
-			'modes/at',
-			'modes/html'
-		]
+		modules: {
+			// js: 'modes/js',
+			// at: 'modes/at',
+			html: 'modes/html'
+		}
 	},
 
 	// Standard routes
@@ -23,5 +27,16 @@ module.exports = [
 		handler: function() {
 			return this.send('e531ebf04fad4e17b890c0ac72789956');
 		}
+	},
+
+	// Client-side application
+	{
+		url: '/app',
+		handler: serveApp
+	},
+	// TODO Be able to serve automatically 'index.html' files when hitting a static location
+	{
+		url: '/',
+		handler: serveApp
 	}
 ];

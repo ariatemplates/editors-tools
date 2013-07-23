@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<title>Graph visualization</title>
+
+	<style type="text/css" media="screen">
+		#editor {
+			position: relative;
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+<!-- Messages  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<div class="alert alert-error fade in" id="server-access-error" style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times; close</button>
+		<span>Oops!</span> Server is not responding...
+	</div>
+
+	<div class="alert alert-success fade in" id="server-success" style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times; close</button>
+		<span>Congrats!</span> Server responding.
+	</div>
+
+	<div class="alert alert-error fade in" id="server-error" style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times; close</button>
+		<span>Server error: </span><span id="server-error-message"></span>
+	</div>
+
+<!-- Info  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<div class="hero-unit">
+		<h1>Ultimate editor!</h1>
+		<p>Try the features of the ultimate editor, which funnily doesn't have a frontend...</p>
+	</div>
+
+<!-- Header  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<div class="page-header">
+		<h1>Graph visualization <small>Parse and play</small></h1>
+	</div>
+
+<!-- App - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<div class="container-fluid">
+		<div class="row-fluid">
+
+<!-- Sidebar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+			<div class="span2">
+
+<!-- Accordion - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- 				<div class="accordion" id="accordion2">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+								Collapsible Group Item #1
+							</a>
+						</div>
+						<div id="collapseOne" class="accordion-body collapse in">
+							<div class="accordion-inner">
+								Anim pariatur cliche...
+							</div>
+						</div>
+					</div>
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+								Collapsible Group Item #2
+							</a>
+						</div>
+						<div id="collapseTwo" class="accordion-body collapse">
+							<div class="accordion-inner">
+								Anim pariatur cliche...
+							</div>
+						</div>
+					</div>
+				</div> -->
+
+<!-- Actions - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+				<div class="row">
+					<a class="span12 btn btn-large btn-block btn-primary" href="#edit" role="button" data-toggle="modal">Edit</a>
+				</div>
+
+				<div class="row">
+					<div class="span12 btn btn-large btn-block btn-primary" data-loading-text="Parsing..." onclick="poc.parse()">Parse</div>
+				</div>
+				<!-- <div class="row">
+					<div class="span12 progress progress-striped active">
+						<div class="bar" id="parsing-progress" style="width: 0%;"></div>
+					</div>
+				</div> -->
+
+				<div class="row">
+					<div class="span12 btn btn-large btn-block btn-danger" onclick="poc.clear()">Clear</div>
+				</div>
+
+				<div class="row">
+					<a class="span12 btn btn-large btn-block btn-info" href="#help" role="button" data-toggle="modal">Help</a>
+				</div>
+
+				<div class="row">
+					<div class="span12 btn btn-large btn-block btn-default" onclick="poc.ping()">Ping</div>
+				</div>
+
+<!-- Navigation  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+				<!-- <div class="row">
+					<ul class="span12 nav nav-list pull-left">
+						<li class="active">
+							<a href="#">
+								<i class="icon-chevron-right"></i>
+								Editor
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<i class="icon-chevron-right"></i>
+								Graph
+							</a>
+						</li>
+					</ul>
+				</div> -->
+
+			</div>
+
+
+
+<!-- Main content  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<!-- Editor  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+			<div class="span10">
+				<!-- <div class="row"> -->
+					<!-- <div class="span12"> -->
+						<!-- <div id="editor" style="width:100%"></div> -->
+					<!-- </div> -->
+				<!-- </div> -->
+
+<!-- Graph display - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+				<div class="row" style="height: 500px;">
+					<div id="graph-display" class="span12" style="height: 100%;"></div>
+				</div>
+
+				<div class="row">
+					<div class="span12">Nodes: <span id="total-nodes" class="badge badge-info" data-toggle="tooltip" title="Total number of nodes the graph contains" data-placement="top">10</span></div>
+				</div>
+
+				<div class="row">
+					<div class="span12">Leaves: <span id="total-leaves" class="badge badge-info" data-toggle="tooltip" title="Total number of leaf nodes the graph contains" data-placement="top">5</span></div>
+				</div>
+
+				<div class="row">
+					<ul class="span12 breadcrumb">
+						<li><a href="#">path</a> <span class="divider">/</span></li>
+						<li><a href="#">to</a> <span class="divider">/</span></li>
+						<li class="active">node</li>
+					</ul>
+				</div>
+
+
+			</div>
+
+
+
+		</div>
+	</div>
+
+<!-- Dialogs - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<div id="edit" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="editLabel">Editor</h3>
+		</div>
+		<div class="modal-body">
+			<div id="editor" style="width:100%"></div>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+		</div>
+		<div class="modal-footer">
+			<!-- <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Cancel</button> -->
+			<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Done</button>
+		</div>
+	</div>
+
+	<div id="help" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="helpLabel">Help</h3>
+		</div>
+		<div class="modal-body">
+			<h1>How to use this?</h1>
+			<p>Just write code in the editor, that you can access through the navigation pane in the left sidebar, and then parse it using the parse button in the same sidebar.</p>
+			<p>The resulting graph will be displayed, accessible through the navigation pane too.</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Got it!</button>
+		</div>
+	</div>
+
+<!-- Scripts - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+	<script src="jquery/jquery.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+
+	<script src="ace/ace.js"></script>
+	<!-- <script src="codemirror.min.js"></script> -->
+
+	<script src="Jit/jit.js"></script>
+	<script src="cytoscape/cytoscape.js"></script>
+
+	<script src="app.js"></script>
+</body>
+
+</html>

@@ -80,7 +80,9 @@ class Server
 
 		{root, views} = fsMap
 
-		root = "#__dirname/#root"
+		root ?= '.'
+
+		root = "#{process.cwd!}/#root"
 
 		fsMap = {root, views}
 
@@ -112,6 +114,7 @@ class Server
 
 	_register-middleware: ->
 		{relative, absolute} = @options.statics
+		console.log "#{@options.fsMap.root}/public"
 
 		@system.use ... [
 			\bodyParser
