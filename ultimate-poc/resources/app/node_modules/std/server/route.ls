@@ -29,7 +29,7 @@ class Route
 			method: \post
 			url: '/rpc'
 			handler: let RPC = new require('./rpc').RPCManager logger
-				for mod in spec.modules => RPC.addModule mod
+				for name, mod of spec.modules => RPC.add name, mod
 				!-> RPC.exec @
 		}
 		| 'shutdown'

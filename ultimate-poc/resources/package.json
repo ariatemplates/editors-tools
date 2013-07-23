@@ -53,7 +53,7 @@
 		"zappajs": "*",
 		"portscanner": "*",
 		"winston": "*",
-		"pegjs": "*",
+		"pegjs": "git+https://github.com/dmajda/pegjs",
 		"esprima": "*",
 		"js-beautify": "*",
 		"jshint": "*",

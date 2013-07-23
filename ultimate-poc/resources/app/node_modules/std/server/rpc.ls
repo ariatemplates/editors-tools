@@ -70,7 +70,7 @@ class RPCManager
 		{module} = route.req.body
 
 		if @modules[module]? => @modules[module].exec route
-		else route.send http.codes.NotImplemented
+		else route.send http.codes.NotImplemented, "Module '#module' doesn't exist"
 
 
 
