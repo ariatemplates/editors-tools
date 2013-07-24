@@ -19,6 +19,8 @@ Please see the `documentation.md` file __before reading or WRITING any documenta
 
 # File system layout
 
+__Some of the files listed below might not appear for now, because they will be either generated or created specifically by you__
+
 * `.gitignore`: Git related file
 * `bin`: folder containing the build, that contains both the Eclipse plugin and the backend for now
 
@@ -66,20 +68,20 @@ We call the tools used to actually edit source code: ___frontends___. They provi
 
 We call the application serving source edition features (processing): the ___backend___.
 
-A frontend is a client of this backend (server application), and they communicate through standard means.
+A frontend is a client of this backend (then acting as a server application), and they communicate through standard means.
 
 Here is a quick description of the stack:
 
 * __backend__: a Node.js based application, providing services used by editors and IDEs
-* __API__: a classical programming interface, used by the JSON-RPC layer (which is the backend-side end-point of the _communication interface_)
+* __API__: a classical programming interface for the backend, used by the JSON-RPC (Remote Procedure Call protocol using JSON) layer (which is the end point of the _communication interface_ - see below - for the backend)
 * __communication interface__: [JSON](http://en.wikipedia.org/wiki/JSON)-[RPC](http://en.wikipedia.org/wiki/Remote_procedure_call) through [HTTP](http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) (default listening port: 3000)
 * __frontend__: any IDE or Editor with extension capability, using the backend through the communication interface
 
-This project aims at providing everything but the last part: a frontend is a consumer of the project.
+This project aims at providing everything __except__ the last part: indeed, a frontend is a consumer of the project.
 
-However, as this is a work in progress, and for some prioritary requirements, everything is integrated into a __single__ frontend project: an Eclipse plugin.
+However, as this project is still a work in progress, and for some prioritary requirements, the reversed approach has been taken: everything is integrated into a __single__ frontend project, an Eclipse plugin.
 
-Later on, we could consider doing it for [Sublime Text](http://www.sublimetext.com/), [Notepad++](http://notepad-plus-plus.org/), [Cloud9](https://c9.io/), ...
+Later on, we could consider extending other tools to use the backend, like: [Sublime Text](http://www.sublimetext.com/), [Notepad++](http://notepad-plus-plus.org/), [Cloud9](https://c9.io/), a custom IDE, ... or even any other specific tools not even doing edition (analysis for instance).
 
 
 # Contribute
@@ -88,11 +90,12 @@ I would first give an advice to apply everywhere: __READ CAREFULLY THE DOCS__.
 
 ## Environment
 
-* [Node.js](http://nodejs.org/download/) - tested with latest version ([0.10.12](http://nodejs.org/dist/v0.10.12/node.exe) at the time of writing)
-* Eclipse IDE - tested with latest version (Kepler at the time of writing)
-	* [Java EE bundle](http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/keplerr)
+* Install [Node.js](http://nodejs.org/download/) - tested with latest version ([0.10.12](http://nodejs.org/dist/v0.10.12/node.exe) at the time of writing)
+	* the `node` binary must in in the `PATH` environment variable
+* Install Eclipse IDE - tested with latest version (Kepler at the time of writing)
+	* Preferably choose [Java EE bundle](http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/keplerr)
 	* Install the plugin [Google GSON](http://code.google.com/p/google-gson/) from [Orbit repository](http://download.eclipse.org/tools/orbit/downloads/) ([latest](http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/) at the time of writing)
-* Java SE - tested with latest version (1.7 at the time of writing)
+* Have a [Java SE](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installation available - tested with latest version (7 at the time of writing)
 
 Tested on Microsoft Windows 7 Enterprise 64-bit SP1.
 
@@ -100,27 +103,81 @@ Tested on Microsoft Windows 7 Enterprise 64-bit SP1.
 
 After cloning the repository, you will have to create the Eclipse project from the sources.
 
-The project file should have the following properties:
+Here is the full __detailed__ procedure:
 
-* root: this current folder
-* sources: `src`
-* resources: `resources`, `META-INF`, `plugin.xml`
-* target: should go in a `bin` folder, to be compliant with the versioning (ignoring)
-* natures:
-	* `org.eclipse.pde.PluginNature`
-	* `org.eclipse.jdt.core.javanature`
+* Create a new project __inside this current folder__:
+	* From the main menu `File>New>Other...`, select `Project` under category `General`
+	* Give it any name you want
+	* Uncheck the checkbox `Use default location`
+	* Browse the file system to select this current folder
+	* Click on `Finish`
+* Add natures to the project:
+	* open the generated `.project` file under the root folder of the project (i.e. this current folder): this file is in XML format
+	* under the XML element `natures`, add natures by adding `nature` elements (example: `<natures><nature>org.eclipse.pde.PluginNature</nature></natures>`)
+	* add the following natures:
+		* `org.eclipse.pde.PluginNature`
+		* `org.eclipse.jdt.core.javanature`
+* Edit properties of the project:
+	* Open properties of the project by choosing menu `Project>Properties` (or `Properties` from contextual menu of the project with right-click on it in)
+	* Configure build path
+		* Select `Java Build Path` on the left
+		* Select tab `Source` on the right
+			* Click on `Add Folder...`
+			* Check:
+				* `resources`
+				* `src` (if not already selected)
+			* Note that the file `plugin.xml` and the folder `META-INF` don't have to be explicitely added
+		* Select tab `Libraries`
+			* Click on `Add Library...`
+			* Select `Plug-in Dependencies`
+			* Click `Next` then `Finish`
+	* Add builders
+		* open the `.project` file
+		* under the element `buildSpec`, add builders by adding `buildCommand` elements, each of them containing two elements: `name` and `arguments` (example: `<buildSpec><buildCommand><name>org.eclipse.jdt.core.javabuilder</name><arguments></arguments></buildCommand></buildSpec>`)
+		* add the following builders (just put the following in `name` elements):
+			* `org.eclipse.jdt.core.javabuilder`
+			* `org.eclipse.pde.ManifestBuilder`
+			* `org.eclipse.pde.SchemaBuilder`
 
+For simplicity, here is for the `.project` file the XML snippet resulting from the above procedure ( __this is not the whole file!!__ ):
 
-Don't forget to update the project specific settings from the plugin definition: for dependencies essentially, importing from `Plug-in dependencies`.
+```xml
+<buildSpec>
+	<buildCommand>
+		<name>org.eclipse.jdt.core.javabuilder</name>
+		<arguments>
+		</arguments>
+	</buildCommand>
+	<buildCommand>
+		<name>org.eclipse.pde.ManifestBuilder</name>
+		<arguments>
+		</arguments>
+	</buildCommand>
+	<buildCommand>
+		<name>org.eclipse.pde.SchemaBuilder</name>
+		<arguments>
+		</arguments>
+	</buildCommand>
+</buildSpec>
+<natures>
+	<nature>org.eclipse.pde.PluginNature</nature>
+	<nature>org.eclipse.jdt.core.javanature</nature>
+</natures>
+```
 
-The Java compliance should be set to the Java version corresponding to the one used (see previous section).
+For the following, default values should be fine:
+
+* the build target should go in a `bin` folder, to be compliant with the versioning - ignoring patterns.
+* the Java compliance should be set to the Java version corresponding to the one used (see previous section).
 
 ## Try
 
-1. Open the Eclipse project
-1. Launch the project as an `Eclipse application`
+* Open the Eclipse project
+* Launch the project as an Eclipse application
+	* Select the project and select menu `Run>Run`, or use the contextual menu of the project and select `Run As`
+	* Choose `Eclipse Application`
 
-Then you can start editing files with the `.tpl` extension.
+Then you can start editing files with the `.tpl` extension under a new project.
 
 ## Development
 
