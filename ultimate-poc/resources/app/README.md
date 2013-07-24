@@ -143,6 +143,7 @@ Make the server module from the std library official or bring it back here.
 
 Improve the logging system.
 
+* choose where to put the logs: depending on the current working directory (current solution) or more deterministic? Giving the user an option would be good too.
 * Learn how to use the library `winston`, configure it more.
 * Find how to use the logger more globally, in other submodules.
 

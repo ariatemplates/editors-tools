@@ -42,6 +42,8 @@ Install the node modules, by launching the program with the following properties
 * program arguments (command in this case): `install`
 * current working directory (context): the folder containing `package.json`
 
+In more simple words: launch from this directory the command `npm install`.
+
 ## Development
 
 ### Package definition

@@ -17,6 +17,10 @@ This application uses Bootstrap for basic frontend, Ace for code edition, and Cy
 
 # Contribute
 
+## FIXME
+
+* static locations specified in the options of the server are served considering the current working directory, which is a too weak convention (might change easily): change the use of the server library by specifying explicitely a root, resolved from a deterministic property (like the path of the module file)
+
 ## Documentation
 
 * Write documentration

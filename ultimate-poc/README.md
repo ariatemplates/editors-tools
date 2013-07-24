@@ -11,6 +11,14 @@ Thus this is for now concretely applied to specific things:
 * Clients implementations:
 	* [Eclipse IDE](http://eclipse.org/)
 
+# Current development state
+
+For now the work is focused on HTML (easy for tests).
+
+You can launch a backend instance (see procedure below) and interact with how you want.
+
+You can launch an Eclipse application with a plugin using this backend instance (see procedure below) and use it to edit `.tpl` files: __despite the name only the HTML syntax will be handled inside!__
+
 # Introduction
 
 Please read the `introduction.md` file if you never did it and don't know what the project is all about.
@@ -101,9 +109,17 @@ Tested on Microsoft Windows 7 Enterprise 64-bit SP1.
 
 ## Setup
 
-After cloning the repository, you will have to create the Eclipse project from the sources.
+After cloning the repository, you will have to do some setup.
 
-Here is the full __detailed__ procedure:
+There are two items to setup: the backend and the Eclipse project.
+
+# Backend
+
+Please follow the instructions written in the `resources` subfolder.
+
+# Eclipse
+
+Here is the full __detailed__ procedure to create the Eclipse project from the sources:
 
 * Create a new project __inside this current folder__:
 	* From the main menu `File>New>Other...`, select `Project` under category `General`
@@ -172,10 +188,16 @@ For the following, default values should be fine:
 
 ## Try
 
-* Open the Eclipse project
-* Launch the project as an Eclipse application
-	* Select the project and select menu `Run>Run`, or use the contextual menu of the project and select `Run As`
-	* Choose `Eclipse Application`
+* Launch the backend
+	* Make sure the port 3000 is free on your system
+	* Open a terminal emulator executing a system shell
+	* Go to the directory `resources`
+	* launch `npm` with argument `start` (command: `npm start`)
+* Launch the Eclipse application
+	* Open the Eclipse project
+	* Launch the project as an Eclipse application
+		* Select the project and select menu `Run>Run`, or use the contextual menu of the project and select `Run As`
+		* Choose `Eclipse Application`
 
 Then you can start editing files with the `.tpl` extension under a new project.
 
@@ -184,6 +206,21 @@ Then you can start editing files with the `.tpl` extension under a new project.
 Please refer to the sub-folders for more details about specific development.
 
 At this current level, you can work on the global architecture, as described in the documentation.
+
+### FIXME
+
+#### Backend packaging
+
+For now it's easier for the Eclipse plugin to communicate with an already running backend instance.
+
+There is some work to do to enable the plugin launching a backend packaged with the plugin.
+
+For development purposes, a first solution could be to resolve the path of the backend inside the sources from the workspace.
+
+For deployment, two things will have to be tackled:
+
+* how to retrieve the path of the plugin: see [FileLocator](http://help.eclipse.org/kepler/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2FFileLocator.html&anchor=find%28org.osgi.framework.Bundle,%20org.eclipse.core.runtime.IPath,%20java.util.Map%29)
+* How to use the backend files? If they are contained in an archive, there might be some problems, as I'm not sure the Eclipse runtime completely extracts the archive to work with its content, maybe it directly extracts files to memory on the fly, when needed. In this case we might need to specify not to keep backend files in an archive. See [thread on stackoverflow](http://stackoverflow.com/questions/5622789/how-to-refer-a-file-from-jar-file-in-eclipse-plugin).
 
 ### Backlog
 

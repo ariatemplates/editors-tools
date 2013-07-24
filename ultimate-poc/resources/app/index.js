@@ -1,3 +1,5 @@
+require('LiveScript');
+
 var server, logger, routes, options;
 
 server = require('std/server');

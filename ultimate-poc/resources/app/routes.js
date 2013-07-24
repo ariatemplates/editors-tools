@@ -8,7 +8,8 @@ module.exports = [
 		modules: {
 			// js: 'modes/js',
 			// at: 'modes/at',
-			html: 'modes/html'
+			// !!! Hack to avoid changing to much of the clients code, to be able to test with HTML instead of at for now
+			at: 'modes/html'
 		}
 	},
 
