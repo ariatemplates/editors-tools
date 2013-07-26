@@ -6,10 +6,7 @@ module.exports = [
 	{
 		type: 'rpc',
 		modules: {
-			// js: 'modes/js',
-			// at: 'modes/at',
-			// !!! Hack to avoid changing to much of the clients code, to be able to test with HTML instead of at for now
-			at: 'modes/html'
+			'editor': 'modes/editor'
 		}
 	},
 

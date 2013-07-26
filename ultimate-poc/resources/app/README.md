@@ -139,6 +139,12 @@ You can tweak the `options` file, but __take care about versioning issues__ behi
 
 Make the server module from the std library official or bring it back here.
 
+### RPC
+
+* Check how specifying modules work, this uses a relative path, and can be intersting for other purposes
+* Be able to specify a module not only by path, but directly with the module itself (in fact I think it's already possible!)
+* Be able to specify multiple names for a module
+
 ### Logging
 
 Improve the logging system.
