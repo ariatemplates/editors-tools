@@ -5,6 +5,7 @@ The file system layout can be surprising, but comes from the way the module syst
 # File system layout
 
 * `README.md`: this current file
+* `client.md`: a recap documentation explaining how clients can use the backend
 * `.gitignore`: Git related file
 * `package.json`: npm `package.json`
 * `node_modules`: all third-party libraries used by the application.
@@ -26,6 +27,10 @@ To ignore:
 * `node_modules`: can be installed from the `package.json` data with the use of npm
 
 To version: _everything else_.
+
+# Documentation
+
+If you want to implement a client using this backend, please read the `client.md` file.
 
 # Contribute
 

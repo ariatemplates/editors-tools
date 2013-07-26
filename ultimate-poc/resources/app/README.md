@@ -144,6 +144,7 @@ Make the server module from the std library official or bring it back here.
 * Check how specifying modules work, this uses a relative path, and can be intersting for other purposes
 * Be able to specify a module not only by path, but directly with the module itself (in fact I think it's already possible!)
 * Be able to specify multiple names for a module
+* Change the way arguments are passed, accepting a real list of arguments instead of a single object.
 
 ### Logging
 
