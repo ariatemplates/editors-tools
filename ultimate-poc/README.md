@@ -113,11 +113,13 @@ After cloning the repository, you will have to do some setup.
 
 There are two items to setup: the backend and the Eclipse project.
 
-# Backend
+### Backend
 
 Please follow the instructions written in the `resources` subfolder.
 
-# Eclipse
+Also, after that, build the HTML parser following the setup instructions in `resources\app\node_modules\modes\html\parser` submodule.
+
+### Eclipse
 
 Here is the full __detailed__ procedure to create the Eclipse project from the sources:
 
@@ -211,16 +213,27 @@ At this current level, you can work on the global architecture, as described in 
 
 #### Backend packaging
 
-For now it's easier for the Eclipse plugin to communicate with an already running backend instance.
+For now it's easier for the Eclipse plugin to communicate with an already running backend instance (launched externally).
 
-There is some work to do to enable the plugin launching a backend packaged with the plugin.
+There is still some work to do to enable the plugin launching a backend packaged with it.
 
-For development purposes, a first solution could be to resolve the path of the backend inside the sources from the workspace.
+There are two kind of environements to consider:
 
-For deployment, two things will have to be tackled:
+* development: just have a quick and dirty solution to make it work in development mode
+* production: make it work in the context of a packaged plugin
 
-* how to retrieve the path of the plugin: see [FileLocator](http://help.eclipse.org/kepler/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2FFileLocator.html&anchor=find%28org.osgi.framework.Bundle,%20org.eclipse.core.runtime.IPath,%20java.util.Map%29)
-* How to use the backend files? If they are contained in an archive, there might be some problems, as I'm not sure the Eclipse runtime completely extracts the archive to work with its content, maybe it directly extracts files to memory on the fly, when needed. In this case we might need to specify not to keep backend files in an archive. See [thread on stackoverflow](http://stackoverflow.com/questions/5622789/how-to-refer-a-file-from-jar-file-in-eclipse-plugin).
+For development, the sources of the server are available, and are located inside the project. Therefore to launch it (without hardcoding paths), there is just a need to resolve the relatives paths inside the project (i.e. to programatically find the path of the project).
+
+For production, the problem is different.
+
+First, the plugin will reside in the Eclipse installation, among other bundles. The thing would be - as it is for development - to resolve the path of the plugin. Have a look at [FileLocator](http://help.eclipse.org/kepler/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2FFileLocator.html&anchor=find%28org.osgi.framework.Bundle,%20org.eclipse.core.runtime.IPath,%20java.util.Map%29).
+
+But then there is a problem due to the fact a plugin is packaged in an archive by default. If the Java system works fine with binaries contained in archives, it is not the case of the _externally made_ server. It relies on a standard file system access.
+
+For that there are two solutions:
+
+* either finding a solution to execute the server in a virtual file system - personnaly I don't know how
+* or we find a solution to extract the file of the archive for the server. See [thread on stackoverflow](http://stackoverflow.com/questions/5622789/how-to-refer-a-file-from-jar-file-in-eclipse-plugin).
 
 ### Backlog
 
