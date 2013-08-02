@@ -68,24 +68,6 @@ Methods:
 
 This section is structured the same way the services are provided by the server: there is one subsection per route, that is per service.
 
-### RPC
-
-`/rpc` is the entry point for RPC requests. __This is a standard route provided by the server library__.
-
-The RPC request are handled by an external module, in the standard library, please refer to its own documentation.
-
-For quick reminder, __as the time of writing__, RPC is made through a POST HTTP request, with `application/json` content type, sending JSON formatted data with the following properties:
-
-* `module`: the name of the module to call, this module being registered by the RPC manager
-* `method`: the name of the member of the module to access; `method` is an historical name, actually you can both access properties values and call methods (but you can't get the value of a function, but this doesn't make sense in this context)
-* `arguments`: a JSON object; this forces to name arguments, and avoids the confusion by making a choice on the convention (versus array, even defining an array with a single item being an object is still possible)
-
-#### Modules
-
-The modules registered against the RPC manager are all the modes. Please refer to the respective documentation in the `node_modules/modes` subfolder for more information.
-
-In the future we might imagine a single mode manager being created, in which case we register only this module (making the `module` property in the RPC request potentially useless).
-
 ### Ping
 
 The `/ping` route sends a valid HTTP code status (200). __This is a standard route provided by the server library__.
@@ -104,6 +86,28 @@ This is generally used to identify the server as being an instance of this backe
 * protocol handled: HTTP
 * request type: POST
 * route/response pair: using only one GUID introduces already a high level of collision avoidance, but using a pair of that is even FAR higher
+
+### Shutdown
+
+You can shutdown the server - that makes it exit, the process will be destroyed -  by sending a GET request to the route `/shutdown`.
+
+### RPC
+
+`/rpc` is the entry point for RPC requests. __This is a standard route provided by the server library__.
+
+The RPC request are handled by an external module, in the standard library, please refer to its own documentation.
+
+For quick reminder, __as the time of writing__, RPC is made through a POST HTTP request, with `application/json` content type, sending JSON formatted data with the following properties:
+
+* `module`: the name of the module to call, this module being registered by the RPC manager
+* `method`: the name of the member of the module to access; `method` is an historical name, actually you can both access properties values and call methods (but you can't get the value of a function, but this doesn't make sense in this context)
+* `arguments`: a JSON object; this forces to name arguments, and avoids the confusion by making a choice on the convention (versus array, even defining an array with a single item being an object is still possible)
+
+#### Modules
+
+The modules registered against the RPC manager are all the modes. Please refer to the respective documentation in the `node_modules/modes` subfolder for more information.
+
+In the future we might imagine a single mode manager being created, in which case we register only this module (making the `module` property in the RPC request potentially useless).
 
 ### Info
 

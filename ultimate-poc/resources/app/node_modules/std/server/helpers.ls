@@ -1,6 +1,10 @@
 require! {
 # -------------------------------------------------------------------------- 3rd
-	_: lodash
+	prelude: 'prelude-ls'
+	lodash
+
+	dop
+	oop
 }
 
 
@@ -21,27 +25,34 @@ require! {
  * @param[in][opt] options {Object} See full description.
  */
 log = !(arg, options ? {}) ->
-	switch typeof! arg
-	| 'Array' # Array of strings! (arrays can be nested)
-		{wrap} = options
-		if wrap
+	options = dop.processProperties options, {
+		properties: [
+			{name: 'wrap', type: oop.types.Boolean, default: off}
+			{name: 'char', type: oop.types.String, default: '#'}
+			{name: 'prefix', type: oop.types.Boolean, default: off}
+
+			{name: 'x', type: oop.types.Number, default: 1}
+			{name: 'xTop', type: oop.types.Number}
+			{name: 'xBottom', type: oop.types.Number}
+		]
+	}
+
+	/* Array of strings! (arrays can be nested) */
+	if prelude.isType 'Array' arg
+		if options.wrap
 			{char} = options
-			char ?= '#'
-			char = "#char"
 
-			{prefix} = options
-			if prefix => arg = ["#char #entry" for entry in arg]
+			if options.prefix => arg = ["#char #line" for line in arg]
 
-			{x, xTop, xBottom} = options
-			x ?= 1
-			xTop ?= x
-			xBottom ?= x
+			{xTop, xBottom} = options
+			xTop ?= options.x
+			xBottom ?= options.x
 			arg = ["#char" * xTop] ++ arg ++ ["#char" * xBottom]
 
-		array = _.flatten arg
-		for array => console.log ..
-
-	| _ => console.log arg
+		array = lodash.flatten arg
+		for line in array => console.log line
+	else
+		console.log arg
 
 
 

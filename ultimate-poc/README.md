@@ -205,65 +205,61 @@ Then you can start editing files with the `.tpl` extension under a new project.
 
 ## Development
 
-Please refer to the sub-folders for more details about specific development.
+Please refer to the subfolders of the project for details about corresponding modules specific development: every folder containing a documentation like this contains a section talking about contributions you can make to it.
 
-At this current level, you can work on the global architecture, as described in the documentation.
+Sections below discuss about development at whole project scale.
 
-### FIXME
+### Backend packaging
 
-#### Backend packaging
+__The Eclipse plugin must be able to embed the code of the backend server and to launch and manage an instance of it properly.__
 
-For now it's easier for the Eclipse plugin to communicate with an already running backend instance (launched externally).
+For now it's easier for the Eclipse plugin to communicate with an already running backend instance, that is launched externally.
 
 There is still some work to do to enable the plugin launching a backend packaged with it.
 
-There are two kind of environements to consider:
+There are two kind of environments to consider:
 
-* development: just have a quick and dirty solution to make it work in development mode
-* production: make it work in the context of a packaged plugin
+* __development__: just have a quick and dirty solution to make it work in development mode
+* __production__: make it work in the context of a packaged plugin
 
-For development, the sources of the server are available, and are located inside the project. Therefore to launch it (without hardcoding paths), there is just a need to resolve the relatives paths inside the project (i.e. to programatically find the path of the project).
+__For development__, the sources of the server are available, and are located inside the project. Therefore to launch it (__without hardcoding paths!!__), there is just a need to __resolve the relative paths__ inside the project (i.e. equivalent to programatically find the path of the project).
 
-For production, the problem is different.
+__For production__, the problem is different.
 
-First, the plugin will reside in the Eclipse installation, among other bundles. The thing would be - as it is for development - to resolve the path of the plugin. Have a look at [FileLocator](http://help.eclipse.org/kepler/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2FFileLocator.html&anchor=find%28org.osgi.framework.Bundle,%20org.eclipse.core.runtime.IPath,%20java.util.Map%29).
+First, once installed the plugin will reside in the Eclipse installation, among every other bundles. The thing would be - as it is for development - to resolve the path of the plugin (but in this case it's not the context of the project but the one of the Eclipse installation). Have a look at [`FileLocator.find`](http://help.eclipse.org/kepler/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2FFileLocator.html&anchor=find%28org.osgi.framework.Bundle,%20org.eclipse.core.runtime.IPath,%20java.util.Map%29): the `Bundle` required in this method can be taken from the `Activator` class of this project.
 
-But then there is a problem due to the fact a plugin is packaged in an archive by default. If the Java system works fine with binaries contained in archives, it is not the case of the _externally made_ server. It relies on a standard file system access.
+But then there is a problem due to the fact a plugin is __packaged in an archive by default__. If the Java system works fine with binaries contained in archives, it is not the case of the _externally made_ server. It __relies on a standard file system access__.
 
 For that there are two solutions:
 
-* either finding a solution to execute the server in a virtual file system - personnaly I don't know how
-* or we find a solution to extract the file of the archive for the server. See [thread on stackoverflow](http://stackoverflow.com/questions/5622789/how-to-refer-a-file-from-jar-file-in-eclipse-plugin).
+* either finding a solution to execute the server in a virtual file system - personally I don't know how
+* or finding a solution to extract the file of the archive for the server. See this [thread on stackoverflow](http://stackoverflow.com/questions/5622789/how-to-refer-a-file-from-jar-file-in-eclipse-plugin) talking about plugin packaging: an option to avoid archiving would be available in case we wrap the plugin in an Eclipse feature.
 
-### Backlog
+### Projects architecture
 
-1. Review the architecture to externalize the backend
-	* create separate projects or at least separate folders for the frontend and the backend
-	* find a way to package the Eclipse frontend plugin with an embedded backend (remember that for test purposes, you can use the detection feature of the frontend, which finds an already running backend)
-1. Clean Eclipse extension points
-	* Use the `org.eclipse.ui.editors.documentProviders` extension point or not?
+__The Eclipse plugin sources and the backend sources should be part of two respective different projects.__
 
-### Documentation
+For now it's simple to have everything in the same place, for the Proof of Concept, and since the first real implementation of using the backend is made with the Eclipse plugin.
 
-1. Complete the procedure to recreate the Eclipse Project in section `Contribute > Setup`
-1. Review documentation
-	* Documentation of the documentation (meta)
-		* I would prefer using a `Backlog` section inside the `Contribute` one (as I'm doing here) instead of a `TODO` section. I don't know about the `FIXME`, probably keep it.
-		* finish writing it, especially the guidelines section
-	* Choose wether to put the `Documentation` section before the `Contribute` one or vice versa? Seems like the first one is the one mostly used.
-	* Check the `Contribute` section: do we put a `Development` section (like here) then a nested `Backlog` section for _non-classified_ stuff and any other section for the rest?
+However, since the backend is intended to be something completely decoupled from any client, will be used by many of them, and above all because we will not be supposed to have any knowledge of these clients, the backend should be in a separate project.
 
-#### Wiki
+This means taking the content of the `resources` folders and to make it root of a new project.
 
-Think about putting documentation files other than `README.md` ones into the wiki. Indeed, they seem to be more general files.
+Then, this brings another challenge: bringing the sources of the backend contained in an external project for packaging phase of the Eclipse plugin.
 
-The `README.md` files are specific, and there can be only one per folder. A folder often being a module, this is logical to use them to describe the module specifically.
+### Eclipse plugin
 
-Other files might be for more general purposes, so consider putting them into the wiki.
+__Clean Eclipse extension points.__
+
+> Do we use the `org.eclipse.ui.editors.documentProviders` extension point or not?
+
+We can manage without, as it is done for now, but maybe it's better for design purposes to use it.
 
 ### Performances of process interactions
 
-Maybe the use of JSON-RPC through HTTP can be too heavy for very frequent and simple operations done while editing. I'm mainly thinking about the frequent update of the models (source, AST (graph) and so on) concerning content, positions, etc. while the user enters text.
+__Reduce the overhead introduced by HTTP, JSON serialization and also RPC.__
+
+Maybe the use of JSON-RPC through HTTP can be too heavy for very frequent and simple operations done while editing. I'm mainly thinking about the frequent update of the models (source, AST (graph) and so on) concerning content, positions, etc., while the user enters text.
 
 Think about using a custom protocol built on top of lower-level ones (TCP for instance).
 
@@ -272,8 +268,56 @@ The following aspects can be improved:
 * connection setup: keeping connected state (contrary to basic HTTP)
 * protocol overhead: limit amount of data used only for the information transmission. HTTP is pure text and thus easy to read, debug, but it can be too much. Prefer binary, and a minimum amount of required data.
 * serialization: limit verbosity, prefer binary over text (JSON is already better than XML), ...
-* two ways sockets: rather than a client-server model, simply make the two entities communicate both ways
+* _bonus_ - two ways sockets: rather than a client-server model, simply make the two entities communicate both ways
 
 There are also other standard solutions like [CORBA](http://en.wikipedia.org/wiki/Common_Object_Request_Broker_Architecture) (but I'm not sure there is an available mapping for JavaScript in this case).
 
 I ([ymeine](https://github.com/ymeine)) found recently (05 Jul 2013) an [article](http://dailyjs.com/2013/07/04/hbase/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+dailyjs+%28DailyJS%29) talking about [Thrift](https://thrift.apache.org/). The description at least corresponds exactly to what we want to do: provide services to clients whatever the system they use, and automatically deal with remote procedure calls and so on.
+
+### Documentation
+
+__Review the documentation of the documentation (the meta-documentation), written in `documentation.md` for now.__
+
+#### `Contribute` section
+
+Check how to structure the `Contribute` section.
+
+Two things can be distinguished:
+
+* content talking about how to setup the project, configure the environment, and also how to _try_ the project, to manually/visually test it: all of this is optional
+* content talking about what can be done to actually develop the project
+
+For the second one, it's harder to see how to structure it. At least we can bring out two aspects: development for the code, and work on the documentation. One last thing is the section about fixes to be done: it must appear first and be concise, since this concerns urgent tasks.
+
+So here are the main parts in order in this section:
+
+1. Setup: optional
+1. Try/Test: optional
+1. Develop
+	1. FIXMEs
+	1. Code
+	1. Documentation
+
+Inside the _code_ section, theer can be many things, from little tasks to more complex ones, requiring detailed paragraphs.
+
+I would put everything in a dedicated section with a meaningful name, followed by a single emphased line summarizing the nature of the task, and then possibly a description paragraph.
+
+#### `Guidelines`
+
+__ Complete the guidelines section.__
+
+#### `Documentation` / `Contribute` order
+
+__Choose wether to put the `Documentation` section before the `Contribute` one or vice versa.__
+
+Seems like the first one is the one mostly used.
+
+#### Wiki
+
+_Determine content with a general purpose trait and consider putting it in a wiki._
+
+Think about putting documentation files other than `README.md` ones into the wiki. Indeed, they seem to be more general files.
+
+The `README.md` files are specific, and there can be only one per folder. A folder often being a module, this is logical to use them to describe the module specifically.
+
+Other files might be for more general purposes, so consider putting them into the wiki.

@@ -1,9 +1,3 @@
-___MOVE IT___
-
-([ymeine](https://github.com/ymeine)): this module is part of my own standard library, and here should stand only a copy of the required files (development or production version).
-
-----
-
 A server library, with an _embedded_ JSON-RPC library.
 
 __DISCLAIMER__: the JSON-RPC library does not comply to the real specifications, it simply uses JSON for RPC, hence the name.
@@ -103,18 +97,11 @@ Each property will create a specific handler, and they follow precedence rules:
 
 # Contribute
 
-## Pre-requisites
-
-* Node.js
-* LiveScript
-
 # FIXME
 
+* `execOnAvailablePort` function in network doesn't work as expected: uses the `prefered` port only. This is beacsue when `zappajs` is required, the `checkPortStatus` on port 3000 returns `closed` everytime.
 * The _helpers_ module file contains only a logging function, used only by the _server_. Try to get rid of that, and use a unique external implementation of logging (I've made more or less 4/5 implementations...)
-* Seems like the `execOnAvailablePort` function in network doesn't work as expected (uses the `prefered` port only)
 
 # References
 
-* [LiveScript](http://livescript.net/)
-* [Node.js](http://nodejs.org/)
 * [JSON-RPC](http://en.wikipedia.org/wiki/JSON-RPC)

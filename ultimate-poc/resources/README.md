@@ -69,6 +69,15 @@ What can be done among others:
 
 Please refer to the content of the `app` folder.
 
+## External libraries
+
+__Interesting external libraries__
+
+* [RPC](https://github.com/joyent/node/wiki/modules#wiki-rpc)
+	* [jsonrpclib](https://github.com/openmason/jsonrpclib)
+	* [node-jsonrpc](https://github.com/andris9/node-jsonrpc)
+	* ...
+
 # References
 
 * npm [`package.json`](https://npmjs.org/doc/json.html)

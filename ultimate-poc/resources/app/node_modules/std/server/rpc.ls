@@ -3,12 +3,29 @@ require! {
 	'./http'
 }
 
+Error = (msg, content, exception) ->
+	result = {
+		msg
+		content
+	}
+
+	if typeof! exception is 'Error'
+		exception = {
+			exception.name
+			exception.message
+			exception.stack
+		}
+
+
+	if exception? => result <<< {exception}
+
+	result
 
 /**
  * @todo Use real JS Proxies (harmony)
  */
 class RPCProxy
-	(@module, @logger) ~>
+	(@module, @logger, @name) ~>
 		@logger ?= {
 			info: console.log
 			console.log
@@ -21,12 +38,16 @@ class RPCProxy
 
 		if @module[method]?
 			try
-				route.json if typeof! @module[method] isnt 'Function' => @module[method] else @module[method] argument
+				if typeof! @module[method] isnt 'Function'
+					result = @module[method]
+				else
+					result = @module[method] argument
+				route.json result
 			catch exception
 				@logger.error exception
-				route.send http.codes.InternalError, "#exception"
+				route.send http.codes.InternalError, Error 'An exception ocurred while executing a method' {module: @name, method} exception
 		else
-			route.send http.codes.NotImplemented
+			route.send http.codes.NotImplemented, Error 'Method not implemented', {module: @name, method}
 
 
 
@@ -60,7 +81,7 @@ class RPCManager
 		module = @@module-factory module
 		if @modules[name]? => throw 'Module already existing'
 
-		@modules[name] = RPCProxy module, @logger
+		@modules[name] = RPCProxy module, @logger, name
 
 	remove: (name) -> if @modules[name]? => delete @modules[name]
 
@@ -70,7 +91,7 @@ class RPCManager
 		{module} = route.req.body
 
 		if @modules[module]? => @modules[module].exec route
-		else route.send http.codes.NotImplemented, "Module '#module' doesn't exist"
+		else route.send http.codes.NotImplemented, Error 'Module doesn\'t exist', {module}
 
 
 

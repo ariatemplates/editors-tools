@@ -1,6 +1,4 @@
 require! {
-# ---------------------------------------------------------------------- Own STD
-	'std/array'
 # -------------------------------------------------------------------------- App
 	'./helpers'
 	'./route'
@@ -46,7 +44,7 @@ class Server
 		{routes, route} = spec
 		routes? ?= route
 
-		routes = array.factory routes
+		if typeof! routes isnt 'Array' => routes = [routes]
 
 		routes = [Route.factory route, logger, @ for route in routes]
 
@@ -114,7 +112,6 @@ class Server
 
 	_register-middleware: ->
 		{relative, absolute} = @options.statics
-		console.log "#{@options.fsMap.root}/public"
 
 		@system.use ... [
 			\bodyParser
@@ -132,19 +129,20 @@ class Server
 			route.register-zappajs @system
 
 	run: ->
-		network.execOnAvailablePort @options.network with {cb: !(port) ~>
-			@ <<< {port}
+		network.execOnAvailablePort @options.network with {
+			cb: !(port) ~>
+				@ <<< {port}
 
-			let self = @ =>
-				<-! @system port
+				let self = @ =>
+					<-! @system port
 
-				self.system = @
+					self.system = @
 
-				self.logInfo!
-				self._register-middleware!
-				self._configure!
-				self._register-routes!
-		}
+					self.logInfo!
+					self._register-middleware!
+					self._configure!
+					self._register-routes!
+			}
 
 
 
