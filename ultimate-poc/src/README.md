@@ -2,8 +2,8 @@ Eclipse frontend plugin code, making use of the backend to provide source code e
 
 # File system layout
 
-* `README.md`: this current file
-* `poc`: the root package of the Eclipse plugin code
+* [`README.md`](./README.md): this current file
+* [`poc`](./poc): the root package of the Eclipse plugin code
 
 # Versioning
 
@@ -19,15 +19,31 @@ The classpath of the root package is: `poc`.
 
 ## FIXME
 
-1. The fallback to launch a raw text editor when the backend could not be created or reused is way too long
+### Fallback when backend launch failed
 
-## Backlog
+__The fallback to launch a raw text editor when the backend server could not be launched or reused is way too long.__
 
-1. Change the root package classpath: to something more like `com.ariatemplates.tools.editors`
-1. Enhance the knowledge base about the Eclipse platform
-	* how to create plugins
-	* more specific knowledge about Text Editors
-	* ...
+Normally a basic timeout implementation is used in `Backend.start()` which should not exceed 1000ms (`Backend.POLLING_TIME_OUT`). Here this is weird because it seems to be like one minute in practice.
+
+Debug this to see if time values are properly updated, and try to figure out what's happening.
+
+## Refactoring
+
+__Change the root package classpath.__
+
+The root package is named `poc` for now. This is fine only while the project is actually at a stage of Proof of Concept. However this will have to change to something more standard (following Java conventions) and related to the context of the project.
+
+This could be something more like `com.ariatemplates.tools.editors`.
+
+## Documentation
+
+__Enhance the knowledge base about the Eclipse Rich Client Platform.__ Probably this would go in a wiki page referenced here instead.
+
+Here is a non-exhaustive list of topics to tackle:
+
+* how to create plugins
+* more specific knowledge about Text Editors
+* ...
 
 # References
 

@@ -9,8 +9,8 @@
 
 
 	"decription": "A server providing common services for source code edition.",
-	"url": "https://github.com/ymeine/editors-tools/tree/ultimate-poc/ultimate-poc",
-	"bugs": "https://github.com/ymeine/editors-tools/issues",
+	"url": "https://github.com/ariatemplates/editors-tools/tree/ultimate-poc/ultimate-poc",
+	"bugs": "https://github.com/ariatemplates/editors-tools/issues",
 
 
 	"contributors": [
@@ -38,8 +38,8 @@
 
 
 
-	"preferGlobal": false,
-	"private": true,
+	"preferGlobal": true,
+	"private": false,
 
 
 	"engineStrict": false,

@@ -2,10 +2,10 @@ Editor view of a document.
 
 # File system layout
 
-* `README.md`: this current file
-* `POCEditor.java`: a class to implement the editor itself
-* `POCSourceViewerConfig.java`: a class to configure the editor
-* `POCTokenScanner.java`: a class in charge to return a list of tokens given a portion of source code
+* [`README.md`](./README.md): this current file
+* [`POCEditor.java`](./POCEditor.java): a class to implement the editor itself
+* [`POCSourceViewerConfig.java`](./POCSourceViewerConfig.java): a class to configure the editor
+* [`POCTokenScanner.java`](./POCTokenScanner.java): a class in charge to return a list of tokens given a portion of source code
 
 # Versioning
 
@@ -15,7 +15,7 @@ To version: _everything_.
 
 ## Editor
 
-The editor is a kind of a hub class, it centralizes the services related to edition, but delegates a lot to other classes.
+__The editor is a kind of a hub class, it centralizes the services related to edition, but delegates a lot to other classes.__
 
 The main work of configuration, setup of services like highlighting and so on is delegated to a source viewer configurator, which configures the source viewer embedded in the editor.
 
@@ -91,24 +91,118 @@ In fact, folding handles for instance use a genric feature of the text editors: 
 
 # Contribute
 
-1. Finish the first implementation of highlighting (it can consider reparsing the whole source everytime)
-1. Move some services from the editor to the source viewer configuration class or the document package
-1. Fix the mode resolution in the source viewer configuration (refer to the class itself for more information)
-1. Clean the code
-1. Complete folding implementation
-1. Implement formatting
-1. Implement content assist
+## Alignment with the latest backend implementation
+
+__The backend changed a lot, and the plugin needs to use differently.__ See [this](src/poc/README.md#alignment-with-the-latest-backend-implementation) for a recap.
+
+Occurences of RPC calls to be adapted:
+
+* [`POCEditor`](POCEditor)`.outline`
+* [`POCEditor`](POCEditor)`.fold`
+* [`POCSourceViewerConfiguration`](POCSourceViewerConfiguration)`()`
+* [`POCTokenScanner`](POCTokenScanner)`.setRange`
+* [`POCTokenScanner`](POCTokenScanner)`.getStylesheet`
+
+An additional things is the change of the name of the method used to get tokens in `POCTokenScanner.setRange()`: from `tokenize` to `highlight` (change `POCTokenScanner.TOKENIZE_MEMBER_KEY`). Probably there are also other changes in the format of this method, please refer to the documentation of the backend concerning [highlighting](ultimate-poc/resources/app/node_modules/modes/node_modules/README.md#highlighting).
+
+## Highlighting
+
+__Finish the first implementation of highlighting.__
+
+Hihlighting is a huge topic, because Eclipse RCP tries to provide a lot of support with efficiency in mind.
+
+It involves things like:
+
+* damager/repairer protocol
+* token scanner
+
+The second one, __the token scanner__, is explained [above](#token-scanner) and is something that must be able to return tokens for some range of code.
+
+It is rather simple, because it takes as input a range that it must store, and then is queried for tokens inside this range. The only _hard_ thing to handle is returning the set of tokens for a given range, but the backend takes care of sending the proper list of tokens.
+
+The first thing, the __damager/repairer__ is something more complicated that has to be investigated.
+
+It basically tries to identify which part of a document has been impacted by a change, and then asks some services to repair this part.
+
+An example will be simple. Let's take a piece of javascript code that is going to be commented:
+
+```javascript
+function foo() {
+	var bar = baz;
+}
+```
+
+With only one insertion at one position, the highlighting changes from this position to the end of the line:
+
+```javascript
+function foo() {
+	//var bar = baz;
+}
+```
+
+The damager will detect that the full line has to be repaired, and then the token scanner will be invoked with the corresponding range.
+
+__However, we need to take care that the proper range is always detected.__ For instance: with an opening multi-line comment, the whole rest of the document (until the end) must be re-highlighted.
+
+__It would be good if for a first implementation the whole document was re-highlighted everytime.__
+
+### Synchronization with updates
+
+__Another important issue is to check that highlighting update is made after the doucment has been updated in the backend.__
+
+Indeed, document updates are handled by the POCDocument class, and synchronization with the backend by the POCDocumentListener one.
+
+So when the document is changed due to an input of the user, the latter will send the change to the backend, and then it's up to the client to call all necessary services to update the views.
+
+However, we don't know when the repairer is trying to update the highlighting afetr a document change: before or after the document listener is called? And will the backend have the time to update it too? (this is an issue of the backend to synchronize properly the requests)
+
+### Handle more text presentation data
+
+The backend returns text presentation data in the stylesheet. There is information about the color of the text but also its _style_: italic, bold, etc.
+
+For now, only the color is taken into account, so process the other information.
+
+The method `POCTokenScanner.getAttribute()` returns the [`TextAttribute`](http://help.eclipse.org/kepler/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fjface%2Ftext%2FTextAttribute.html) instance which should take more data: use the third constructor with color, background, style and font.
+
+Use the [`Font`](http://help.eclipse.org/kepler/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fswt%2Fgraphics%2FFont.html) class to handle: bold, italic and family.
+
+Be careful of properly handling default style (the stylesheet provides default attributes for styles skipping some of them).
+
+## Editor, Source viewer configuration or document package?
+
+Move some services from the editor to the source viewer configuration class or the document package.
+
+## Editor configuration at initialization
+
+Fix the mode resolution in the source viewer configuration (refer to the class itself for more information).
+
+## Other services
+
+__Implement other services.__
+
+There are two parts in implementing a service:
+
+* communicating with the backend to get required data for the service
+* using this data and apply specific processings with it on the clinet to _complete_ the service
+
+Services to be set up:
+
+1. Folding
+1. Formatting
+1. Content assist
 
 ## Performances
 
 ### Highlighting
 
 1. Cache styles
-1. Pre-process entirely the stylesheet
-1. Change the tokenizing format (backend) to accept shorter token style specification (with color names for instance)
+1. Pre-process entirely the stylesheet: it changes rarely (if it's not never) so it won't have to be done too often
 
 ## Documentation
 
-1. Complete the documentation the work that has been done for folding
-	* review what has been written already
-	* put the references of the resources I used ([I](https://github.com/ymeine) mainly copied and arranged code from a tutorial)
+### Folding
+
+__Complete the documentation the work that has been done for folding.__
+
+* review what has been written already
+* [ymeine](https://github.com/ymeine): put the references of the resources I used (I mainly copied and arranged code from a tutorial)

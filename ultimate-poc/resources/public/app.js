@@ -208,7 +208,7 @@ window.poc = {
 
 		// $("#total-nodes").text(ast.flatten().length);
 		// $("#total-leaves").text(ast.leaves().length);
-		$("#total-nodes").text(viewData.nodes.length);
+		$("#total-nodes").text(viewData.nodes);
 		$("#total-leaves").text(viewData.leaves);
 
 		var container = "graph-display";

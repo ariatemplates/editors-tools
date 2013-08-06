@@ -16,7 +16,7 @@ module.exports = [
 	'ping',
 	'info',
 
-	// GUID identification pairs
+	// GUID identification pair
 	{
 		url: '/80d007698d534c3d9355667f462af2b0',
 		log: {

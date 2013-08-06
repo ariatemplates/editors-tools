@@ -4,19 +4,19 @@ The application is based on a generic server library, using JSON-RPC communicati
 
 # File system layout
 
-* `README.md`: this current file
-* `.gitignore`: Git related file
+* [`README.md`](./README.md): this current file
+* [`.gitignore`](./.gitignore): Git related file
 
 Application:
 
-* `index.js`: the main application file
-* `node_modules`: the modules constituting the application
+* [`index.js`](./index.js): the main application file
+* [`node_modules`](node_modules): the modules constituting the application
 
 Server related:
 
-* `routes.js`: the list of routes to pass to the server
-* `options.js`: the options to pass to the server
-* `logger.js`: defines a unique logger to be used throughout the whole application
+* [`routes.js`](./routes.js): the list of routes to pass to the server
+* [`options.js`](./options.js): the options to pass to the server
+* [`logger.js`](./logger.js): defines a unique logger to be used throughout the whole application
 * `log.log`: the logs of the application
 
 # Versioning
@@ -33,27 +33,27 @@ To version: _everything else_.
 
 The application is implemented as a generic server providing services under JSON-RPC requests.
 
-It uses the `server` module for that, please refer to its documentation.
+It uses the `server` module for that, please refer to [its documentation](ultimate-poc/resources/app/node_modules/std/server/README.md).
 
-The services it provides are all stored in the `modes` module, which contains modules for source code edition: once again, please refer to its documentation.
+The services it provides are all stored in the [`modes`](ultimate-poc/resources/app/node_modules/modes) module, which contains modules for source code edition: once again, please refer to its documentation.
 
 ## Routes
 
-The concept of routes is common in server-side technologies, and for more information about the implementation in this project, please refer to the `server` module.
+The concept of routes is common in server-side technologies, and for more information about the implementation in this project, please refer to the [`server`](ultimate-poc/resources/app/node_modules/std/server/README.md) module.
 
-Know that you can define the list of routes that the server will setup in the _routes_ module file.
+Know that you can define the list of routes that the server will setup in the [_routes_](./routes.js) module file.
 
 This module must export a collection (array) of route specifications.
 
 ## Options
 
-The options to run the server are defined in the _options_ module file, for convenience. Please refer to the `server` module for more information.
+The options to run the server are defined in the [_options_](./options.js) module file, for convenience. Please refer to the `server` module for more information.
 
 This module must return an object that follows the input format that the server module accepts.
 
 ## Logging
 
-You can setup a unique logger for the whole application in the _logger_ module file.
+You can setup a unique logger for the whole application in the [_logger_](./logger.js) module file.
 
 This module must export an instance of a logger, that is an object which must repect the following interface:
 
@@ -105,9 +105,7 @@ For quick reminder, __as the time of writing__, RPC is made through a POST HTTP 
 
 #### Modules
 
-The modules registered against the RPC manager are all the modes. Please refer to the respective documentation in the `node_modules/modes` subfolder for more information.
-
-In the future we might imagine a single mode manager being created, in which case we register only this module (making the `module` property in the RPC request potentially useless).
+For now there is only on emodule registered against the RPC manager: the editor module. Please refer to the [respective documentation](ultimate-poc/resources/app/node_modules/modes) for more information.
 
 ### Info
 
@@ -133,9 +131,9 @@ For instance (you can complete this list):
 
 ## Use
 
-Launch the _index_ file: `node index`.
+Launch the [_index_](./index.js) file: `node index`.
 
-You can tweak the `options` file, but __take care about versioning issues__ behind.
+You can tweak the [`options`](./options.js) file, but __take care about versioning issues__ behind.
 
 ## Development
 
@@ -145,7 +143,7 @@ Make the server module from the std library official or bring it back here.
 
 ### RPC
 
-* Check how specifying modules work, this uses a relative path, and can be intersting for other purposes
+* Check how specifying modules work, this uses a relative path, and can be interesting for other purposes
 * Be able to specify a module not only by path, but directly with the module itself (in fact I think it's already possible!)
 * Be able to specify multiple names for a module
 * Change the way arguments are passed, accepting a real list of arguments instead of a single object.

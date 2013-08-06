@@ -13,39 +13,39 @@ Thus this is for now concretely applied to specific things:
 
 # Current development state
 
-For now the work is focused on HTML (easy for tests).
+For now the work is focused on HTML (easy for tests). The structure of the language is close to Aria Templates, which is a good thing.
 
-You can launch a backend instance (see procedure below) and interact with how you want.
+You can launch a backend instance (see procedure below) and interact with it the way you want.
 
-You can launch an Eclipse application with a plugin using this backend instance (see procedure below) and use it to edit `.tpl` files: __despite the name only the HTML syntax will be handled inside!__
+You can launch an Eclipse application with a plugin using this backend instance (see [procedure below](#setup)) and use it to edit `.tpl` files: __despite the name of the extension only the HTML syntax will be supported inside!__
 
 # Introduction
 
-Please read the `introduction.md` file if you never did it and don't know what the project is all about.
+Please read the [introduction](./introduction.md) if you never did it and don't know what the project is all about.
 
-Please see the `documentation.md` file __before reading or WRITING any documentation__. This helps understanding the documentation, and is required to maintain it consistent while adding content.
+Please see the [meta-documentation](./documentation.md) __before reading or WRITING any documentation__. This helps understanding the documentation, and is required to maintain it consistent while adding content.
 
 # File system layout
 
 __Some of the files listed below might not appear for now, because they will be either generated or created specifically by you__
 
-* `.gitignore`: Git related file
-* `bin`: folder containing the build, that contains both the Eclipse plugin and the backend for now
+* [`.gitignore`](./gitignore): Git related file
+* `bin`: folder containing the build, which contains both the Eclipse plugin and the backend for now
 
 Documentation:
 
-* `README.md`: this current file
-* `introduction.md`: an introduction to the project
-* `documentation.md`: a documentation about the documentation in this project
+* [`README.md`](./README.md): this current file
+* [`introduction.md`](./introduction.md): an introduction to the project
+* [`documentation.md`](./documentation.md): a documentation about the documentation in this project (meta-documentation)
 
 Backend code:
 
-* `resources`: the sources of the backend
+* [`resources`](./resources): the sources of the backend
 
 Eclipse code:
 
-* `src`: the sources of the Eclipse plugin
-* `build.properties`, `plugin.xml`, `META-INF`: files and folders contributing to the Eclipse plugin definition
+* [`src`](./src): the sources of the Eclipse plugin
+* [`build.properties`](./build.properties), [`plugin.xml`](./plugin.xml), [`META-INF`](./META-INF): files and folders contributing to the Eclipse plugin definition
 * `.project`, `.classpath`, `.settings`: files related to the Eclipse project configuration
 
 # Versioning
@@ -53,10 +53,10 @@ Eclipse code:
 To version:
 
 * Documentation
-* `.gitignore`
-* `build.properties`, `plugin.xml`, `META-INF`
-* `src`
-* `resources`
+* [`.gitignore`](./gitignore)
+* [`build.properties`](./build.properties), [`plugin.xml`](./plugin.xml), [`META-INF`](./META-INF)
+* [`src`](./src)
+* [`resources`](./resources)
 
 What might be versioned (should be reproducible but might differ between environments - so versioning could pollute more than help):
 
@@ -68,22 +68,22 @@ To ignore:
 
 # Documentation
 
-As mentioned, the goal is to implement a generic solution to handle source code edition, whatever the language, whatever the UI used behind (i.e. the tool(s)).
+As mentioned, the goal is to implement a generic solution to handle source code edition, whatever the language, whatever the [UI](http://en.wikipedia.org/wiki/User_interface) used behind (i.e. the tool(s)).
 
 ## Architecture
 
-We call the tools used to actually edit source code: ___frontends___. They provide the (G)UI.
+We call the tools used to actually edit source code: [___frontends___](http://en.wikipedia.org/wiki/Backend). They provide the ([G](http://en.wikipedia.org/wiki/GUI))[UI](http://en.wikipedia.org/wiki/User_interface).
 
-We call the application serving source edition features (processing): the ___backend___.
+We call the application serving source edition features (processing): the [___backend___](http://en.wikipedia.org/wiki/Backend).
 
 A frontend is a client of this backend (then acting as a server application), and they communicate through standard means.
 
 Here is a quick description of the stack:
 
-* __backend__: a Node.js based application, providing services used by editors and IDEs
-* __API__: a classical programming interface for the backend, used by the JSON-RPC (Remote Procedure Call protocol using JSON) layer (which is the end point of the _communication interface_ - see below - for the backend)
+* [__backend__](http://en.wikipedia.org/wiki/Backend): a Node.js based application, providing services used by editors and IDEs
+* [__API__](http://en.wikipedia.org/wiki/API): a classical programming interface for the backend, used by the JSON-RPC (Remote Procedure Call protocol using JSON) layer (which is the end point of the _communication interface_ - see below - for the backend)
 * __communication interface__: [JSON](http://en.wikipedia.org/wiki/JSON)-[RPC](http://en.wikipedia.org/wiki/Remote_procedure_call) through [HTTP](http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) (default listening port: 3000)
-* __frontend__: any IDE or Editor with extension capability, using the backend through the communication interface
+* [__frontend__](http://en.wikipedia.org/wiki/Backend): any [IDE](http://en.wikipedia.org/wiki/Integrated_development_environment) or [editor](http://en.wikipedia.org/wiki/Source_code_editor) with extension capability, using the backend through the communication interface
 
 This project aims at providing everything __except__ the last part: indeed, a frontend is a consumer of the project.
 
@@ -98,6 +98,8 @@ I would first give an advice to apply everywhere: __READ CAREFULLY THE DOCS__.
 
 ## Environment
 
+To be able to develop the project or even use the product you need to:
+
 * Install [Node.js](http://nodejs.org/download/) - tested with latest version ([0.10.12](http://nodejs.org/dist/v0.10.12/node.exe) at the time of writing)
 	* the `node` binary must in in the `PATH` environment variable
 * Install Eclipse IDE - tested with latest version (Kepler at the time of writing)
@@ -109,15 +111,15 @@ Tested on Microsoft Windows 7 Enterprise 64-bit SP1.
 
 ## Setup
 
-After cloning the repository, you will have to do some setup.
+After cloning the [repository](/.), you will have to do some setup.
 
 There are two items to setup: the backend and the Eclipse project.
 
 ### Backend
 
-Please follow the instructions written in the `resources` subfolder.
+Please follow the [backend specific directions](resources/README.md#Setup).
 
-Also, after that, build the HTML parser following the setup instructions in `resources\app\node_modules\modes\html\parser` submodule.
+Also, after that, [build the HTML parser](resources/app/node_modules/modes/html/parser/README.md#setup).
 
 ### Eclipse
 
@@ -193,8 +195,9 @@ For the following, default values should be fine:
 * Launch the backend
 	* Make sure the port 3000 is free on your system
 	* Open a terminal emulator executing a system shell
-	* Go to the directory `resources`
+	* Go to the directory [`resources`](./resources)
 	* launch `npm` with argument `start` (command: `npm start`)
+	* (you can check it works if [this](http://localhost:3000/ping) sends `OK`)
 * Launch the Eclipse application
 	* Open the Eclipse project
 	* Launch the project as an Eclipse application
@@ -207,7 +210,9 @@ Then you can start editing files with the `.tpl` extension under a new project.
 
 Please refer to the subfolders of the project for details about corresponding modules specific development: every folder containing a documentation like this contains a section talking about contributions you can make to it.
 
-Sections below discuss about development at whole project scale.
+Sections below discuss about development at the whole project scale.
+
+__Please have a look at the [roadmap](./roadmap.md) too for a prioritization of what has to be done.__ It will link to specific documentations' sections (including some of below ones).
 
 ### Backend packaging
 
@@ -215,25 +220,25 @@ __The Eclipse plugin must be able to embed the code of the backend server and to
 
 For now it's easier for the Eclipse plugin to communicate with an already running backend instance, that is launched externally.
 
-There is still some work to do to enable the plugin launching a backend packaged with it.
+There is still some work to do to enable the plugin to launch a backend packaged with it.
 
-There are two kind of environments to consider:
+There are two kinds of environments to consider:
 
 * __development__: just have a quick and dirty solution to make it work in development mode
 * __production__: make it work in the context of a packaged plugin
 
-__For development__, the sources of the server are available, and are located inside the project. Therefore to launch it (__without hardcoding paths!!__), there is just a need to __resolve the relative paths__ inside the project (i.e. equivalent to programatically find the path of the project).
+__For development__, the sources of the server are available, and are located inside the project. Therefore to launch it ( __without hardcoding paths!!__ ), there is just a need to __resolve the relative paths inside the project__ (i.e. equivalent to programatically find the path of the project).
 
 __For production__, the problem is different.
 
-First, once installed the plugin will reside in the Eclipse installation, among every other bundles. The thing would be - as it is for development - to resolve the path of the plugin (but in this case it's not the context of the project but the one of the Eclipse installation). Have a look at [`FileLocator.find`](http://help.eclipse.org/kepler/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2FFileLocator.html&anchor=find%28org.osgi.framework.Bundle,%20org.eclipse.core.runtime.IPath,%20java.util.Map%29): the `Bundle` required in this method can be taken from the `Activator` class of this project.
+First, once installed, the plugin will reside in the Eclipse installation, among every other bundles. The thing would be - as it is for development - to __resolve the path of the plugin__ (but in this case it's not in the context of the project but the one of the Eclipse installation). Have a look at [`FileLocator.find`](http://help.eclipse.org/kepler/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2FFileLocator.html&anchor=find%28org.osgi.framework.Bundle,%20org.eclipse.core.runtime.IPath,%20java.util.Map%29): the `Bundle` required in this method can be taken from the [`Activator`](src/poc/Activator.java) class of this project.
 
 But then there is a problem due to the fact a plugin is __packaged in an archive by default__. If the Java system works fine with binaries contained in archives, it is not the case of the _externally made_ server. It __relies on a standard file system access__.
 
 For that there are two solutions:
 
 * either finding a solution to execute the server in a virtual file system - personally I don't know how
-* or finding a solution to extract the file of the archive for the server. See this [thread on stackoverflow](http://stackoverflow.com/questions/5622789/how-to-refer-a-file-from-jar-file-in-eclipse-plugin) talking about plugin packaging: an option to avoid archiving would be available in case we wrap the plugin in an Eclipse feature.
+* or finding a solution to extract the files of the archive for the server. See this [thread on stackoverflow](http://stackoverflow.com/questions/5622789/how-to-refer-a-file-from-jar-file-in-eclipse-plugin#answer-5660242) talking about plugin packaging: an option to avoid archiving would be available in case we wrap the plugin in an Eclipse feature.
 
 ### Projects architecture
 
@@ -276,7 +281,7 @@ I ([ymeine](https://github.com/ymeine)) found recently (05 Jul 2013) an [article
 
 ### Documentation
 
-__Review the documentation of the documentation (the meta-documentation), written in `documentation.md` for now.__
+__Review the documentation of the documentation (the meta-documentation), written in [`documentation.md`](./documentation.md) for now.__
 
 #### `Contribute` section
 
@@ -304,7 +309,7 @@ I would put everything in a dedicated section with a meaningful name, followed b
 
 #### `Guidelines`
 
-__ Complete the guidelines section.__
+__Complete the guidelines section.__
 
 #### `Documentation` / `Contribute` order
 
@@ -314,7 +319,7 @@ Seems like the first one is the one mostly used.
 
 #### Wiki
 
-_Determine content with a general purpose trait and consider putting it in a wiki._
+__Determine content with a general purpose trait and consider putting it in a wiki.__
 
 Think about putting documentation files other than `README.md` ones into the wiki. Indeed, they seem to be more general files.
 

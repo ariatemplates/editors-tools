@@ -67,11 +67,11 @@ Now that you know how to communicate with the backend, it's time to know how to 
 
 ## Start
 
-The first step is to start the server, but this is beyond the scope of this article. We consider a server is running on `http://localhost:3000`
+The first step is to start the server, but this is beyond the scope of this article. We consider a server is running on [http://localhost:3000](http://localhost:3000).
 
-However you can check the existence of a server using a ping method: `http://localhost:3000/ping`.
+However you can check the existence of a server using a ping method: [http://localhost:3000/ping](http://localhost:3000/ping).
 
-If you want to be sure however that this is not another server also responding a success status code on this path, you can use the identification pair system: on `http://localhost:3000/80d007698d534c3d9355667f462af2b0` it should send `e531ebf04fad4e17b890c0ac72789956`.
+If you want to be sure however that this is not another server also responding a success status code on this path, you can use the identification pair system: on [http://localhost:3000/80d007698d534c3d9355667f462af2b0](http://localhost:3000/80d007698d534c3d9355667f462af2b0) it should send `e531ebf04fad4e17b890c0ac72789956`.
 
 ## RPC modules
 
