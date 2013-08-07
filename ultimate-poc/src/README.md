@@ -23,7 +23,7 @@ The classpath of the root package is: `poc`.
 
 __The fallback to launch a raw text editor when the backend server could not be launched or reused is way too long.__
 
-Normally a basic timeout implementation is used in `Backend.start()` which should not exceed 1000ms (`Backend.POLLING_TIME_OUT`). Here this is weird because it seems to be like one minute in practice.
+Normally a basic timeout implementation is used in `Backend.start()` which should not exceed 1000 ms (`Backend.POLLING_TIME_OUT`). Here this is weird because it seems to be like one minute in practice.
 
 Debug this to see if time values are properly updated, and try to figure out what's happening.
 

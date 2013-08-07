@@ -53,7 +53,7 @@ For that, the server provides a GUID identification system: on a GET request wit
 
 Concretely: if a HTTP GET Request on port 3000 with the URL path [`80d007698d534c3d9355667f462af2b0`](http://localhost:3000/80d007698d534c3d9355667f462af2b0) receives a response with content `e531ebf04fad4e17b890c0ac72789956`, the server is considered to be a backend.
 
-__REFER TO THE [BACKEND DOCUMENTATION](ultimate-poc/resources/app/README.md#guid-identification) TO BE SURE TO HAVE THE REAL (UP-TO-DATE) VALUES__
+__REFER TO THE [BACKEND DOCUMENTATION](/ultimate-poc/resources/app/README.md#guid-identification) TO BE SURE TO HAVE THE REAL (UP-TO-DATE) VALUES__
 
 ### Launch
 

@@ -20,6 +20,8 @@
 <body>
 <!-- Messages  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+	<!-- Server access -->
+
 	<div class="alert alert-error fade in" id="server-access-error" style="display: none">
 		<button type="button" class="close" data-dismiss="alert">&times; close</button>
 		<span>Oops!</span> Server is not responding...
@@ -33,6 +35,30 @@
 	<div class="alert alert-error fade in" id="server-error" style="display: none">
 		<button type="button" class="close" data-dismiss="alert">&times; close</button>
 		<span>Server error: </span><span id="server-error-message"></span>
+	</div>
+
+	<!-- GUID identification -->
+
+	<div class="alert alert-success fade in" id="server-guid-success" style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times; close</button>
+		<span>Congrats!</span> Server identified properly.
+	</div>
+
+	<div class="alert alert-error fade in" id="server-guid-error" style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times; close</button>
+		<span>Server identification error</span>
+	</div>
+
+	<!-- Shutdown -->
+
+	<div class="alert alert-success fade in" id="server-shutdown-success" style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times; close</button>
+		<span>Congrats!</span> Server shut down properly.
+	</div>
+
+	<div class="alert alert-error fade in" id="server-shutdown-error" style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times; close</button>
+		<span>Error while trying to shut down server!</span> Please do it manually...
 	</div>
 
 <!-- Info  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -110,6 +136,14 @@
 
 				<div class="row">
 					<div class="span12 btn btn-large btn-block btn-default" onclick="poc.ping()">Ping</div>
+				</div>
+
+				<div class="row">
+					<div class="span12 btn btn-large btn-block btn-default" onclick="poc.guid()">Identify</div>
+				</div>
+
+				<div class="row">
+					<div class="span12 btn btn-large btn-block btn-danger" onclick="poc.shutdown()">Shutdown</div>
 				</div>
 
 <!-- Navigation  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

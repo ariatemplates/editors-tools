@@ -29,7 +29,7 @@ Please see the [meta-documentation](./documentation.md) __before reading or WRIT
 
 __Some of the files listed below might not appear for now, because they will be either generated or created specifically by you__
 
-* [`.gitignore`](./gitignore): Git related file
+* [`.gitignore`](./.gitignore): Git related file
 * `bin`: folder containing the build, which contains both the Eclipse plugin and the backend for now
 
 Documentation:
@@ -53,7 +53,7 @@ Eclipse code:
 To version:
 
 * Documentation
-* [`.gitignore`](./gitignore)
+* [`.gitignore`](./.gitignore)
 * [`build.properties`](./build.properties), [`plugin.xml`](./plugin.xml), [`META-INF`](./META-INF)
 * [`src`](./src)
 * [`resources`](./resources)
@@ -111,13 +111,13 @@ Tested on Microsoft Windows 7 Enterprise 64-bit SP1.
 
 ## Setup
 
-After cloning the [repository](/.), you will have to do some setup.
+After cloning the [repository](https://github.com/ymeine/editors-tools.git), you will have to do some setup.
 
 There are two items to setup: the backend and the Eclipse project.
 
 ### Backend
 
-Please follow the [backend specific directions](resources/README.md#Setup).
+Please follow the [backend specific directions](resources/README.md#setup).
 
 Also, after that, [build the HTML parser](resources/app/node_modules/modes/html/parser/README.md#setup).
 

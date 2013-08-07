@@ -4,7 +4,7 @@ Editor view of a document.
 
 * [`README.md`](./README.md): this current file
 * [`POCEditor.java`](./POCEditor.java): a class to implement the editor itself
-* [`POCSourceViewerConfig.java`](./POCSourceViewerConfig.java): a class to configure the editor
+* [`POCSourceViewerConfiguration.java`](./POCSourceViewerConfiguration.java): a class to configure the editor
 * [`POCTokenScanner.java`](./POCTokenScanner.java): a class in charge to return a list of tokens given a portion of source code
 
 # Versioning
@@ -93,17 +93,17 @@ In fact, folding handles for instance use a genric feature of the text editors: 
 
 ## Alignment with the latest backend implementation
 
-__The backend changed a lot, and the plugin needs to use differently.__ See [this](src/poc/README.md#alignment-with-the-latest-backend-implementation) for a recap.
+__The backend changed a lot, and the plugin needs to use differently.__ See [this](/ultimate-poc/src/poc/README.md#alignment-with-the-latest-backend-implementation) for a recap.
 
 Occurences of RPC calls to be adapted:
 
-* [`POCEditor`](POCEditor)`.outline`
-* [`POCEditor`](POCEditor)`.fold`
-* [`POCSourceViewerConfiguration`](POCSourceViewerConfiguration)`()`
-* [`POCTokenScanner`](POCTokenScanner)`.setRange`
-* [`POCTokenScanner`](POCTokenScanner)`.getStylesheet`
+* [`POCEditor`](./POCEditor.java)`.outline`
+* [`POCEditor`](./POCEditor.java)`.fold`
+* [`POCSourceViewerConfiguration`](./POCSourceViewerConfiguration.java)`()`
+* [`POCTokenScanner`](./POCTokenScanner.java)`.setRange`
+* [`POCTokenScanner`](./POCTokenScanner.java)`.getStylesheet`
 
-An additional things is the change of the name of the method used to get tokens in `POCTokenScanner.setRange()`: from `tokenize` to `highlight` (change `POCTokenScanner.TOKENIZE_MEMBER_KEY`). Probably there are also other changes in the format of this method, please refer to the documentation of the backend concerning [highlighting](ultimate-poc/resources/app/node_modules/modes/node_modules/README.md#highlighting).
+An additional things is the change of the name of the method used to get tokens in `POCTokenScanner.setRange()`: from `tokenize` to `highlight` (change `POCTokenScanner.TOKENIZE_MEMBER_KEY`). Probably there are also other changes in the format of this method, please refer to the documentation of the backend concerning [highlighting](/ultimate-poc/resources/app/node_modules/modes/node_modules/README.md#highlighting).
 
 ## Highlighting
 

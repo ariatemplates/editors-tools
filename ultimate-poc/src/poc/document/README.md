@@ -75,7 +75,7 @@ Then, the procedure of initialization changed. Basically this JSON has to be sen
 
 This still returns the same result (a document id wrapped in an object - `{guid: ...}`)
 
-__You should use the suggested method `Backend.editor()`__ ([see](ultimate-poc/src/poc/README.md#alignment-with-the-latest-backend-implementation))
+__You should use the suggested method `Backend.editor()`__ ([see](/ultimate-poc/src/poc/README.md#alignment-with-the-latest-backend-implementation))
 
 For now, the code would be changed to:
 
@@ -112,7 +112,7 @@ For the content, the easiest solution would be to send the whole document conten
 
 The best solution is to send a diff. A diff represents only the difference between the last document state and the new document state. This can express things like: something has been inserted, or replaced, or removed, or moved, ...
 
-To know how to use a diff and to actually update a document, please refer to the [corresponding section](resources/app/node_modules/modes/node_modules/README.md#update) in the backend documentation.
+To know how to use a diff and to actually update a document, please refer to the [corresponding section](/ultimate-poc/resources/app/node_modules/modes/node_modules/README.md#update) in the backend documentation.
 
 ### Frequency/timing
 

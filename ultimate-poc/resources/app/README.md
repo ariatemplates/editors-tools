@@ -33,13 +33,13 @@ To version: _everything else_.
 
 The application is implemented as a generic server providing services under JSON-RPC requests.
 
-It uses the `server` module for that, please refer to [its documentation](ultimate-poc/resources/app/node_modules/std/server/README.md).
+It uses the `server` module for that, please refer to [its documentation](/ultimate-poc/resources/app/node_modules/std/server/README.md).
 
-The services it provides are all stored in the [`modes`](ultimate-poc/resources/app/node_modules/modes) module, which contains modules for source code edition: once again, please refer to its documentation.
+The services it provides are all stored in the [`modes`](/ultimate-poc/resources/app/node_modules/modes) module, which contains modules for source code edition: once again, please refer to its documentation.
 
 ## Routes
 
-The concept of routes is common in server-side technologies, and for more information about the implementation in this project, please refer to the [`server`](ultimate-poc/resources/app/node_modules/std/server/README.md) module.
+The concept of routes is common in server-side technologies, and for more information about the implementation in this project, please refer to the [`server`](/ultimate-poc/resources/app/node_modules/std/server/README.md) module.
 
 Know that you can define the list of routes that the server will setup in the [_routes_](./routes.js) module file.
 
@@ -105,7 +105,7 @@ For quick reminder, __as the time of writing__, RPC is made through a POST HTTP 
 
 #### Modules
 
-For now there is only on emodule registered against the RPC manager: the editor module. Please refer to the [respective documentation](ultimate-poc/resources/app/node_modules/modes) for more information.
+For now there is only on emodule registered against the RPC manager: the editor module. Please refer to the [respective documentation](/ultimate-poc/resources/app/node_modules/modes) for more information.
 
 ### Info
 

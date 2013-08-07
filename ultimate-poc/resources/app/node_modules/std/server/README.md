@@ -4,26 +4,26 @@ __DISCLAIMER__: the JSON-RPC library does not comply to the real specifications,
 
 # File system layout
 
-* [`README.md`](./README.md)`: this current file
-* [`index.ls`](./index.ls)`: exports a convenient function to create and run a server
+* [`README.md`](./README.md): this current file
+* [`index.js`](./index.js): exports a convenient function to create and run a server
 
 ## Modules
 
 These files return classes (see below):
 
-* [`route.ls`](./route.ls)`: `Route`
-* [`rpc.ls`](./rpc.ls)`: `RPC`
-* [`server.ls`](./server.ls)`: `Server`
+* [`route.ls`](./route.ls): `Route`
+* [`rpc.ls`](./rpc.ls): `RPC`
+* [`server.ls`](./server.ls): `Server`
+* [`route.js.ls`](./route.js.ls): a beginning of conversion of `route` from LiveScript to JavaScript
+* [`rpc.js.ls`](./rpc.js.ls): a beginning of conversion of `rpc` from LiveScript to JavaScript
 
 ## Utilities
 
-___NEEDS REFACTORING___
-
 These files return functions:
 
-* [`helpers.ls`](./helpers.ls)`: various
-* [`http.ls`](./http.ls)`: HTTP
-* [`network.ls`](./network.ls)`: network
+* [`helpers.ls`](./helpers.ls): various
+* [`http.js`](./http.js): HTTP
+* [`network.js`](./network.js): network
 
 # Versioning
 

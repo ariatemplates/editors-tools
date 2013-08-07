@@ -2,8 +2,8 @@ Handles global data for the whole plugin.
 
 # File system layout
 
-* [`README.md`(./README.md): this current file
-* [`POCWorkbenchPreferencePage.java`(./POCWorkbenchPreferencePage.java): the view handling the plugin preferences page (integrated to the preferences system of Eclipse RCP)
+* [`README.md`](./README.md): this current file
+* [`POCWorkbenchPreferencePage.java`](./POCWorkbenchPreferencePage.java): the view handling the plugin preferences page (integrated to the preferences system of Eclipse RCP)
 
 # Versioning
 

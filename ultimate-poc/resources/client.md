@@ -19,33 +19,33 @@ To be able to use a server, a few information is needed:
 
 ## Network address
 
-__For now__, the backend is served on __localhost__, and listening to connections on port __3000__.
+__For now__, the backend is served on [__localhost__](http://localhost), and listening to connections on port [__3000__](http://localhost:3000).
 
 ## Protocol
 
-It uses the __HTTP__ protocol.
+It uses the [__HTTP__](http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) protocol.
 
-On top of it is implemented a __RPC__ protocol, using __JSON__.
+On top of it is implemented a [__RPC__](http://en.wikipedia.org/wiki/Remote_procedure_call) protocol, using [__JSON__](http://en.wikipedia.org/wiki/JSON).
 
-However, there are other small services available through pure HTTP, please refer to the main documentation for more details on available _routes_.
+However, there are other small services available through pure [__HTTP__](http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol), please refer to the main documentation for more details on available _routes_.
 
 ### RPC
 
-RPC stands for _Remote Procedure Call_, and JSON is the famous _JavaScript Object Notation_ format used for serialization.
+[RPC](http://en.wikipedia.org/wiki/Remote_procedure_call) stands for _Remote Procedure Call_, and JSON is the famous _JavaScript Object Notation_ format used for serialization.
 
-RPC requests go through the route `/rpc` and use the POST HTTP method.
+[RPC](http://en.wikipedia.org/wiki/Remote_procedure_call) requests go through the route `/rpc` and use the POST HTTP method.
 
-RPC is used to expose the API of a system, in a standard way (system agnostic). Like this, as long as there is a way to communicate the RPC request, the API of any system is accessible for any other system, provided that both systems implement the protocol.
+[RPC](http://en.wikipedia.org/wiki/Remote_procedure_call) is used to expose the API of a system, in a standard way (system agnostic). Like this, as long as there is a way to communicate the [RPC](http://en.wikipedia.org/wiki/Remote_procedure_call) request, the API of any system is accessible for any other system, provided that both systems implement the protocol.
 
-JSON is just the way to transport the information used for RPC.
+JSON is just the way to transport the information used for [RPC](http://en.wikipedia.org/wiki/Remote_procedure_call).
 
-As RPC is used to access an API, here are the information to be provided for a RPC request:
+As [RPC](http://en.wikipedia.org/wiki/Remote_procedure_call) is used to access an API, here are the information to be provided for a [RPC](http://en.wikipedia.org/wiki/Remote_procedure_call) request:
 
 * `module`: the name of the module containing the property to access or method to call. Available modules are discussed below.
 * `method`: the name of the property to access or method to call inside the previous module
 * `argument`: __a single object__ used to pass arguments
 
-Example of a RPC request:
+Example of a [RPC](http://en.wikipedia.org/wiki/Remote_procedure_call) request:
 
 ```http
 POST /rpc HTTP/1.1
@@ -75,7 +75,7 @@ If you want to be sure however that this is not another server also responding a
 
 ## RPC modules
 
-For now the only available module is `editor`. So all your RPC request should use the following base JSON:
+For now the only available module is `editor`. So all your [RPC](http://en.wikipedia.org/wiki/Remote_procedure_call) request should use the following base JSON:
 
 ```json
 {

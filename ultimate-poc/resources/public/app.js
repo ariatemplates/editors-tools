@@ -9,6 +9,22 @@ var Backend = {
 		});
 	},
 
+	guid: function guid() {
+		return $.ajax({
+			url: "80d007698d534c3d9355667f462af2b0",
+			async: false,
+			type: "GET"
+		});
+	},
+
+	shutdown: function shutdown() {
+		return $.ajax({
+			url: "shutdown",
+			async: false,
+			type: "GET"
+		});
+	},
+
 	rpc: function rpc(module, method, argument) {
 		var response = $.ajax({
 			url: "rpc",
@@ -182,6 +198,30 @@ window.poc = {
 			$("#server-access-error").css("display", "");
 		} else {
 			$("#server-success").css("display", "");
+		}
+	},
+
+	guid: function() {
+		var res = Backend.guid();
+
+		if (res.status != 200) {
+			$("#server-access-error").css("display", "");
+		} else {
+			if (res.responseText == "e531ebf04fad4e17b890c0ac72789956") {
+				$("#server-guid-success").css("display", "");
+			} else {
+				$("#server-guid-error").css("display", "");
+			}
+		}
+	},
+
+	shutdown: function() {
+		var res = Backend.shutdown();
+
+		if (res.status != 200) {
+			$("#server-shutdown-error").css("display", "");
+		} else {
+			$("#server-shutdown-success").css("display", "");
 		}
 	},
 

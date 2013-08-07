@@ -8,7 +8,7 @@ The file system layout can be surprising, but comes from the way the module syst
 * [`client.md`](./client.md): a recap documentation explaining how clients can use the backend
 * [`.gitignore`](./.gitignore): Git related file
 * [`package.json`](./package.json): npm `package.json`
-* [`node_modules`](./node_modules): all third-party libraries used by the application.
+* `node_modules`: all third-party libraries used by the application.
 
 ## [`app`](./app)
 
@@ -24,7 +24,7 @@ A _pseudo-standard_ module is a module that is not installed through the package
 
 To ignore:
 
-* [`node_modules`](./node_modules): can be installed from the [`package.json`](./package.json) data with the use of npm
+* `node_modules`: can be installed from the [`package.json`](./package.json) data with the use of npm
 
 To version: _everything else_.
 

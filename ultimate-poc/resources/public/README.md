@@ -4,8 +4,8 @@ This can gather different things, either for _administration_, or even for devel
 
 # File system layout
 
-* `README.md`: this current file
-* `index.html`: the entry point of the application
+* [`README.md`](./README.md): this current file
+* [`index.html`](./index.html): the entry point of the application
 
 # Versioning
 

@@ -33,7 +33,7 @@ __Consistency in naming.__
 
 Rename the files for more conciseness and proper naming.
 
-Like [`POCOutline`](./POCOutline.java) to `Outline` and `POCOutlineLabelProvider` to `LabelProvider`.
+Like [`POCOutline`](./POCOutline.java) to `Outline` and [`POCOutlineLabelProvider`](./POCOutlineLabelProvider.java) to `LabelProvider`.
 
 Moreover this won't be a PoC anymore in the future, so this makes even more sense.
 
