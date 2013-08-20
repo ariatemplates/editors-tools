@@ -29,7 +29,7 @@ var findAvailablePort = oop.methodFactory({
 		properties: [
 			{names: ['hostname', 'host', 'ip'], type: oop.types.String, default: 'localhost'},
 			{names: ['ports'], mixed: true, type: PortsSpec},
-			{names: ['cb', 'fn'], type: oop.types.Function},
+			{names: ['cb', 'fn'], type: oop.types.Function, required: true},
 			{
 				names: ['errorcb'], type: oop.types.Function,
 				default: function() {
@@ -43,13 +43,6 @@ var findAvailablePort = oop.methodFactory({
 	},
 
 	exec: function(spec) {
-		if (spec.cb == null) {
-			throw {
-				msg: 'Missing argument',
-				names: ['cb', 'fn']
-			};
-		}
-
 		portscanner.checkPortStatus(spec.ports.prefered, spec.hostname, function(error, status) {
 			if (status === 'closed') {
 				spec.cb(spec.ports.prefered);

@@ -49,6 +49,10 @@ Install the node modules, by launching the program with the following properties
 
 In more simple words: launch from this directory the command `npm install`.
 
+## Try
+
+Just execute the command: `npm start` from this directory.
+
 ## Development
 
 ### Package definition

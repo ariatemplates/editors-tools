@@ -105,7 +105,7 @@ For quick reminder, __as the time of writing__, RPC is made through a POST HTTP 
 
 #### Modules
 
-For now there is only on emodule registered against the RPC manager: the editor module. Please refer to the [respective documentation](/ultimate-poc/resources/app/node_modules/modes) for more information.
+For now there is only one module registered against the RPC manager: the editor module. Please refer to the [respective documentation](/ultimate-poc/resources/app/node_modules/modes) for more information.
 
 ### Info
 

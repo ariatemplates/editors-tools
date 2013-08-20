@@ -54,6 +54,7 @@
 		"portscanner": "*",
 		"winston": "*",
 		"pegjs": "git+https://github.com/dmajda/pegjs",
+		"escape-html": "*",
 		"esprima": "*",
 		"js-beautify": "*",
 		"jshint": "*",

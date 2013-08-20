@@ -37,6 +37,7 @@ Documentation:
 * [`README.md`](./README.md): this current file
 * [`introduction.md`](./introduction.md): an introduction to the project
 * [`documentation.md`](./documentation.md): a documentation about the documentation in this project (meta-documentation)
+* [`roadmap.md`](./roadmap.md): a roadmap for the project
 
 Backend code:
 
@@ -50,14 +51,6 @@ Eclipse code:
 
 # Versioning
 
-To version:
-
-* Documentation
-* [`.gitignore`](./.gitignore)
-* [`build.properties`](./build.properties), [`plugin.xml`](./plugin.xml), [`META-INF`](./META-INF)
-* [`src`](./src)
-* [`resources`](./resources)
-
 What might be versioned (should be reproducible but might differ between environments - so versioning could pollute more than help):
 
 * `.project`, `.classpath`, `.settings`
@@ -65,6 +58,8 @@ What might be versioned (should be reproducible but might differ between environ
 To ignore:
 
 * `bin`: generated content (from the sources)
+
+To version: _everything else_.
 
 # Documentation
 
@@ -239,6 +234,8 @@ For that there are two solutions:
 
 * either finding a solution to execute the server in a virtual file system - personally I don't know how
 * or finding a solution to extract the files of the archive for the server. See this [thread on stackoverflow](http://stackoverflow.com/questions/5622789/how-to-refer-a-file-from-jar-file-in-eclipse-plugin#answer-5660242) talking about plugin packaging: an option to avoid archiving would be available in case we wrap the plugin in an Eclipse feature.
+
+NB: to bring files from the backend project into the Eclipse Plugin project without versioning issues, [Git Submodules](http://git-scm.com/book/en/Git-Tools-Submodules) can be used
 
 ### Projects architecture
 
