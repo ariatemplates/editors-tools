@@ -1,5 +1,6 @@
 var portscanner = require('portscanner');
-var oop = require('oop');
+
+var oop = require('std/oop');
 
 
 
@@ -30,8 +31,7 @@ var findAvailablePort = oop.methodFactory({
 			{names: ['hostname', 'host', 'ip'], type: oop.types.String, default: 'localhost'},
 			{names: ['ports'], mixed: true, type: PortsSpec},
 			{names: ['cb', 'fn'], type: oop.types.Function, required: true},
-			{
-				names: ['errorcb'], type: oop.types.Function,
+			{names: ['errorcb'], type: oop.types.Function,
 				default: function() {
 					return function() {
 						console.log('No port found, exiting application...');

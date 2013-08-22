@@ -1,5 +1,5 @@
 require! {
-	oop
+	'std/oop'
 
 	'./http'
 }

@@ -3,8 +3,8 @@ require! {
 	prelude: 'prelude-ls'
 	lodash
 
-	dop
-	oop
+	'std/dop'
+	'std/oop'
 }
 
 

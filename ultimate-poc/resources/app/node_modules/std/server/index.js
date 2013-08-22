@@ -1,4 +1,7 @@
+require('LiveScript');
+
 var zappa = require('zappajs');
+
 var Server = require('./server').Server;
 
 
