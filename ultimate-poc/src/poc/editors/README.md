@@ -93,7 +93,7 @@ In fact, folding handles for instance use a genric feature of the text editors: 
 
 ## Alignment with the latest backend implementation
 
-__The backend changed a lot, and the plugin needs to use differently.__ See [this](/ultimate-poc/src/poc/README.md#alignment-with-the-latest-backend-implementation) for a recap.
+__The backend changed a lot, and the plugin needs to use differently.__ See [this](/ultimate-poc/src/poc#alignment-with-the-latest-backend-implementation) for a recap.
 
 Occurences of RPC calls to be adapted:
 
@@ -103,7 +103,7 @@ Occurences of RPC calls to be adapted:
 * [`POCTokenScanner`](./POCTokenScanner.java)`.setRange`
 * [`POCTokenScanner`](./POCTokenScanner.java)`.getStylesheet`
 
-An additional things is the change of the name of the method used to get tokens in `POCTokenScanner.setRange()`: from `tokenize` to `highlight` (change `POCTokenScanner.TOKENIZE_MEMBER_KEY`). Probably there are also other changes in the format of this method, please refer to the documentation of the backend concerning [highlighting](/ultimate-poc/resources/app/node_modules/modes/node_modules/README.md#highlighting).
+An additional things is the change of the name of the method used to get tokens in `POCTokenScanner.setRange()`: from `tokenize` to `highlight` (change `POCTokenScanner.TOKENIZE_MEMBER_KEY`). Probably there are also other changes in the format of this method, please refer to the documentation of the backend concerning [highlighting](/ultimate-poc/resources/app/node_modules/modes/node_modules#highlighting).
 
 ## Highlighting
 

@@ -8,11 +8,66 @@ define([
 	Graphs
 ) {
 
-var initialSource = '<html></html>';
+
+
+
+function objectToJqTree(obj, key) {
+	var label = key;
+
+	var children = [];
+
+	if (typeof obj === 'object') {
+		for (var property in obj) {
+			children.push(objectToJqTree(obj[property], property));
+		}
+	} else if (typeof obj == 'array') {
+		for (var i = 0, length = obj.length; i < length; i++) {
+			children.push(objectToJqTree(obj[i], i));
+		}
+	} else {
+		label = '"' + key + '": ' + JSON.stringify(obj);
+
+		// alternative implementation
+		// children.push({
+		// 	label: JSON.stringify(obj),
+		// 	children: []
+		// })
+	}
+
+	// jqTree requires a list of nodes to be given instead of a root (logical)
+	// Here the choice has been made to give the list of children directly, since there is no key hence no label anyway
+
+	if (key == null) {
+		return children;
+	}
+
+	// normal case
+
+	return {
+		label: label,
+		children: children
+	}
+}
+
+function createJqTree(id, data) {
+	$('#' + id).tree({
+		data: data,
+		// autoOpen: true,
+		// dragAndDrop: true,
+		slide: false,
+		// openedIcon: '-',
+		// closedIcon: '+',
+		useContextMenu: false
+	});
+}
 
 function JSONToHTML(json) {
 	return hljs.highlight('json', JSON.stringify(json, null, 4)).value;
 }
+
+
+
+var initialSource = '<html></html>';
 
 serverAccessErrorAlert = {
 	type: 'danger',
@@ -20,7 +75,12 @@ serverAccessErrorAlert = {
 	text: 'Oops! Server is not responding...'
 }
 
+
+
 var poc = {
+
+// Server control --------------------------------------------------------------
+
 	ping: function() {
 		var res = Backend.ping();
 
@@ -75,12 +135,14 @@ var poc = {
 		}
 	},
 
-// Parsing & tree display ------------------------------------------------------
+// Code edition services -------------------------------------------------------
+
+	introspection: {},
 
 	source: initialSource,
 
 	init: function() {
-		poc.doc = Backend.init('html', poc.source);
+		poc.doc = Backend.init('html');
 
 		GUI.alert({
 			type: 'info',
@@ -89,6 +151,9 @@ var poc = {
 		});
 
 		this.clear();
+
+		var css = Backend.service(poc.doc, "css");
+		$('#highlight-stylesheet').html(css);
 	},
 
 	update: function() {
@@ -98,6 +163,7 @@ var poc = {
 		this.parse();
 		this.highlight();
 		this.fold();
+		this.outline();
 	},
 
 	clear: function() {
@@ -116,10 +182,11 @@ var poc = {
 
 		// Output --------------------------------------------------------------
 
-		window.ast = ast;
-		window.viewData = viewData;
+		poc.introspection.ast = ast;
+		poc.introspection.graph = viewData;
 
-		$("#ast-content").html(JSONToHTML(ast));
+		createJqTree('ast-content', objectToJqTree(ast));
+		$("#ast-data-content").html(JSONToHTML(ast));
 
 		$("#total-nodes").text(viewData.nodes);
 		$("#total-leaves").text(viewData.leaves);
@@ -157,22 +224,73 @@ var poc = {
 
 	highlight: function() {
 		var ranges = Backend.service(poc.doc, "highlight");
-		console.log(ranges);
+		poc.introspection.highlight = ranges;
 
 		var html = Backend.service(poc.doc, "html");
-		var css = Backend.service(poc.doc, "css");
 
-		$('#highlight-stylesheet').html(css);
 		$('#highlight-content').html(html);
-
 		$('#highlighting-data-content').html(JSONToHTML(ranges));
 	},
 
 	fold: function() {
 		var ranges = Backend.service(poc.doc, "fold");
+		poc.introspection.fold = ranges;
 
 		$('#folding-data-content').html(JSONToHTML(ranges));
+	},
+
+	outline: function() {
+		var data = Backend.service(poc.doc, "outline", {type: "full"});
+		poc.introspection.outline = data;
+
+		createJqTree('outline-content', data.tree);
+		$('#outline-data-content').html(JSONToHTML(data));
+	},
+
+// Live preview ----------------------------------------------------------------
+
+	preview: function(evt) {
+		// Update --------------------------------------------------------------
+
+		var delta = evt.data;
+
+		var action = delta.action;
+		var range = delta.range;
+
+		var editorDocument = this.editor.getSession().getDocument();
+
+		var start;
+		var end;
+		var text;
+
+		// ERROR! Position to index will give results for update dtext already!!!
+		// When removing text it's annoying, and it doesn't work for 'del'
+
+		start = editorDocument.positionToIndex(range.start);
+		if (action === 'insertText') {
+			text = delta.text;
+		} else if (action === 'removeText') {
+			text = '';
+			end = start + delta.text.length;
+		} else if (action === 'insertLines') {
+			text = delta.lines.join('\n') + '\n';
+		}
+
+		Backend.service(poc.doc, "update", {source: text, start: start, end: end});
+
+		// this.update();
+
+		// Highlight -----------------------------------------------------------
+
+		var ranges = Backend.service(poc.doc, "highlight");
+
+		poc.introspection.highlight = ranges;
+
+		var html = Backend.service(poc.doc, "html");
+
+		$('#preview-content').html(html);
 	}
+
 };
 
 window.poc = poc;

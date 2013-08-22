@@ -8,7 +8,6 @@ This can gather different things, either for _administration_, or even for devel
 * [`index.html`](./index.html): the entry point of the application
 * `lib`: folder for manually installed 3rd party libraries
 * `bower_components`: folder for 3rd party libraries installed through [Bower](http://bower.io/)
-*
 
 # Versioning
 
@@ -53,9 +52,9 @@ See [here](#3rd-party-libraries) for downloads.
 
 ## Try
 
-Just go to the [root of the backend project](ultimate-poc/resources/README.md#try) and follow the intructions to launch the backend.
+Just go to the root of the backend project and follow the [instructions to launch the backend](/ultimate-poc/resources#try).
 
-The application is served on two [routes](ultimate-poc/resources/app/routes.js):
+The application is served on two [routes](/ultimate-poc/resources/app/routes.js):
 
 * `/` (no path)
 * `/app`
@@ -72,24 +71,11 @@ The application is served on two [routes](ultimate-poc/resources/app/routes.js):
 
 ### JIT
 
-Implement a graph display using JavaScript InfoVis Toolkit
-
-### Modularity
-
-Use Require.js.
-
-Modules to create:
-
-* RPC: a module to send RPC requests to the server
-* Graph builders: a module able to build graph displays for several libraries, with a common input model
-
-### Layout
-
-Find how to
+__Implement a graph display using JavaScript InfoVis Toolkit.__
 
 ### Cytoscape
 
-Improve the use of the Cytoscape library.
+__Improve the use of the Cytoscape library.__
 
 * Adapt width of nodes to its content
 * Add scrolling features, more convenient than moving (by selecting all or pressing an edge) and playing with zoom
@@ -102,9 +88,3 @@ Maybe find an alternative.
 What is missing now:
 
 * easy layout management
-
-# References
-
-* [Cytoscape](http://cytoscape.github.io/cytoscape.js/)
-* [JIT](http://philogb.github.io/jit/)
-* [Bootstrap](http://twitter.github.io/bootstrap)

@@ -13,6 +13,9 @@
 	<!-- <link rel="stylesheet" href="highlight.js/styles/github.css" /> -->
 	<link rel="stylesheet" href="highlight.js/styles/solarized_light.css" />
 
+	<link rel="stylesheet" href="jquery/plugins/jqTree/jqTree.css" />
+
+
 <!-- Application - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 	<link rel="stylesheet" type="text/css" media="screen" href="main.css" />
@@ -29,35 +32,40 @@
 
 	<div id="app-section" class="container">
 		<div class="row">
-			<div id="sidebar-section" class="col-lg-2"></div>
+			<div id="sidebar-section" class="container col-lg-1"></div>
 
-			<div class="container col-lg-10">
+			<div id="main-section" class="container col-lg-7">
 				<div class="row col-lg-12">
 					<ul class="nav nav-pills">
-						<li class="disabled"><a href="#editor-tab">Editor (coming)</a></li>
-						<li class="active"><a href="#highlighted-tab" data-toggle="pill">Highlighted</a></li>
+						<li class="active"><a href="#editor-tab" data-toggle="pill">Editor</a></li>
+						<li><a href="#highlighted-tab" data-toggle="pill">Highlighted</a></li>
+						<li><a href="#outline-tab" data-toggle="pill">Outline</a></li>
+						<li><a href="#ast-tab" data-toggle="pill">AST</a></li>
 						<li><a href="#graph-tab" data-toggle="pill">Graph</a></li>
 						<li><a href="#highlighting-data-tab" data-toggle="pill">Highlighting (data)</a></li>
 						<li><a href="#folding-data-tab" data-toggle="pill">Folding (data)</a></li>
-						<li><a href="#ast-tab" data-toggle="pill">AST (data)</a></li>
+						<li><a href="#ast-data-tab" data-toggle="pill">AST (data)</a></li>
+						<li><a href="#outline-data-tab" data-toggle="pill">Outline (data)</a></li>
 					</ul>
 				</div>
 
 				<div class="row col-lg-12">
 					<div class="tab-content">
-						<div id="highlighted-tab" class="tab-pane active fade">
+						<div id="editor-tab" class="tab-pane active in fade">
+							<div id="editor"></div>
+						</div>
+
+						<div id="highlighted-tab" class="tab-pane fade">
 							<div id="highlight-content"></div>
 						</div>
 
-						<div id="highlighting-data-tab" class="tab-pane fade">
-							<pre><code id="highlighting-data-content"></code></pre>
+						<div id="outline-tab" class="tab-pane fade">
+							<div id="outline-content"></div>
 						</div>
 
-						<div id="folding-data-tab" class="tab-pane fade">
-							<pre><code id="folding-data-content"></code></pre>
+						<div id="ast-tab" class="tab-pane fade">
+							<div id="ast-content"></div>
 						</div>
-
-
 
 						<div id="graph-tab" class="tab-pane fade">
 							<div class="row" style="height: 500px;">
@@ -75,54 +83,37 @@
 							<div id="breadcrumb-section" class="row"></div>
 						</div>
 
-						<div id="ast-tab" class="tab-pane fade">
-							<pre><code id="ast-content"></code></pre>
+
+
+
+						<div id="highlighting-data-tab" class="tab-pane fade">
+							<pre><code id="highlighting-data-content"></code></pre>
+						</div>
+
+						<div id="folding-data-tab" class="tab-pane fade">
+							<pre><code id="folding-data-content"></code></pre>
+						</div>
+
+						<div id="ast-data-tab" class="tab-pane fade">
+							<pre><code id="ast-data-content"></code></pre>
+						</div>
+
+						<div id="outline-data-tab" class="tab-pane fade">
+							<pre><code id="outline-data-content"></code></pre>
 						</div>
 					</div>
 				</div>
 			</div>
 
+			<div id="preview-section" class="container col-lg-4">
+				<h1>Live preview</h1>
+				<div id="preview-content">Here is the highlighting preview content</div>
+			</div>
 
 		</div>
 	</div>
 
 <!-- Dialogs - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-	<div id="edit" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class='modal-title'>Editor</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				</div>
-				<div class="modal-body">
-					<div id="editor" style="width:100%"></div>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="poc.update()">Done</button>
-					<!-- <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Cancel</button> -->
-				</div>
-			</div>
-		</div>
-	</div>
 
 	<div id="help" class="modal fade">
 		<div class="modal-dialog">
@@ -161,6 +152,8 @@
 
 	<script src="ace/ace.js"></script>
 	<!-- <script src="ace/lib/ace/ace.js"></script> -->
+
+	<script src="jquery/plugins/jqTree/tree.jquery.js"></script>
 
 	<script src="highlight.js/highlight.pack.js"></script>
 

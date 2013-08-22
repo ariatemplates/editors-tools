@@ -31,12 +31,6 @@ GUI.addAction({
 });
 
 GUI.addAction({
-	label: 'Edit',
-	type: 'primary',
-	href: 'edit'
-});
-
-GUI.addAction({
 	label: 'Parse',
 	type: 'primary',
 	loading: 'Parsing...',
@@ -48,6 +42,20 @@ GUI.addAction({
 	type: 'primary',
 	loading: 'Highlighting...',
 	onclick: 'poc.highlight()'
+});
+
+GUI.addAction({
+	label: 'Fold',
+	type: 'primary',
+	loading: 'Folding...',
+	onclick: 'poc.fold()'
+});
+
+GUI.addAction({
+	label: 'Update all',
+	type: 'primary',
+	loading: 'Updating...',
+	onclick: 'poc.update()'
 });
 
 GUI.addAction({
@@ -90,20 +98,36 @@ GUI.setNodePath({
 
 // Editor creation -------------------------------------------------------------
 
-var editorElmt = $("#editor");
-var editorParent = editorElmt.parent();
+function createEditor(id) {
+	var editorElmt = $("#" + id);
+	var editorParent = editorElmt.parent();
 
-$("#editor").css({
-	position: "absolute",
-	top: editorParent.css("top"),
-	bottom: editorParent.css("bottom"),
-	left: editorParent.css("left"),
-	right: editorParent.css("right")
-});
+	editorElmt.css({
+		position: "absolute",
+		top: editorParent.css("top"),
+		bottom: editorParent.css("bottom"),
+		left: editorParent.css("left"),
+		right: editorParent.css("right")
+	});
 
-var editor = poc.editor = ace.edit("editor");
-editor.setTheme("ace/theme/monokai");
-editor.getSession().setMode("ace/mode/html");
+	var editor = ace.edit(id);
+	editor.setTheme("ace/theme/monokai");
+	editor.getSession().setMode("ace/mode/html");
+	editor.setHighlightActiveLine(true);
+	editor.setHighlightGutterLine(true);
+	editor.setHighlightSelectedWord(true);
+	editor.setPrintMarginColumn(80);
+	editor.setShowPrintMargin(true);
+	editor.setShowInvisibles(true);
+	editor.setWrapBehavioursEnabled(false);
+
+	return editor;
+}
+
+var editor = poc.editor = createEditor('editor');
+
+editor.on('blur', poc.update.bind(poc));
+editor.on('change', poc.preview.bind(poc));
 
 // Initialization --------------------------------------------------------------
 

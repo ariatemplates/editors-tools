@@ -112,9 +112,9 @@ There are two items to setup: the backend and the Eclipse project.
 
 ### Backend
 
-Please follow the [backend specific directions](resources/README.md#setup).
+Please follow the [backend specific directions](resources#setup).
 
-Also, after that, [build the HTML parser](resources/app/node_modules/modes/html/parser/README.md#setup).
+Also, after that, [build the HTML parser](resources/app/node_modules/modes/html/parser#setup).
 
 ### Eclipse
 
