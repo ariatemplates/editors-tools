@@ -10,6 +10,9 @@
 	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+	<link rel="stylesheet" href="codemirror/theme/solarized.css" />
+	<link rel="stylesheet" href="codemirror/lib/codemirror.css" />
+
 	<!-- <link rel="stylesheet" href="highlight.js/styles/github.css" /> -->
 	<link rel="stylesheet" href="highlight.js/styles/solarized_light.css" />
 
@@ -24,127 +27,83 @@
 </head>
 
 <body>
-	<div id="messages-section"></div>
-	<div id="jumbotron-section"></div>
-	<div id="page-header-section"></div>
-
+	<div id="app-section" class="container">
+		<div id="messages-section"></div>
+		<div id="jumbotron-section"></div>
+		<div id="page-header-section"></div>
 <!-- App - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-	<div id="app-section" class="container">
+		<div class="row btn-toolbar">
+			<div id="sidebar-section" class="col-lg-12 btn-group-vertical btn-group-justified"></div>
+		</div>
+
 		<div class="row">
-			<div id="sidebar-section" class="container col-lg-1"></div>
-
-			<div id="main-section" class="container col-lg-7">
-				<div class="row col-lg-12">
-					<ul class="nav nav-pills">
-						<li class="active"><a href="#editor-tab" data-toggle="pill">Editor</a></li>
-						<li><a href="#highlighted-tab" data-toggle="pill">Highlighted</a></li>
-						<li><a href="#outline-tab" data-toggle="pill">Outline</a></li>
-						<li><a href="#ast-tab" data-toggle="pill">AST</a></li>
-						<li><a href="#graph-tab" data-toggle="pill">Graph</a></li>
-						<li><a href="#highlighting-data-tab" data-toggle="pill">Highlighting (data)</a></li>
-						<li><a href="#folding-data-tab" data-toggle="pill">Folding (data)</a></li>
-						<li><a href="#ast-data-tab" data-toggle="pill">AST (data)</a></li>
-						<li><a href="#outline-data-tab" data-toggle="pill">Outline (data)</a></li>
-					</ul>
-				</div>
-
-				<div class="row col-lg-12">
-					<div class="tab-content">
-						<div id="editor-tab" class="tab-pane active in fade">
-							<div id="editor"></div>
-						</div>
-
-						<div id="highlighted-tab" class="tab-pane fade">
-							<div id="highlight-content"></div>
-						</div>
-
-						<div id="outline-tab" class="tab-pane fade">
-							<div id="outline-content"></div>
-						</div>
-
-						<div id="ast-tab" class="tab-pane fade">
-							<div id="ast-content"></div>
-						</div>
-
-						<div id="graph-tab" class="tab-pane fade">
-							<div class="row" style="height: 500px;">
-								<div id="graph-display" class="col-lg-12" style="height: 100%;"></div>
-							</div>
-
-							<div class="row">
-								<div class="col-lg-12">Nodes: <span id="total-nodes" class="badge badge-info" data-toggle="tooltip" title="Total number of nodes the graph contains" data-placement="top">10</span></div>
-							</div>
-
-							<div class="row">
-								<div class="col-lg-12">Leaves: <span id="total-leaves" class="badge badge-info" data-toggle="tooltip" title="Total number of leaf nodes the graph contains" data-placement="top">5</span></div>
-							</div>
-
-							<div id="breadcrumb-section" class="row"></div>
-						</div>
-
-
-
-
-						<div id="highlighting-data-tab" class="tab-pane fade">
-							<pre><code id="highlighting-data-content"></code></pre>
-						</div>
-
-						<div id="folding-data-tab" class="tab-pane fade">
-							<pre><code id="folding-data-content"></code></pre>
-						</div>
-
-						<div id="ast-data-tab" class="tab-pane fade">
-							<pre><code id="ast-data-content"></code></pre>
-						</div>
-
-						<div id="outline-data-tab" class="tab-pane fade">
-							<pre><code id="outline-data-content"></code></pre>
-						</div>
-					</div>
-				</div>
+			<div id="tabs-section" class="col-lg-8">
+				<ul class="container col-lg-4 nav nav-pills nav-stacked"></ul>
+				<div class="container col-lg-8 tab-content"></div>
 			</div>
 
-			<div id="preview-section" class="container col-lg-4">
-				<h1>Live preview</h1>
+			<div id="preview-section" class="col-lg-4">
+				<h1><!-- <span class="label label-default"> -->Live preview<!-- </span> --></h1>
 				<div id="preview-content">Here is the highlighting preview content</div>
 			</div>
-
 		</div>
 	</div>
+
+<!-- Editors - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<div id="tab-content-editor-ace"><div id="editor-ace"></div></div>
+	<div id="tab-content-editor-cm"><div id="editor-cm"></div></div>
+
+<!-- Views - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<div id="tab-content-highlighted"><div id="highlight-content"></div></div>
+	<div id="tab-content-graph">
+		<div class="row" style="height: 500px;">
+			<div id="graph-display" class="col-lg-12" style="height: 100%;"></div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">Nodes: <span id="total-nodes" class="badge badge-info" data-toggle="tooltip" title="Total number of nodes the graph contains" data-placement="top">10</span></div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">Leaves: <span id="total-leaves" class="badge badge-info" data-toggle="tooltip" title="Total number of leaf nodes the graph contains" data-placement="top">5</span></div>
+		</div>
+
+		<div id="breadcrumb-section" class="row"></div>
+	</div>
+
+<!-- Tree views - - - - - - - - - - - - - - - - - - - - - -  -->
+
+	<div id="tab-content-outline"><div id="outline-content"></div></div>
+	<div id="tab-content-ast"><div id="ast-content"></div></div>
+
+<!-- Code views - - - - - - - - - - - - - - - - - - - - - -  -->
+
+	<div id="tab-content-highlighting-data"><pre><code id="highlighting-data-content"></code></pre></div>
+	<div id="tab-content-folding-data"><pre><code id="folding-data-content"></code></pre></div>
+	<div id="tab-content-ast-data"><pre><code id="ast-data-content"></code></pre></div>
+	<div id="tab-content-outline-data"><pre><code id="outline-data-content"></code></pre></div>
 
 <!-- Dialogs - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-	<div id="help" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Help</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				</div>
-				<div class="modal-body">
-					<h1>How to use this?</h1>
-					<p>Just write code in the editor, that you can access through the navigation pane in the left sidebar, and then parse it using the parse button in the same sidebar.</p>
-					<p>The resulting graph will be displayed, accessible through the navigation pane too.</p>
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Got it!</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	<div id="dialogs-section"></div>
 
+	<div id="dialog-content-help">
+		<h1>How to use this?</h1>
+		<p>Just write code in the editor, that you can access through the navigation pane in the left sidebar, and then parse it using the parse button in the same sidebar.</p>
+		<p>The resulting graph will be displayed, accessible through the navigation pane too.</p>
+	</div>
 
 <!-- Scripts - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 	<script src="requirejs/require.js" data-main="index"></script>
-
 	<script src="jquery/jquery.js"></script>
 
 
 
 	<script src="bootstrap/js/bootstrap.min.js"></script>
-
 	<script src="hogan/hogan-2.0.0.js"></script>
 	<!-- <script src="hogan/lib/hogan.js"></script> -->
 
@@ -152,13 +111,17 @@
 
 	<script src="ace/ace.js"></script>
 	<!-- <script src="ace/lib/ace/ace.js"></script> -->
+	<!-- <script src="codemirror/codemirror-compressed.js"></script> -->
+	<script src="codemirror/lib/codemirror.js"></script>
+	<script src="codemirror/mode/xml/xml.js"></script>
+	<script src="codemirror/mode/javascript/javascript.js"></script>
+	<script src="codemirror/mode/css/css.js"></script>
+	<script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
 
 	<script src="jquery/plugins/jqTree/tree.jquery.js"></script>
-
 	<script src="highlight.js/highlight.pack.js"></script>
 
 	<script src="Jit/jit.js"></script>
-
 	<script src="cytoscape/cytoscape.js"></script>
 
 </body>

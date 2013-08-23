@@ -1,90 +1,59 @@
 define([
 	'backend',
 	'actions',
-	'gui'
+	'gui',
+	'editors',
+	'tabsgroup'
 ], function(
 	Backend,
 	Actions,
-	GUI
+	GUI,
+	Editors,
+	TabsGroup
 ) {
 
+TabsGroup = TabsGroup.TabsGroup;
 
+
+// Top of the page -------------------------------------------------------------
 
 GUI.jumbotron({
 	header: 'Ultimate editor!',
 	content: 'Try the features of the ultimate editor, which funnily doesn\'t have a frontend...'
 });
-
-GUI.pageHeader({
-	text: 'Graph visualization',
-	small: 'Parse and play'
-});
-
-
+GUI.pageHeader({text: 'Graph visualization', small: 'Parse and play'});
 
 // Actions ---------------------------------------------------------------------
 
-GUI.addAction({
-	label: 'Init',
-	type: 'danger',
-	onclick: 'poc.init()'
-});
+GUI.addAction({label: 'Init', type: 'danger', onclick: 'poc.init()', icon: 'home'});
+// GUI.addAction({label: 'Parse', type: 'primary', loading: 'Parsing...', onclick: 'poc.parse()'});
+// GUI.addAction({label: 'Highlight', type: 'primary', loading: 'Highlighting...', onclick: 'poc.highlight()'});
+// GUI.addAction({label: 'Fold', type: 'primary', loading: 'Folding...', onclick: 'poc.fold()'});
+// GUI.addAction({label: 'Update all', type: 'primary', loading: 'Updating...', onclick: 'poc.update()', icon: 'refresh'});
+GUI.addAction({label: 'Clear', type: 'danger', onclick: 'poc.clear()', icon: 'trash'});
+GUI.addAction({label: 'Help', type: 'info', href: 'help', icon: 'question-sign'});
+GUI.addAction({label: 'Ping', onclick: 'poc.ping()'});
+GUI.addAction({label: 'Identify', onclick: 'poc.guid()'});
+GUI.addAction({label: 'Shutdown', type: 'danger', onclick: 'poc.shutdown()', icon: 'off'});
 
-GUI.addAction({
-	label: 'Parse',
-	type: 'primary',
-	loading: 'Parsing...',
-	onclick: 'poc.parse()'
-});
+// Tabs ------------------------------------------------------------------------
 
-GUI.addAction({
-	label: 'Highlight',
-	type: 'primary',
-	loading: 'Highlighting...',
-	onclick: 'poc.highlight()'
-});
+var tabs = new TabsGroup({id: 'tabs-section', type: 'pill'});
 
-GUI.addAction({
-	label: 'Fold',
-	type: 'primary',
-	loading: 'Folding...',
-	onclick: 'poc.fold()'
-});
+tabs.add({id: 'editor-ace', label: 'Editor (Ace)', active: true});
+tabs.add({id: 'editor-cm', label: 'Editor (CodeMirror)', disabled: true});
+tabs.add({id: 'highlighted', label: 'Highlighted'});
+tabs.add({id: 'outline', label: 'Outline'});
+tabs.add({id: 'ast', label: 'AST'});
+tabs.add({id: 'graph', label: 'Graph'});
+tabs.add({id: 'highlighting-data', label: 'Highlighting (data)'});
+tabs.add({id: 'folding-data', label: 'Folding (data)'});
+tabs.add({id: 'ast-data', label: 'AST (data)'});
+tabs.add({id: 'outline-data', label: 'Outline (data)'});
 
-GUI.addAction({
-	label: 'Update all',
-	type: 'primary',
-	loading: 'Updating...',
-	onclick: 'poc.update()'
-});
+// Dialogs ---------------------------------------------------------------------
 
-GUI.addAction({
-	label: 'Clear',
-	type: 'danger',
-	onclick: 'poc.clear()'
-});
-
-GUI.addAction({
-	label: 'Help',
-	type: 'info',
-	href: 'help'
-});
-
-GUI.addAction({
-	label: 'Ping',
-	onclick: 'poc.ping()'
-});
-
-GUI.addAction({
-	label: 'Identify',
-	onclick: 'poc.guid()'
-});
-
-GUI.addAction({
-	label: 'Shutdown',
-	type: 'danger',
-	onclick: 'poc.shutdown()'
-});
+GUI.addDialog({id: 'help', title: 'Help', closeLabel: 'Got it!'});
 
 // Graph -----------------------------------------------------------------------
 
@@ -98,52 +67,16 @@ GUI.setNodePath({
 
 // Editor creation -------------------------------------------------------------
 
-function createEditor(id) {
-	var editorElmt = $("#" + id);
-	var editorParent = editorElmt.parent();
+var editorAce = poc.editor = Editors.createAceEditor('editor-ace', $('#' + tabs.id).css('height'));
 
-	editorElmt.css({
-		position: "absolute",
-		top: editorParent.css("top"),
-		bottom: editorParent.css("bottom"),
-		left: editorParent.css("left"),
-		right: editorParent.css("right")
-	});
+editorAce.on('blur', poc.update.bind(poc));
+editorAce.on('change', poc.preview.bind(poc));
 
-	var editor = ace.edit(id);
-	editor.setTheme("ace/theme/monokai");
-	editor.getSession().setMode("ace/mode/html");
-	editor.setHighlightActiveLine(true);
-	editor.setHighlightGutterLine(true);
-	editor.setHighlightSelectedWord(true);
-	editor.setPrintMarginColumn(80);
-	editor.setShowPrintMargin(true);
-	editor.setShowInvisibles(true);
-	editor.setWrapBehavioursEnabled(false);
-
-	return editor;
-}
-
-var editor = poc.editor = createEditor('editor');
-
-editor.on('blur', poc.update.bind(poc));
-editor.on('change', poc.preview.bind(poc));
+var editorCM = poc.editorCM = Editors.createCMEditor('editor-cm');
 
 // Initialization --------------------------------------------------------------
 
 Actions.ping();
 Actions.init();
-
-// Parsing progress bar --------------------------------------------------------
-
-// var el = $("#parsing-progress");
-// console.log(el);
-// el.animate({
-// 	"width": "100%"
-// }, {
-// 	duration: 1000,
-// 	easing: 'linear'
-// });
-
 
 });
