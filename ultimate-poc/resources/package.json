@@ -10,6 +10,13 @@
 
 	"decription": "A server providing common services for source code edition.",
 	"url": "https://github.com/ariatemplates/editors-tools/tree/ultimate-poc/ultimate-poc",
+
+
+
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ariatemplates/editors-tools.git"
+	},
 	"bugs": "https://github.com/ariatemplates/editors-tools/issues",
 
 
@@ -17,7 +24,7 @@
 		{
 			"name": "Yannick Meine",
 			"email": "yannick.meine@amadeus.com",
-			"url": "https://github.com/ymeine"
+			"url": "http://ymeine.github.io"
 		}
 	],
 	"licenses": [
@@ -49,17 +56,13 @@
 	"dependencies": {
 		"lodash": "*",
 		"prelude-ls": "*",
-		"jsclass": "*",
-		"zappajs": "*",
-		"portscanner": "*",
-		"winston": "*",
-		"pegjs": "git+https://github.com/dmajda/pegjs",
-		"escape-html": "*",
-		"esprima": "*",
-		"js-beautify": "*",
-		"jshint": "*",
-		"reflect": "*",
 
-		"LiveScript": "1.1.1"
+		"oop": "git+https://github.com/ymeine/oop",
+
+		"http-server": "git+https://github.com/ymeine/http-server",
+		"winston": "*",
+
+		"pegjs": "git+https://github.com/dmajda/pegjs",
+		"escape-html": "*"
 	}
 }

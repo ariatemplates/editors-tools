@@ -14,7 +14,7 @@ module.exports = [
 	{
 		type: 'rpc',
 		modules: {
-			'editor': 'modes/editor'
+			'editor': require('modes/editor')
 		}
 	},
 
