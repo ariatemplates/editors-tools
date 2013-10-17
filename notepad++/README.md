@@ -2,7 +2,7 @@ How to install Notepad++ syntax highlighting (UDL)
 ==================================================
 
 1. Open Notepad++.
-2. Chooose `View` -> `User-Defined Dialogue...` (UDL)
+2. Chooose `View` -> `User-Defined Dialogue...` (UDL) in N++ 5.x, or `Language` -> `Define your language...` in N++ 6.x
 3. Click `Import...`
 4. Navigate to choose one of the `.udl.xml` files.
 5. Restart Notepad++.
